@@ -15,23 +15,23 @@ This checklist is designed to be executed by a team of weak agentic coding LLMs.
 
 ## Stream A: Prompt Engineering & Repo Bootstrap (Window: 0-3h)
 
-- [ ] **Task A.1: Initialize Project Structure**
+- [ X ] **Task A.1: Initialize Project Structure**
     - **Prompt:** `Initialize a new React Native project named "HelloWord" using the TypeScript template. Then, create the following directory structure inside the 'src' folder: /assets, /components, /core, /hooks, /navigation, /platforms, /screens, /store, /types, /utils. Inside 'src/core', create a 'services' directory.`
 
-- [ ] **Task A.2: Configure Web Support with Vite**
+- [ X ] **Task A.2: Configure Web Support with Vite**
     - **Prompt:** `Install 'vite', '@vitejs/plugin-react', 'vite-plugin-react-native-web', 'react-dom', and 'react-native-web'. Create a 'vite.config.ts' file in the root directory. Configure it to use the React plugin and resolve '.web.tsx', '.web.ts' extensions first. Create a root 'index.html' file that loads a script from '/src/index.web.js'.`
 
-- [ ] **Task A.3: Set up Tailwind CSS**
+- [ X ] **Task A.3: Set up Tailwind CSS**
     - **Prompt:** `Install 'tailwindcss' and 'nativewind'. Initialize a Tailwind configuration file ('tailwind.config.js'). Configure the 'content' array to scan all '.tsx' and '.ts' files within the 'src' directory for class names. Set up the NativeWind Babel plugin.`
 
-- [ ] **Task A.4: Create Core Type Definitions**
+- [ X ] **Task A.4: Create Core Type Definitions**
     - **Prompt:** `Create the file 'src/core/types/liturgical.ts'. In this file, define the following TypeScript interfaces and enums:
       - enum 'LiturgicalSeason' with values ADVENT, CHRISTMASTIDE, etc.
       - interface 'BilingualText' with fields: latin (string), english (string), isRubric (boolean, optional).
       - interface 'LiturgicalDay' with fields: date (string), season (LiturgicalSeason), celebration (string, optional), rank (number), color (string), commemorations (string[]).
       - interface 'VoiceNote' with fields: id (string), date (string), title (string), filePath (string), duration (number), transcription (string, optional).`
 
-- [ ] **Task A.5: Create Platform Adapter Interfaces**
+- [ X ] **Task A.5: Create Platform Adapter Interfaces**
     - **Prompt:** `Create the file 'src/core/types/services.ts'. In this file, define the following TypeScript interfaces:
       - 'IStorageService' with methods: initialize(), executeQuery(sql, params), transaction(callback).
       - 'IAudioRecorder' with methods: record(), stop(), play(filePath).
