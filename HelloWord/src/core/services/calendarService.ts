@@ -3,7 +3,6 @@ import { LiturgicalDay, LiturgicalSeason } from '../types/liturgical';
 export class LiturgicalCalendar {
   static async getDayInfo(dateString: string): Promise<LiturgicalDay> {
     const date = new Date(dateString);
-    const year = date.getFullYear();
     const month = date.getMonth() + 1; // Month is 0-indexed
     const day = date.getDate();
 

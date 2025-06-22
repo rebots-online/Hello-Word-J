@@ -1,5 +1,6 @@
 import Dexie, { Table } from 'dexie';
 import { IStorageService } from '../../core/types/services';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { LiturgicalDay, BilingualText, VoiceNote } from '../../core/types/liturgical'; // Assuming these are needed for table definitions
 
 // Define interfaces for table records based on SQL schema from DataManager
