@@ -10,7 +10,7 @@ export enum LiturgicalSeason {
 export interface BilingualText {
   latin: string;
   english: string;
-  isRubric?: boolean; // As per Task A.4
+  isRubric?: boolean;
 }
 
 export interface LiturgicalDay {
