@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import { IStorageService } from '../core/types/services';
 import { NativeStorageService } from './native/sqliteStorage';
-import { WebStorageService } from './web/indexedDbStorage';
+import { WebSqliteStorageService } from './web/webSqliteStorage'; // Updated import
 
 let storageServiceInstance: IStorageService | null = null;
 
@@ -14,14 +14,14 @@ export function createStorageService(): IStorageService {
     console.log('Creating NativeStorageService (SQLite) for mobile platform.');
     storageServiceInstance = new NativeStorageService();
   } else if (Platform.OS === 'web') {
-    console.log('Creating WebStorageService (IndexedDB/Dexie) for web platform.');
-    storageServiceInstance = new WebStorageService();
+    console.log('Creating WebSqliteStorageService (sql.js) for web platform.'); // Updated log message
+    storageServiceInstance = new WebSqliteStorageService(); // Use the new service
   } else {
     // Fallback or error for unsupported platforms
     console.warn(`Unsupported platform: ${Platform.OS}. Defaulting to web storage or consider a mock.`);
-    // For now, let's default to WebStorageService if platform is unknown but web-like
+    // For now, let's default to WebSqliteStorageService if platform is unknown but web-like
     // Or throw an error if strict platform support is required.
-    // storageServiceInstance = new WebStorageService();
+    // storageServiceInstance = new WebSqliteStorageService();
     throw new Error(`Unsupported platform: ${Platform.OS}. Cannot create a storage service.`);
   }
 
