@@ -1,11 +1,11 @@
-import SQLite, { SQLiteDatabase, ResultSet, SQLError } from 'react-native-sqlite-storage';
+import SQLite, { SQLiteDatabase, ResultSet, SQLError } from 'src/platforms/web/indexedDbStorage';
 import { IStorageService } from '../../core/types/services';
 
 // Enable promise support for the SQLite library
 SQLite.enablePromise(true);
 
 const DATABASE_NAME = 'HelloWord.db';
-const DATABASE_LOCATION = 'default'; // Standard location for react-native-sqlite-storage
+const DATABASE_LOCATION = 'default'; // Standard location for src/platforms/web/indexedDbStorage
 
 export class NativeStorageService implements IStorageService {
   private db: SQLiteDatabase | null = null;
@@ -118,7 +118,7 @@ export class NativeStorageService implements IStorageService {
         // `await this.storageService.transaction(async () => { ... })` will work if
         // the `executeQuery` it calls within the callback is somehow tied to this transaction.
 
-        // Let's simplify the `IStorageService.transaction` to match `react-native-sqlite-storage` more closely.
+        // Let's simplify the `IStorageService.transaction` to match `src/platforms/web/indexedDbStorage` more closely.
         // The callback will receive the transaction object `tx`.
         // The `DataManager` will need to be updated to use this `tx` if it's passed one.
         // However, the current `IStorageService` signature for `transaction` is `(callback: () => Promise<void>)`.

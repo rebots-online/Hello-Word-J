@@ -21,12 +21,8 @@ export default defineConfig({
         replacement: 'react-native-web'
       },
       {
-        find: 'react-native-sqlite-storage',
-        replacement: resolve(__dirname, 'HelloWord/src/platforms/web/indexedDbStorage.ts')
-      },
-      {
         find: '@',
-        replacement: resolve(__dirname, 'HelloWord/src')
+        replacement: resolve(__dirname, 'src')
       }
     ],
     extensions: ['.web.tsx', '.web.ts', '.web.jsx', '.web.js', '.tsx', '.ts', '.jsx', '.js']
@@ -56,7 +52,7 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html')
+        main: resolve(__dirname, 'public/index.html')
       }
     }
   }
