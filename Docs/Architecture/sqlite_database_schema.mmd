@@ -1,0 +1,83 @@
+---
+title: SanctissiMissa SQLite Database Schema
+---
+
+erDiagram
+    %% CORE LITURGICAL DATA TABLES
+    CALENDAR_DAYS {
+        text date PK "YYYY-MM-DD format, primary key"
+        text season "Advent, Christmastide, Septuagesima, Lent, Paschaltide, Time after Pentecost"
+        text celebration "Primary celebration name (e.g., 'In Circumcisione Domini')"
+        integer rank "Liturgical rank 1-9 (9=highest precedence)"
+        text color "Liturgical color: white, red, green, purple, black, rose"
+        text commemorations "JSON array of secondary feasts for this date"
+        text raw_kalendar_line "Original Divinum Officium kalendar line for debugging"
+    }
+    
+    MASS_TEXTS {
+        integer id PK "Auto-increment primary key"
+        text celebration_key FK "Foreign key to calendar_days.date"
+        text part_type "Mass part: Introitus, Kyrie, Gloria, Collect, Epistle, Gradual, Gospel, Credo, Offertory, Secret, Preface, Canon, Communion, Postcommunion"
+        integer sequence "Order of appearance within the Mass (1, 2, 3, ...)"
+        text latin "Latin text content from Divinum Officium"
+        text english "English translation from Divinum Officium"
+        boolean is_rubric "TRUE if this is a rubrical instruction, FALSE for liturgical text"
+    }
+    
+    OFFICE_TEXTS {
+        integer id PK "Auto-increment primary key" 
+        text celebration_key FK "Foreign key to calendar_days.date"
+        text hour "Canonical hour: Matutinum, Laudes, Prima, Tertia, Sexta, Nona, Vespera, Completorium"
+        text part_type "Office part: Antiphona, Psalmus, Lectio, Responsory, Hymnus, Capitulum, Oratio"
+        integer sequence "Order within the specific hour (1, 2, 3, ...)"
+        text latin "Latin text content from Divinum Officium"
+        text english "English translation from Divinum Officium"
+        boolean is_rubric "TRUE if this is a rubrical instruction, FALSE for liturgical text"
+    }
+    
+    %% USER DATA TABLES
+    VOICE_NOTES {
+        text id PK "UUID string primary key"
+        text date "Associated liturgical date (YYYY-MM-DD)"
+        text title "User-defined title for the voice note"
+        text file_path "Path to audio file (platform-specific)"
+        integer duration "Duration in seconds"
+        text transcription "Optional AI transcription of audio content"
+    }
+    
+    %% METADATA TABLES (Optional future expansion)
+    LITURGICAL_COLORS {
+        text color PK "Color name: white, red, green, purple, black, rose"
+        text symbolism "Theological symbolism of the color"
+        text seasons "Typical liturgical seasons for this color"
+    }
+    
+    LITURGICAL_RANKS {
+        integer rank PK "Numerical rank 1-9"
+        text name "Name: Simplex, Commemoratio, Memoria, Totum duplex, etc."
+        text description "Liturgical precedence description"
+        text rubrics "Special rubrical considerations"
+    }
+    
+    CANONICAL_HOURS {
+        text hour PK "Hour name: Matutinum, Laudes, Prima, etc."
+        text time_approximate "Approximate traditional time"
+        integer order_sequence "Order in the daily cycle (1-8)"
+        text description "Brief description of the hour's purpose"
+    }
+    
+    %% RELATIONSHIPS
+    CALENDAR_DAYS ||--o{ MASS_TEXTS : "has Mass texts for date"
+    CALENDAR_DAYS ||--o{ OFFICE_TEXTS : "has Office texts for date"
+    CALENDAR_DAYS ||--o{ VOICE_NOTES : "may have user notes"
+    
+    LITURGICAL_COLORS ||--o{ CALENDAR_DAYS : "defines color meaning"
+    LITURGICAL_RANKS ||--o{ CALENDAR_DAYS : "defines rank meaning"
+    CANONICAL_HOURS ||--o{ OFFICE_TEXTS : "defines hour structure"
+    
+    %% DATA VOLUME ESTIMATES
+    note1[Data Volume Estimates:<br/>calendar_days: ~1,095 rows/year<br/>mass_texts: ~50,000+ rows/year<br/>office_texts: ~200,000+ rows/year<br/>Total size: ~50-100MB for 3 years]
+    
+    note2[Content Source:<br/>All liturgical content imported<br/>from Divinum Officium flat files<br/>Matches divinumofficium.com exactly]
+    
+    note3[Platform Storage:<br/>Web: IndexedDB via Dexie<br/>Native: SQLite via react-native-sqlite-storage<br/>Unified interface via IStorageService]

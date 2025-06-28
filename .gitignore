@@ -34,3 +34,19 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# build scripts and generated database
+/scripts/
+/assets/
+sanctissimissa.db
+
+# Divinum Officium flat file cache (build-time only)
+divinum-officium-cache/
+*.txt
+Sancti/
+Tempora/
+Commune/
+Tabulae/
+
+# Perl codebase for clean room analysis (not included in distribution)
+divinum-officium-perl/

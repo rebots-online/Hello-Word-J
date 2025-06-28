@@ -1,0 +1,131 @@
+---
+title: Divinum Officium Flat File to SQLite Import Architecture
+---
+
+erDiagram
+    %% FLAT FILE SOURCES (Input)
+    GITHUB_REPOSITORY {
+        string base_url "https://raw.githubusercontent.com/DivinumOfficium/divinum-officium/master/web/www/"
+        string directory_structure "Sancti/, Tempora/, Commune/, Tabulae/"
+    }
+    
+    SANCTI_FILES {
+        string filename "MM-DD[suffix].txt (e.g., 01-01.txt, 01-18r.txt)"
+        string content "Section-based: [Introitus], [Oratio], etc."
+        string includes "@filename:section:substitutions"
+        string language "Latin/, English/"
+    }
+    
+    TEMPORA_FILES {
+        string filename "[Season][Week]-[Day] (e.g., Adv1-0.txt, Pasc2-3.txt)"
+        string content "Section-based liturgical texts"
+        string conditional "(condition)text patterns"
+    }
+    
+    KALENDAR_FILES {
+        string filename "1960.txt, 1570.txt (in Tabulae/Kalendaria/)"
+        string format "MM-DD=path1~path2=Name1=Rank1=Name2=Rank2"
+        string example "01-01=01-01=In Circumcisione Domini=3="
+    }
+    
+    %% PROCESSING SERVICES (Transform)
+    TEXT_PARSING_SERVICE {
+        method fetch_file "URL construction + HTTP fetch"
+        method parse_sections "Split by [Section Name] brackets"
+        method resolve_includes "Handle @filename:section recursively"
+        method process_conditionals "Basic (condition)text handling"
+        array output "LiturgicalTextPart[]"
+    }
+    
+    DIRECTORIUM_SERVICE {
+        method load_kalendar "Fetch and merge calendar files"
+        method parse_entries "Split MM-DD=path=name=rank format"
+        method version_management "Handle 1960, 1570, etc."
+        array output "KalendarEntryData[]"
+    }
+    
+    LITURGICAL_ENGINE_SERVICE {
+        method determine_office "Date-based file resolution"
+        method precedence_logic "Sancti vs Tempora priority"
+        method context_building "LiturgicalContext creation"
+        string output "File paths + context"
+    }
+    
+    %% INTERMEDIATE DATA STRUCTURES
+    LITURGICAL_TEXT_PART {
+        string part_type "Introitus, Oratio, Antiphona1, etc."
+        string text_content "Processed text content"
+        boolean is_rubric "Rubric detection flag"
+        string lang "Latin or English"
+        integer sequence "Order within file"
+    }
+    
+    KALENDAR_ENTRY_DATA {
+        string mmdd "MM-DD key"
+        string raw_line "Full kalendar line"
+        array parsed_entries "Array of feast data"
+    }
+    
+    %% SQLITE DATABASE TABLES (Output)
+    CALENDAR_DAYS {
+        text date PK "YYYY-MM-DD format"
+        text season "Advent, Lent, Paschaltide, etc."
+        text celebration "Primary celebration name"
+        integer rank "Liturgical rank (1-9)"
+        text color "Liturgical color"
+        text commemorations "JSON array of secondary feasts"
+        text raw_kalendar_line "Original DO kalendar line"
+    }
+    
+    MASS_TEXTS {
+        integer id PK "Auto increment"
+        text celebration_key FK "References calendar_days.date"
+        text part_type "Introitus, Kyrie, Gloria, etc."
+        integer sequence "Order within Mass"
+        text latin "Latin text content"
+        text english "English text content"
+        boolean is_rubric "Rubric flag"
+    }
+    
+    OFFICE_TEXTS {
+        integer id PK "Auto increment"
+        text celebration_key FK "References calendar_days.date"
+        text hour "Matutinum, Laudes, Prima, etc."
+        text part_type "Antiphona, Psalmus, Lectio, etc."
+        integer sequence "Order within hour"
+        text latin "Latin text content"
+        text english "English text content"
+        boolean is_rubric "Rubric flag"
+    }
+    
+    VOICE_NOTES {
+        text id PK "UUID"
+        text date "Associated liturgical date"
+        text title "User-defined title"
+        text file_path "Audio file location"
+        integer duration "Duration in seconds"
+        text transcription "Optional transcription"
+    }
+
+    %% RELATIONSHIPS - FLAT FILE SOURCES
+    GITHUB_REPOSITORY ||--o{ SANCTI_FILES : "contains"
+    GITHUB_REPOSITORY ||--o{ TEMPORA_FILES : "contains"
+    GITHUB_REPOSITORY ||--o{ KALENDAR_FILES : "contains"
+    
+    %% RELATIONSHIPS - PROCESSING FLOW
+    SANCTI_FILES ||--o{ TEXT_PARSING_SERVICE : "processes"
+    TEMPORA_FILES ||--o{ TEXT_PARSING_SERVICE : "processes"
+    KALENDAR_FILES ||--o{ DIRECTORIUM_SERVICE : "processes"
+    
+    TEXT_PARSING_SERVICE ||--o{ LITURGICAL_TEXT_PART : "produces"
+    DIRECTORIUM_SERVICE ||--o{ KALENDAR_ENTRY_DATA : "produces"
+    LITURGICAL_ENGINE_SERVICE ||--o{ TEXT_PARSING_SERVICE : "coordinates"
+    
+    %% RELATIONSHIPS - DATABASE IMPORT
+    LITURGICAL_TEXT_PART ||--o{ MASS_TEXTS : "imports to"
+    LITURGICAL_TEXT_PART ||--o{ OFFICE_TEXTS : "imports to"
+    KALENDAR_ENTRY_DATA ||--o{ CALENDAR_DAYS : "imports to"
+    
+    %% RELATIONSHIPS - DATABASE FOREIGN KEYS
+    CALENDAR_DAYS ||--o{ MASS_TEXTS : "date references"
+    CALENDAR_DAYS ||--o{ OFFICE_TEXTS : "date references"

@@ -10,9 +10,9 @@ import {
   useColorScheme,
 } from 'react-native';
 
-import { DataManager } from './src/core/services/dataManager';
-import { createStorageService } from './src/platforms/storageFactory';
-import { IStorageService } from './src/core/types/services';
+import { DataManager } from '../src/core/services/dataManager';
+import { createStorageService } from '../src/platforms/storageFactory';
+import { IStorageService } from '../src/core/types/services';
 
 // Define a simple type for the calendar day item we expect from the DB
 interface CalendarDayItem {

@@ -1,0 +1,171 @@
+@startuml Divinum Officium Perl Architecture
+
+!define CGI_COLOR #FFE082
+!define MODULE_COLOR #A5D6A7
+!define DATA_COLOR #BBDEFB
+!define FILE_COLOR #FFCDD2
+
+title Divinum Officium Perl Codebase Architecture
+
+package "CGI Scripts" as cgi <<CGI_COLOR>> {
+    class missa.pl {
+        +main()
+        +get_date()
+        +occurrence()
+        +get_winner()
+        +print_mass()
+        -$winner: string
+        -$commemoratio: string
+        -$rank: integer
+    }
+    
+    class officium.pl {
+        +main()
+        +get_office()
+        +print_hours()
+        +get_kalendar()
+    }
+    
+    class kalendar.pl {
+        +show_calendar()
+        +get_month()
+        +format_display()
+    }
+}
+
+package "Core Modules" as modules <<MODULE_COLOR>> {
+    class "DivinumOfficium::Main" {
+        +vernaculars(basedir): array
+        +liturgical_color(celebration): string
+        -color_patterns: hash
+    }
+    
+    class "DivinumOfficium::Directorium" {
+        +get_from_directorium(date, version): hash
+        +load_data_data(): void
+        +load_transfer_file(): void
+        +check_coronatio(): boolean
+        -$datafolder: string
+        -$_data: hash
+        -$_dCACHE: hash
+    }
+    
+    class "DivinumOfficium::Date" {
+        +leapyear(year): boolean
+        +geteaster(year): Date
+        +get_sday(date): integer
+        +nextday(date): Date
+    }
+    
+    class "DivinumOfficium::FileIO" {
+        +do_read(filename): array
+        +file_exists(path): boolean
+    }
+}
+
+package "Data Structure" as data <<DATA_COLOR>> {
+    folder "web/www/missa/" {
+        folder "Latin/" {
+            folder "Sancti/" as missa_sancti
+            folder "Tempora/" as missa_tempora
+            folder "Commune/" as missa_commune
+        }
+        folder "English/"
+        folder "Deutsch/"
+    }
+    
+    folder "web/www/horas/" {
+        folder "Latin/" {
+            folder "Sancti/" as horas_sancti
+            folder "Tempora/" as horas_tempora
+            folder "Commune/" as horas_commune
+        }
+    }
+    
+    folder "web/www/Tabulae/" {
+        folder "Kalendaria/" as kalendaria
+        file "data.txt"
+    }
+}
+
+package "File Formats" as formats <<FILE_COLOR>> {
+    class SanctiFile {
+        +[Officium]: string
+        +[Rank]: string  
+        +[Rule]: string
+        +[Introitus]: string
+        +[Oratio]: string
+        +[Lectio]: string
+        +[Evangelium]: string
+        +[Communio]: string
+        +parse_sections(): hash
+    }
+    
+    class KalendarFile {
+        +format: "MM-DD=filename=name=rank="
+        +parse_entries(): array
+        +get_feast(date): hash
+    }
+    
+    class TemporaFile {
+        +[season_sections]: string
+        +get_temporal_texts(): hash
+    }
+}
+
+' Relationships
+missa.pl --> "DivinumOfficium::Main"
+missa.pl --> "DivinumOfficium::Directorium"
+missa.pl --> "DivinumOfficium::Date"
+missa.pl --> "DivinumOfficium::FileIO"
+
+officium.pl --> "DivinumOfficium::Main"
+officium.pl --> "DivinumOfficium::Directorium"
+
+"DivinumOfficium::Directorium" --> kalendaria
+"DivinumOfficium::FileIO" --> missa_sancti
+"DivinumOfficium::FileIO" --> horas_sancti
+
+missa_sancti --> SanctiFile
+kalendaria --> KalendarFile
+missa_tempora --> TemporaFile
+
+' Critical Examples
+note right of SanctiFile
+    **June 29 Example:**
+    [Officium]
+    SS. Apostolorum Petri et Pauli
+    
+    [Rank]
+    ;;Duplex I classis;;6;;ex C1
+    
+    [Introitus]
+    v. Nunc scio vere, quia misit...
+end note
+
+note right of KalendarFile
+    **1960.txt Format:**
+    06-28=06-28r=Vigilia Ss. Petri et Pauli=5=
+    06-29=(implicit from 06-29.txt)
+    
+    **Suffixes:**
+    r = vigil
+    t = transferred
+    o = octave
+end note
+
+note bottom of missa.pl
+    **Critical Variables:**
+    $winner = winning celebration file
+    $rank = liturgical precedence (1-9)
+    $commemoratio = commemorated feast
+    
+    **Process:**
+    1. Parse date parameters
+    2. Load kalendar for liturgical version
+    3. Determine precedence (Sancti vs Tempora)
+    4. Load winner file and parse sections
+    5. Generate HTML output
+end note
+
+@enduml

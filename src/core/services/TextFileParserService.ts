@@ -147,7 +147,7 @@ export class TextFileParserService {
     let sequence = 0;
 
     const initialPathPrefix = this.getPathPrefix(filePathFragment);
-    const initialFullFilePath = `${initialPathPrefix}${filePathFragment}`.replace(/\\/\\//g, '/');
+    const initialFullFilePath = `${initialPathPrefix}${filePathFragment}`.replace(/\/\//g, '/');
 
     const processedIncludes = new Set<string>(); // To avoid processing the same include multiple times in one call stack
 
@@ -196,7 +196,7 @@ export class TextFileParserService {
             // Substitutions (includeMatch[3]) are very complex, ignoring for now.
 
             const includePathPrefix = this.getPathPrefix(inclFile.endsWith(".txt") ? inclFile : `${inclFile}.txt`);
-            const includeFullFile = `${includePathPrefix}${inclFile.endsWith(".txt") ? inclFile : `${inclFile}.txt`}`.replace(/\\/\\//g, '/');
+            const includeFullFile = `${includePathPrefix}${inclFile.endsWith(".txt") ? inclFile : `${inclFile}.txt`}`.replace(/\/\//g, '/');
 
             const includeKey = `${currentLang}/${includeFullFile}#${inclSection}`;
             if (processedIncludes.has(includeKey)) {
@@ -265,7 +265,7 @@ export class TextFileParserService {
             const inclFile = includeMatch[1] || fileContext;
             const inclSection = includeMatch[2] || sectionContext;
             const includePathPrefix = this.getPathPrefix(inclFile.endsWith(".txt") ? inclFile : `${inclFile}.txt`);
-            const includeFullFile = `${includePathPrefix}${inclFile.endsWith(".txt") ? inclFile : `${inclFile}.txt`}`.replace(/\\/\\//g, '/');
+            const includeFullFile = `${includePathPrefix}${inclFile.endsWith(".txt") ? inclFile : `${inclFile}.txt`}`.replace(/\/\//g, '/');
 
             const includeKey = `${langContext}/${includeFullFile}#${inclSection}`;
             if (processedIncludes.has(includeKey)) return;

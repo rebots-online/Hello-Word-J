@@ -1,0 +1,212 @@
+@startuml Divinum Officium Flat File to SQLite Import Architecture
+
+!define REPOSITORY_COLOR #E1F5FE
+!define PROCESSING_COLOR #FFF3E0  
+!define DATABASE_COLOR #E8F5E8
+!define INTERFACE_COLOR #F3E5F5
+
+title Divinum Officium Flat File to SQLite Import Architecture
+
+package "Divinum Officium Source Repository" as repo <<REPOSITORY_COLOR>> {
+    
+    folder "Sancti/" as sancti {
+        file "01-01.txt" as sancti_file1
+        file "01-18r.txt" as sancti_file2
+        file "MM-DD[suffix].txt" as sancti_fileN
+        note right of sancti_fileN
+            Fixed feast dates
+            Section format: [Introitus], [Oratio]
+            Includes: @filename:section:substitutions
+        end note
+    }
+    
+    folder "Tempora/" as tempora {
+        file "Adv1-0.txt" as tempora_file1
+        file "Pasc2-3.txt" as tempora_file2
+        file "[Season][Week]-[Day].txt" as tempora_fileN
+        note right of tempora_fileN
+            Movable liturgical seasons
+            Conditional content: (condition)text
+        end note
+    }
+    
+    folder "Tabulae/Kalendaria/" as kalendaria {
+        file "1960.txt" as kal1960
+        file "1570.txt" as kal1570
+        note right of kal1960
+            Calendar definitions
+            Format: MM-DD=path~path=Name=Rank
+            Example: 01-01=01-01=In Circumcisione Domini=3=
+        end note
+    }
+}
+
+package "Processing Services" as services <<PROCESSING_COLOR>> {
+    
+    class DirectoriumService {
+        +loadKalendar(version: string): Promise<KalendarEntryData[]>
+        +parseKalendarLine(line: string): KalendarEntryData
+        +getEntriesForDate(mmdd: string): KalendarEntryData[]
+        -baseUrl: string
+        -kalendarCache: Map<string, KalendarEntryData[]>
+    }
+    
+    class LiturgicalEngineService {
+        +determineOfficeForDay(date: Date, version: string): Promise<OfficeComponentPaths>
+        +resolvePrecedence(sancti: string[], tempora: string[]): string
+        +buildLiturgicalContext(date: Date): LiturgicalContext
+        -directoriumService: DirectoriumService
+    }
+    
+    class TextParsingService {
+        +getResolvedTexts(lang: string, filePath: string, context: LiturgicalContext): Promise<LiturgicalTextPart[]>
+        +fetchFileContent(url: string): Promise<string>
+        +parseSections(content: string): Map<string, string[]>
+        +resolveIncludes(sections: Map<string, string[]>, context: LiturgicalContext): Promise<Map<string, string[]>>
+        +processConditionals(text: string, context: LiturgicalContext): string
+        -baseUrl: string
+        -fileCache: Map<string, string>
+    }
+    
+    interface LiturgicalTextPart <<INTERFACE_COLOR>> {
+        part_type: string
+        text_content: string
+        is_rubric: boolean
+        lang: 'Latin' | 'English'
+        sequence: number
+    }
+    
+    interface KalendarEntryData <<INTERFACE_COLOR>> {
+        mmdd: string
+        rawLine: string
+        parsedEntries?: Array<{path: string, name?: string, rank?: string}>
+    }
+    
+    interface LiturgicalContext <<INTERFACE_COLOR>> {
+        date: Date
+        version: string
+        seasonContext: string
+        dateKey: string
+    }
+}
+
+package "Database Import Layer" as import_layer <<PROCESSING_COLOR>> {
+    
+    class DataManager {
+        +importDivinumOfficiumContent(): Promise<void>
+        +getMassTextsForDate(date: string): Promise<MassText[]>
+        +getOfficeTextsForDate(date: string, hour?: string): Promise<OfficeText[]>
+        +getLiturgicalDayInfo(date: string): Promise<LiturgicalDayInfo>
+        -mergeTexts(latin: LiturgicalTextPart[], english: LiturgicalTextPart[]): MergedTextPart[]
+        -isMassPartHeuristic(partType: string): boolean
+        -getHourFromPartType(partType: string): string
+    }
+    
+    interface MergedTextPart <<INTERFACE_COLOR>> {
+        celebration_key: string
+        part_type: string
+        sequence: number
+        latin: string
+        english: string
+        is_rubric: boolean
+        hour?: string
+    }
+}
+
+package "SQLite Database Schema" as database <<DATABASE_COLOR>> {
+    
+    entity "calendar_days" as calendar_days {
+        * date : TEXT <<PK>>
+        --
+        season : TEXT
+        celebration : TEXT
+        rank : INTEGER
+        color : TEXT
+        commemorations : TEXT
+        raw_kalendar_line : TEXT
+    }
+    
+    entity "mass_texts" as mass_texts {
+        * id : INTEGER <<PK>>
+        --
+        * celebration_key : TEXT <<FK>>
+        * part_type : TEXT
+        * sequence : INTEGER
+        * latin : TEXT
+        * english : TEXT
+        is_rubric : BOOLEAN
+    }
+    
+    entity "office_texts" as office_texts {
+        * id : INTEGER <<PK>>
+        --
+        * celebration_key : TEXT <<FK>>
+        * hour : TEXT
+        * part_type : TEXT
+        * sequence : INTEGER
+        * latin : TEXT
+        * english : TEXT
+        is_rubric : BOOLEAN
+    }
+    
+    entity "voice_notes" as voice_notes {
+        * id : TEXT <<PK>>
+        --
+        * date : TEXT
+        * title : TEXT
+        * file_path : TEXT
+        * duration : INTEGER
+        transcription : TEXT
+    }
+}
+
+' Relationships - File Processing Flow
+kalendaria --> DirectoriumService : "processes"
+sancti --> TextParsingService : "fetches & parses"
+tempora --> TextParsingService : "fetches & parses"
+
+DirectoriumService --> LiturgicalEngineService : "provides calendar data"
+LiturgicalEngineService --> TextParsingService : "determines file paths"
+
+TextParsingService --> LiturgicalTextPart : "produces"
+DirectoriumService --> KalendarEntryData : "produces"
+
+' Relationships - Database Import
+LiturgicalTextPart --> DataManager : "processes for import"
+KalendarEntryData --> DataManager : "processes for import"
+
+DataManager --> calendar_days : "imports calendar data"
+DataManager --> mass_texts : "imports Mass texts"
+DataManager --> office_texts : "imports Office texts"
+
+' Database Foreign Key Relationships
+calendar_days ||--o{ mass_texts : "celebration_key"
+calendar_days ||--o{ office_texts : "celebration_key"
+
+' Notes
+note top of repo
+    **ONE-TIME IMPORT SOURCE**
+    GitHub Repository: DivinumOfficium/divinum-officium
+    Base URL: https://raw.githubusercontent.com/.../web/www/
+    Languages: Latin/, English/
+end note
+
+note top of database
+    **PRODUCTION DATABASE**
+    Pre-populated SQLite database
+    No runtime file fetching
+    Distributed with application
+    Content matches divinumofficium.com exactly
+end note
+
+note bottom of import_layer
+    **IMPORT PROCESS (BUILD TIME ONLY)**
+    1. Fetch flat files from GitHub
+    2. Parse sections and resolve includes
+    3. Process conditionals and language fallbacks
+    4. Merge Latin + English content
+    5. Import to SQLite with proper relationships
+    6. Distribute SQLite database only
+end note
+
+@enduml

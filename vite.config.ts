@@ -7,25 +7,62 @@ import { dirname, resolve } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Shared aliases for both web and native
+const sharedAliases = {
+  // Core shared code
+  '@core': resolve(__dirname, 'src/core'),
+  '@platforms': resolve(__dirname, 'src/platforms'),
+  // Platform-specific overrides
+  '@components': resolve(__dirname, 'src/platforms/web/components'),
+  // React Native Web compatibility
+  'react-native': 'react-native-web',
+  // Root src alias
+  '@': resolve(__dirname, 'src'),
+};
+
 export default defineConfig({
   root: __dirname,
   publicDir: resolve(__dirname, 'public'),
   plugins: [
-    react(),
-    reactNativeWeb()
+    react({
+      // Use the new JSX runtime
+      jsxRuntime: 'automatic',
+      // Babel configuration for web
+      babel: {
+        plugins: [
+          // Removed nativewind/babel and react-native-reanimated/plugin for web build
+        ],
+      },
+    }),
+    reactNativeWeb({
+      // Enable React Native Web optimizations
+      removeConsole: process.env.NODE_ENV === 'production',
+    }),
   ],
   resolve: {
-    alias: [
-      {
-        find: 'react-native',
-        replacement: 'react-native-web'
-      },
-      {
-        find: '@',
-        replacement: resolve(__dirname, 'src')
-      }
+    alias: Object.entries(sharedAliases).map(([find, replacement]) => ({
+      find,
+      replacement,
+    })),
+    extensions: [
+      // Platform-specific extensions
+      '.web.tsx',
+      '.web.ts',
+      '.web.jsx',
+      '.web.js',
+      // Standard React Native extensions
+      '.native.tsx',
+      '.native.ts',
+      '.native.jsx',
+      '.native.js',
+      // Standard extensions
+      '.mjs',
+      '.js',
+      '.ts',
+      '.jsx',
+      '.tsx',
+      '.json',
     ],
-    extensions: ['.web.tsx', '.web.ts', '.web.jsx', '.web.js', '.tsx', '.ts', '.jsx', '.js']
   },
   server: {
     port: 5173,
@@ -52,8 +89,14 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'public/index.html')
-      }
+        main: resolve(__dirname, 'HelloWord/index.html')
+      },
+      external: [
+        'react-native-sqlite-storage',
+        'react-native-fs', 
+        '@react-native-async-storage/async-storage',
+        'react-native'
+      ]
     }
   }
 });

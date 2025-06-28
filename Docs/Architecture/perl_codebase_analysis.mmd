@@ -1,0 +1,84 @@
+---
+title: Divinum Officium Perl Codebase Architecture Analysis
+---
+
+graph TD
+    %% PERL CGI SCRIPTS
+    subgraph "CGI Scripts"
+        A[missa.pl<br/>Mass calculation engine]
+        B[officium.pl<br/>Office calculation engine]
+        C[kalendar.pl<br/>Calendar display]
+    end
+    
+    %% PERL MODULES
+    subgraph "Core Modules"
+        D[DivinumOfficium::Main<br/>Common functions]
+        E[DivinumOfficium::Directorium<br/>Calendar logic]
+        F[DivinumOfficium::Date<br/>Date calculations]
+        G[DivinumOfficium::FileIO<br/>File operations]
+    end
+    
+    %% DATA STRUCTURE
+    subgraph "Data Structure"
+        H[web/www/missa/<br/>Mass texts by language]
+        I[web/www/horas/<br/>Office texts by language]
+        J[web/www/Tabulae/<br/>Calendar definitions]
+    end
+    
+    %% SANCTI FILES
+    subgraph "Sancti Files (Saint Feasts)"
+        K[Latin/Sancti/06-29.txt<br/>SS. Apostolorum Petri et Pauli]
+        L[Latin/Sancti/06-28r.txt<br/>Vigilia Ss. Petri et Pauli]
+        M[Latin/Sancti/01-01.txt<br/>In Circumcisione Domini]
+        N[Latin/Sancti/12-25.txt<br/>In Nativitate Domini]
+    end
+    
+    %% KALENDAR FILES
+    subgraph "Kalendar System"
+        O[Kalendaria/1960.txt<br/>1960 Rubrics calendar]
+        P[Kalendaria/1570.txt<br/>1570 Rubrics calendar]
+        Q[data.txt<br/>Version configuration]
+    end
+    
+    %% FILE FORMAT
+    subgraph "File Format Structure"
+        R["[Officium]: Celebration name<br/>[Rank]: Liturgical rank<br/>[Rule]: Special rules<br/>[Introitus]: Entrance<br/>[Oratio]: Collect<br/>[Lectio]: Epistle<br/>[Evangelium]: Gospel<br/>[Communio]: Communion"]
+    end
+    
+    %% CONNECTIONS
+    A --> D
+    A --> E
+    A --> F
+    A --> G
+    B --> D
+    B --> E
+    B --> F
+    B --> G
+    
+    D --> H
+    D --> I
+    E --> J
+    
+    H --> K
+    H --> L
+    H --> M
+    H --> N
+    
+    J --> O
+    J --> P
+    J --> Q
+    
+    K --> R
+    L --> R
+    
+    %% CRITICAL DISCOVERY
+    note1[🔍 CRITICAL DISCOVERY:<br/>Our engine was looking in wrong directory<br/>Correct: web/www/missa/Latin/Sancti/<br/>Not: web/www/Latin/Sancti/]
+    
+    note2[📋 KALENDAR FORMAT:<br/>MM-DD=filename=celebration=rank=<br/>06-28=06-28r=Vigilia Ss. Petri et Pauli=5=<br/>'r' suffix = vigil]
+    
+    note3[🏆 SAINTS PETER & PAUL:<br/>June 28: Vigil (Class II, rank 5)<br/>June 29: Feast (Class I, rank 6)]
+    
+    style A fill:#ffeb3b
+    style E fill:#4caf50
+    style K fill:#f44336
+    style O fill:#2196f3

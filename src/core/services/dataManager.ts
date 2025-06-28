@@ -116,6 +116,7 @@ export class DataManager {
   }
 
   async initialize(): Promise<void> {
+    console.log('DataManager: Initializing pre-populated SQLite database...');
     await this.storageService.initialize();
 
     await this.storageService.transaction(async () => {
@@ -125,63 +126,78 @@ export class DataManager {
       await this.storageService.executeQuery(CREATE_VOICE_NOTES_TABLE);
     });
 
-    const existingCalendar = await this.storageService.executeQuery("SELECT COUNT(*) as count FROM calendar_days");
-    if (existingCalendar[0]?.count > 0) {
-      console.log('Calendar already exists. Skipping calendar import.');
-    } else {
-      const year = 2024;
-      const days = this.calendarService.getDaysForYear(year);
-      await this.storageService.transaction(async () => {
-        for (const day of days) {
-          const commemorations = day.allEntries?.slice(1).map(e => `${e.name || e.path}${e.rank ? ` (${e.rank})` : ''}`) || [];
-          const params = [
-            day.date, day.primaryCelebrationName || null, null,
-            day.primaryCelebrationPath ? 1 : 0, null,
-            JSON.stringify(commemorations), day.rawCalendarLine || null,
-          ];
-          const sql = `INSERT INTO calendar_days (date, celebration, season, rank, color, commemorations, raw_kalendar_line) VALUES (?, ?, ?, ?, ?, ?, ?);`;
-          await this.storageService.executeQuery(sql, params);
-        }
-      });
-      console.log(`Imported ${days.length} fixed calendar day entries.`);
+    // The SQLite database comes pre-populated with Divinum Officium content
+    // Import was done ONCE during build/development, not during app runtime
+    const dataCount = await this.storageService.executeQuery("SELECT COUNT(*) as count FROM calendar_days");
+    console.log(`DataManager: Ready with ${dataCount[0]?.count || 0} liturgical days in database.`);
+  }
+
+  // Query methods for accessing pre-populated SQLite database
+
+  async getMassTextsForDate(date: string): Promise<Array<{
+    part_type: string;
+    sequence: number;
+    latin: string;
+    english: string;
+    is_rubric: boolean;
+  }>> {
+    const results = await this.storageService.executeQuery(
+      `SELECT part_type, sequence, latin, english, is_rubric 
+       FROM mass_texts 
+       WHERE celebration_key = ? 
+       ORDER BY sequence ASC`,
+      [date]
+    );
+    return results;
+  }
+
+  async getOfficeTextsForDate(date: string, hour?: string): Promise<Array<{
+    hour: string;
+    part_type: string;
+    sequence: number;
+    latin: string;
+    english: string;
+    is_rubric: boolean;
+  }>> {
+    let sql = `SELECT hour, part_type, sequence, latin, english, is_rubric 
+               FROM office_texts 
+               WHERE celebration_key = ?`;
+    const params: any[] = [date];
+
+    if (hour) {
+      sql += ` AND hour = ?`;
+      params.push(hour);
     }
 
-    const massTexts = await this.storageService.executeQuery("SELECT COUNT(*) as count FROM mass_texts");
-    if (massTexts[0]?.count > 0) {
-      console.log('Texts already exist. Skipping import.');
-    } else {
-      const days = await this.storageService.executeQuery("SELECT date, celebration, raw_kalendar_line FROM calendar_days");
+    sql += ` ORDER BY hour, sequence ASC`;
 
-      for (const day of days as KalendarDayInfo[]) {
-        const [year, month, dayNum] = day.date.split('-').map(Number);
-        const dateObj = new Date(year, month - 1, dayNum);
+    const results = await this.storageService.executeQuery(sql, params);
+    return results;
+  }
 
-        try {
-          const { context, components } = await this.liturgicalEngineService.determineOfficeForDay(dateObj, this.currentLiturgicalVersionId);
-          let filePath = components.winnerPath || '';
-          if (!filePath.endsWith('.txt')) filePath += '.txt';
+  async getLiturgicalDayInfo(date: string): Promise<{
+    date: string;
+    celebration: string | null;
+    season: string | null;
+    rank: number;
+    color: string | null;
+    commemorations: string[];
+    raw_kalendar_line: string | null;
+  } | null> {
+    const results = await this.storageService.executeQuery(
+      `SELECT date, celebration, season, rank, color, commemorations, raw_kalendar_line
+       FROM calendar_days 
+       WHERE date = ?`,
+      [date]
+    );
 
-          const latin = await this.textParserService.getResolvedTexts('Latin', filePath, context);
-          const english = await this.textParserService.getResolvedTexts('English', filePath, context);
+    if (results.length === 0) return null;
 
-          const mass = this.mergeTexts(latin.filter(p => this.isMassPartHeuristic(p.part_type)), english.filter(p => this.isMassPartHeuristic(p.part_type)));
-          const office = this.mergeTexts(latin.filter(p => !this.isMassPartHeuristic(p.part_type)), english.filter(p => !this.isMassPartHeuristic(p.part_type)));
-
-          await this.storageService.transaction(async () => {
-            for (const part of mass) {
-              await this.storageService.executeQuery(`INSERT INTO mass_texts (celebration_key, part_type, sequence, latin, english, is_rubric) VALUES (?, ?, ?, ?, ?, ?);`, [day.date, part.part_type, part.sequence, part.latin, part.english, part.is_rubric]);
-            }
-            for (const part of office) {
-              await this.storageService.executeQuery(`INSERT INTO office_texts (celebration_key, hour, part_type, sequence, latin, english, is_rubric) VALUES (?, ?, ?, ?, ?, ?, ?);`, [day.date, this.getHourFromPartType(part.part_type), part.part_type, part.sequence, part.latin, part.english, part.is_rubric]);
-            }
-          });
-
-          console.log(`Inserted texts for ${day.date} (Mass: ${mass.length}, Office: ${office.length})`);
-        } catch (err) {
-          console.error(`Failed to process ${day.date}`, err);
-        }
-      }
-    }
+    const row = results[0];
+    return {
+      ...row,
+      commemorations: row.commemorations ? JSON.parse(row.commemorations) : []
+    };
   }
 
   private isMassPartHeuristic(partType: string): boolean {

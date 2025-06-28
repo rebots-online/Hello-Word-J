@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "CommonJS",
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@core/*": ["src/core/*"],
+      "@platforms/*": ["src/platforms/*"],
+      "@components/*": ["src/platforms/web/components/*"],
+      "@/*": ["src/*"]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "scripts/**/*",
+    "public/**/*",
+    "HelloWord/App.tsx",
+    "HelloWord/index.web.js",
+    "HelloWord/src/platforms/web/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "HelloWord/android",
+    "HelloWord/ios",
+    "HelloWord/__tests__",
+    "src/platforms/native"
+  ]
+}

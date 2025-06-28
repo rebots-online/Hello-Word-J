@@ -1,0 +1,104 @@
+---
+title: Divinum Officium Flat File Import Process Flow
+---
+
+flowchart TD
+    %% PHASE 1: SOURCE DATA COLLECTION
+    subgraph "Phase 1: Flat File Sources"
+        A[Divinum Officium GitHub Repository<br/>github.com/DivinumOfficium/divinum-officium]
+        
+        subgraph "File Structure"
+            B[Sancti/ Directory<br/>MM-DD[suffix].txt<br/>Fixed feast dates]
+            C[Tempora/ Directory<br/>[Season][Week]-[Day].txt<br/>Movable dates]
+            D[Tabulae/Kalendaria/<br/>1960.txt, 1570.txt<br/>Calendar definitions]
+        end
+        
+        A --> B
+        A --> C  
+        A --> D
+    end
+    
+    %% PHASE 2: PARSING & PROCESSING
+    subgraph "Phase 2: File Processing Services"
+        E[DirectoriumService<br/>Kalendar File Processing]
+        F[LiturgicalEngineService<br/>File Path Resolution]
+        G[TextParsingService<br/>Content Extraction]
+        
+        subgraph "Processing Steps"
+            H[1. Section Parsing<br/>[Introitus], [Oratio], etc.]
+            I[2. Include Resolution<br/>@filename:section:substitutions]
+            J[3. Conditional Processing<br/>(condition)text patterns]
+            K[4. Language Fallback<br/>English → Latin]
+        end
+        
+        E --> F
+        F --> G
+        G --> H
+        H --> I
+        I --> J
+        J --> K
+    end
+    
+    %% PHASE 3: DATA TRANSFORMATION
+    subgraph "Phase 3: Data Transformation"
+        L[Raw File Content<br/>Multi-line text with sections]
+        M[Parsed Sections<br/>Map&lt;string, string[]&gt;]
+        N[LiturgicalTextPart Array<br/>Structured text objects]
+        O[MergedTextPart Array<br/>Latin + English combined]
+        
+        L --> M
+        M --> N
+        N --> O
+    end
+    
+    %% PHASE 4: DATABASE IMPORT
+    subgraph "Phase 4: SQLite Database Import"
+        P[Calendar Day Import<br/>Date, celebration, rank, color]
+        Q[Mass Text Import<br/>Part type, sequence, bilingual text]
+        R[Office Text Import<br/>Hour, part type, sequence, bilingual text]
+        
+        subgraph "Target Tables"
+            S[(calendar_days<br/>Primary calendar data)]
+            T[(mass_texts<br/>Mass ordinary & proper)]
+            U[(office_texts<br/>Divine Office hours)]
+            V[(voice_notes<br/>User recordings)]
+        end
+        
+        P --> S
+        Q --> T
+        R --> U
+    end
+    
+    %% CONNECTIONS BETWEEN PHASES
+    B --> E
+    C --> F
+    D --> E
+    
+    K --> L
+    O --> P
+    O --> Q
+    O --> R
+    
+    %% DATA FLOW ANNOTATIONS
+    S -.->|FK: date| T
+    S -.->|FK: date| U
+    
+    %% STYLING
+    classDef sourceFiles fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef processing fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef transformation fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef database fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+    
+    class A,B,C,D sourceFiles
+    class E,F,G,H,I,J,K processing
+    class L,M,N,O transformation
+    class P,Q,R,S,T,U,V database
+    
+    %% CRITICAL NOTES
+    note1[🔄 ONE-TIME IMPORT<br/>Build process only<br/>Not runtime operation]
+    note2[🚫 NO FLAT FILES<br/>in production app<br/>SQLite only]
+    note3[✅ EXACT MATCH<br/>Output matches<br/>divinumofficium.com]
+    
+    note1 -.-> P
+    note2 -.-> S
+    note3 -.-> T

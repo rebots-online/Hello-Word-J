@@ -1,10 +1,9 @@
-# Architecture Diagrams
+# Architecture
 
-This folder contains UML and Mermaid diagrams summarizing the Divinum Officium web application as referenced from [the original perl implementation](https://github.com/rebots-online/divinum-officium/tree/master/web).
+This directory contains documents describing the architecture of the HelloWord application.
 
-- `webapp_flowchart.*` shows the high level request flow.
-- `liturgical_calendar.*` depicts the main calendar reckoning logic.
-- `database_schema.*` outlines the translation from the original flat-file structure to SQLite tables.
-- `optimal_sqlite_schema.*` highlights a proposed schema for future optimizations.
+- `project_structure_20250628_100000.md`: Outlines the overall project structure.
+- `core_services_20250628_100000.md`: Describes the core services, centered around the `LiturgicalEngine`.
+- `webapp_flowchart.mmd`: Shows the high-level request flow of the web application.
 
-These diagrams serve as a snapshot reference for further planning and review.
+The architecture is designed to be modular and platform-agnostic, with a central `LiturgicalEngine` that orchestrates the delivery of liturgical data to the UI.

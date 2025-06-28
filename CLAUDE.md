@@ -92,3 +92,63 @@ src/
 - Service worker is configured for PWA functionality
 - Project follows clean room implementation approach (no direct copying from reference)
 - Focus on Extraordinary Form (1962) liturgical calendar and texts
+
+## 🚨 RESUME NOTES - June 27, 2025 Development Session
+
+### CRITICAL STATUS AT PAUSE
+**MAJOR ARCHITECTURE CORRECTION COMPLETED**: Switched from wrong mass-import approach to correct dynamic calculation engine.
+
+### CURRENT STATE ✅
+1. **Dynamic Engine**: `scripts/setup-dynamic-liturgical-engine.js` - Creates cache-only database
+2. **CLI Tool**: `scripts/liturgical-cli.js` - Testing tool with Markdown report generation  
+3. **Cache Database**: `/assets/liturgical-cache.db` (48KB cache-only, NOT full import)
+4. **Package Scripts**: `npm run liturgical-cli`, `npm run setup-liturgical-engine`
+
+### 🔴 IMMEDIATE URGENT FIX NEEDED
+CLI missing 'report' command in main() switch statement. Add this case:
+```javascript
+case 'report':
+    if (args.length < 2) {
+        console.error('❌ Error: Date required for report command');
+        process.exit(1);
+    }
+    const reportDate = validateDate(args[1]);
+    const reportPath = await generateMarkdownReport(reportDate);
+    console.log(`✅ Markdown report generated: ${reportPath}`);
+    break;
+```
+
+### CRITICAL USER REQUIREMENTS
+- **NO placeholder data anywhere** (user repeatedly emphasized)
+- **Calculate on-demand, cache only what's used**
+- **Match divinumofficium.com output exactly - mismatches = blockers**
+- **Do NOT store years worth of Mass + Office data**
+
+### NEXT STEPS ON RESUME
+1. Fix CLI report command
+2. Implement real liturgical calculation (replace mock data)
+3. Add real-time Divinum Officium file fetching with caching
+4. Create verification against divinumofficium.com URLs
+5. Update DataManager to use dynamic calculation
+6. integrate learnings and education component tightly with the generated content--
+
+```
+CREATE TABLE MARTYROLOGY (
+  id          INTEGER PRIMARY KEY,
+  date        TEXT          NOT NULL REFERENCES CALENDAR_DAYS(date),
+  saint_name  TEXT          NOT NULL,
+  entry_text  TEXT NOT NULL,            -- full narrative or short bio
+  source      TEXT,                     -- e.g. “Butler’s Lives of the Saints”
+  UNIQUE(date, saint_name)
+);
+```
+ - Perhaps alongside the voice journal info since they should all be easily visible as 'flags' associated with a specific date/time/place
+
+### TESTING COMMANDS
+```bash
+npm run liturgical-cli help
+npm run liturgical-cli mass 2025-06-27
+npm run liturgical-cli report 2025-06-27  # NEEDS FIX
+npm run liturgical-cli verify 2025-06-27
+npm run liturgical-cli cache-stats
+```

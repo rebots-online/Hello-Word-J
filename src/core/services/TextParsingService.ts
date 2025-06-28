@@ -1,11 +1,16 @@
-// HelloWord/src/core/services/TextFileParserService.ts
-
 export interface LiturgicalTextPart {
   part_type: string; // e.g., Introitus, Oratio, Antiphona1
   text_content: string;
   is_rubric: boolean;
   lang: 'Latin' | 'English'; // Or other supported languages
   sequence: number;
+}
+
+export interface LiturgicalContext {
+  season?: string;
+  week?: number;
+  day?: string;
+  version?: string;
 }
 
 interface FileCacheEntry {
@@ -75,8 +80,8 @@ export class TextParsingService { // Renamed class
     let currentSectionName: string | null = null;
     let currentSectionLines: string[] = [];
 
-    fileContent.split('\\n').forEach(line => {
-      const sectionMatch = line.match(/^\\[([\\w\\s-]+)\\]$/); // Matches [Section Name]
+    fileContent.split('\n').forEach(line => {
+      const sectionMatch = line.match(/^\[([^[\]]+)\]$/); // Matches [Section Name]
       if (sectionMatch) {
         if (currentSectionName) {
           sections.set(currentSectionName, currentSectionLines);
@@ -104,7 +109,7 @@ export class TextParsingService { // Renamed class
     // we might choose to include the text or exclude it.
     // Let's try to include text if condition is not obviously false.
     // This is a major simplification.
-    const conditionalMatch = line.match(/^\\((.*?)\\)(.*)$/);
+    const conditionalMatch = line.match(/^\((.*?)\)(.*)$/);
     if (conditionalMatch) {
         const condition = conditionalMatch[1].toLowerCase();
         const text = conditionalMatch[2];
@@ -168,7 +173,7 @@ export class TextParsingService { // Renamed class
     // TODO: More robust rubric detection, perhaps based on specific tags or patterns if they emerge.
     // This needs to be refined by observing actual file content.
     if (line.trim().startsWith("*") || line.trim().startsWith("†")) return true;
-    if (line.match(/^R\\.\\s/) || line.match(/^V\\.\\s/)) return true; // R. V. for Response/Versicle
+    if (line.match(/^R\.\s/) || line.match(/^V\.\s/)) return true; // R. V. for Response/Versicle
     // Color markers like <c>red</c> are not in the raw files typically.
     // Sometimes rubrics are just lines that are not part of prayers. This is hard to detect.
     return false;
@@ -184,7 +189,7 @@ export class TextParsingService { // Renamed class
     let sequence = 0;
 
     const initialPathPrefix = this.getPathPrefix(filePathFragment);
-    const initialFullFilePath = `${initialPathPrefix}${filePathFragment}`.replace(/\\/\\//g, '/');
+    const initialFullFilePath = `${initialPathPrefix}${filePathFragment}`.replace(/\/\//g, '/');
 
     const processedIncludes = new Set<string>(); // To avoid processing the same include multiple times in one call stack
 
@@ -230,10 +235,10 @@ export class TextParsingService { // Renamed class
           if (includeMatch) {
             const inclFile = includeMatch[1] || currentFilePath; // If Filename is empty, self-reference
             const inclSection = includeMatch[2] || sectionName; // If Section is empty, same section
-            // Substitutions (includeMatch[3]) are very complex, ignoring for now.
+            const inclSubstitutions = includeMatch[3]; // Substitutions parameter
 
             const includePathPrefix = this.getPathPrefix(inclFile.endsWith(".txt") ? inclFile : `${inclFile}.txt`);
-            const includeFullFile = `${includePathPrefix}${inclFile.endsWith(".txt") ? inclFile : `${inclFile}.txt`}`.replace(/\\/\\//g, '/');
+            const includeFullFile = `${includePathPrefix}${inclFile.endsWith(".txt") ? inclFile : `${inclFile}.txt`}`.replace(/\/\//g, '/');
 
             const includeKey = `${currentLang}/${includeFullFile}#${inclSection}`;
             if (processedIncludes.has(includeKey)) {
@@ -280,7 +285,6 @@ export class TextParsingService { // Renamed class
               // else console.warn(`TextParsingService: Section [${inclSection}] not found in ${includeFullFile}`);
             }
             // else console.warn(`TextParsingService: Included file not found: ${includeFullFile}`);
-            }
             processedIncludes.delete(includeKey); // Allow re-inclusion if explicitly called again (rare)
           } else { // Not an include line, process normally
             const processedLine = this.processLineConditionals(line, currentLang, targetVersion);
@@ -306,7 +310,7 @@ export class TextParsingService { // Renamed class
             const inclFile = includeMatch[1] || fileContext;
             const inclSection = includeMatch[2] || sectionContext;
             const includePathPrefix = this.getPathPrefix(inclFile.endsWith(".txt") ? inclFile : `${inclFile}.txt`);
-            const includeFullFile = `${includePathPrefix}${inclFile.endsWith(".txt") ? inclFile : `${inclFile}.txt`}`.replace(/\\/\\//g, '/');
+            const includeFullFile = `${includePathPrefix}${inclFile.endsWith(".txt") ? inclFile : `${inclFile}.txt`}`.replace(/\/\//g, '/');
 
             const includeKey = `${langContext}/${includeFullFile}#${inclSection}`;
             if (processedIncludes.has(includeKey)) return;

@@ -1,0 +1,129 @@
+---
+title: "Perl to TypeScript Architecture Transition - SanctissiMissa"
+subtitle: "Clean Room Implementation Through Conceptual Abstraction"
+---
+
+graph TB
+    %% PERL ARCHITECTURE (Left Side - Original System)
+    subgraph "🐪 ORIGINAL PERL SYSTEM"
+        subgraph "CGI Layer"
+            CGI_missa["missa.pl<br/>📝 CGI Entry Point<br/>Processes date parameter"]
+            CGI_officium["officium.pl<br/>📿 Office CGI<br/>Divine Office generation"]
+        end
+        
+        subgraph "Core Perl Functions"
+            PERL_precedence["precedence()<br/>🎯 Main Coordinator<br/>Sets date, calls occurrence()"]
+            PERL_occurrence["occurrence()<br/>⚖️ Core Algorithm<br/>Determines winner/commemoratio"]
+            PERL_get_sday["get_sday()<br/>📅 Date Mapper<br/>MM-DD format converter"]
+            PERL_getweek["getweek()<br/>🗓️ Season Calculator<br/>Determines liturgical season"]
+        end
+        
+        subgraph "Perl Modules"
+            PERL_directorium["DivinumOfficium::Directorium<br/>📋 Transfer Handler<br/>Vigils, octaves, special assignments"]
+            PERL_main["DivinumOfficium::Main<br/>🎨 Color & Common Functions<br/>liturgical_color(), vernaculars()"]
+            PERL_date["DivinumOfficium::Date<br/>🥚 Easter Calculator<br/>leapyear(), geteaster()"]
+        end
+        
+        subgraph "Perl Data Processing"
+            PERL_officestring["officestring()<br/>📖 File Parser<br/>Loads & parses [Section] format"]
+            PERL_ranking["Ranking System<br/>📊 Precedence Logic<br/>;;Class;;Number;; parsing"]
+            PERL_file_logic["File Structure Logic<br/>📁 Path Resolution<br/>Sancti/MM-DD[suffix].txt"]
+        end
+        
+        subgraph "Perl Data Sources"
+            PERL_sancti["Sancti Files<br/>👥 Saint Feasts<br/>web/www/missa/Latin/Sancti/"]
+            PERL_tempora["Tempora Files<br/>⛪ Temporal Seasons<br/>web/www/missa/Latin/Tempora/"]
+            PERL_kalendar["Kalendar Files<br/>📆 Calendar Rules<br/>Tabulae/Kalendaria/1960.txt"]
+        end
+    end
+    
+    %% CONCEPTUAL ABSTRACTION (Center - Analysis Phase)
+    subgraph "🧠 CONCEPTUAL ABSTRACTION"
+        subgraph "Neo4j Knowledge Graph"
+            NEO4J_analysis["📊 Perl Codebase Analysis<br/>28,000+ files mapped<br/>Function relationships documented"]
+            NEO4J_patterns["🔄 Architectural Patterns<br/>occurrence() → precedence() → winner<br/>File precedence logic identified"]
+            NEO4J_dataflow["📋 Data Flow Documentation<br/>INPUT → Parse → Calculate → Rank → Output<br/>12-step process mapped"]
+        end
+        
+        subgraph "Clean Room Specification"
+            SPEC_occurrence["📐 Occurrence Algorithm Spec<br/>1. Get Sanctoral (get_sday)<br/>2. Get Temporal (getweek)<br/>3. Apply precedence rules"]
+            SPEC_precedence["⚖️ Precedence Rules Spec<br/>Rank 9: Christmas, Easter<br/>Rank 6-8: Major feasts<br/>Rank 1-5: Saints, ferias"]
+            SPEC_data["💾 Data Structure Spec<br/>[Section] format parsing<br/>MM-DD file naming<br/>Suffix handling (r=vigil)"]
+        end
+    end
+    
+    %% TYPESCRIPT ARCHITECTURE (Right Side - New System)
+    subgraph "⚡ NEW TYPESCRIPT SYSTEM"
+        subgraph "Database Layer"
+            TS_database["liturgical-database.db<br/>🗄️ Pre-populated SQLite<br/>4MB • 5,924 sections • Offline-first"]
+            TS_import["import-divinum-officium-database.ts<br/>📥 Database Importer<br/>501 Sancti + 396 Tempora files"]
+        end
+        
+        subgraph "TypeScript Engine"
+            TS_engine["LiturgicalEngineFromDB.ts<br/>⚡ Main Engine<br/>calculateLiturgicalData()"]
+            TS_occurrence["calculateOccurrence()<br/>⚖️ Core Algorithm<br/>Database queries replace file access"]
+            TS_precedence["Precedence Logic<br/>🎯 Ranking System<br/>Higher rank wins, commemorations"]
+        end
+        
+        subgraph "Content Generation"
+            TS_generator["test-full-liturgical-generator.ts<br/>📝 Content Generator<br/>Complete Mass + Office HTML"]
+            TS_accordion["Accordion UI<br/>🪗 All sections open<br/>Journal integration"]
+            TS_texts["Mass Text Extraction<br/>📜 Real liturgical content<br/>No placeholders"]
+        end
+        
+        subgraph "Future Features"
+            TS_calendar["Calendar Dashboard<br/>📅 Visual cache status<br/>Batch generation"]
+            TS_pdf["PDF Generation<br/>📄 Printable booklets<br/>Custom formatting"]
+            TS_cache["Cache Management<br/>🗄️ Intelligent cleanup<br/>Size monitoring"]
+        end
+    end
+    
+    %% CONNECTIONS - PERL TO ABSTRACTION
+    CGI_missa --> NEO4J_analysis
+    PERL_precedence --> NEO4J_patterns
+    PERL_occurrence --> SPEC_occurrence
+    PERL_ranking --> SPEC_precedence
+    PERL_sancti --> SPEC_data
+    PERL_officestring --> NEO4J_dataflow
+    
+    %% CONNECTIONS - ABSTRACTION TO TYPESCRIPT
+    NEO4J_patterns --> TS_engine
+    SPEC_occurrence --> TS_occurrence
+    SPEC_precedence --> TS_precedence
+    SPEC_data --> TS_database
+    NEO4J_dataflow --> TS_generator
+    
+    %% INTERNAL PERL CONNECTIONS
+    CGI_missa --> PERL_precedence
+    PERL_precedence --> PERL_occurrence
+    PERL_occurrence --> PERL_get_sday
+    PERL_occurrence --> PERL_getweek
+    PERL_occurrence --> PERL_directorium
+    PERL_precedence --> PERL_officestring
+    PERL_officestring --> PERL_sancti
+    PERL_officestring --> PERL_tempora
+    PERL_directorium --> PERL_kalendar
+    
+    %% INTERNAL TYPESCRIPT CONNECTIONS
+    TS_import --> TS_database
+    TS_database --> TS_engine
+    TS_engine --> TS_occurrence
+    TS_occurrence --> TS_precedence
+    TS_engine --> TS_generator
+    TS_generator --> TS_accordion
+    TS_generator --> TS_texts
+    
+    %% STYLING
+    classDef perlStyle fill:#FFF8DC,stroke:#8B4513,stroke-width:2px,color:#000
+    classDef abstractStyle fill:#E6F3FF,stroke:#4169E1,stroke-width:2px,color:#000
+    classDef tsStyle fill:#F0FFF0,stroke:#228B22,stroke-width:2px,color:#000
+    classDef futureStyle fill:#FFF5EE,stroke:#FF6347,stroke-width:2px,color:#000
+    
+    %% Apply styles
+    class CGI_missa,CGI_officium,PERL_precedence,PERL_occurrence,PERL_get_sday,PERL_getweek,PERL_directorium,PERL_main,PERL_date,PERL_officestring,PERL_ranking,PERL_file_logic,PERL_sancti,PERL_tempora,PERL_kalendar perlStyle
+    
+    class NEO4J_analysis,NEO4J_patterns,NEO4J_dataflow,SPEC_occurrence,SPEC_precedence,SPEC_data abstractStyle
+    
+    class TS_database,TS_import,TS_engine,TS_occurrence,TS_precedence,TS_generator,TS_accordion,TS_texts tsStyle
+    
+    class TS_calendar,TS_pdf,TS_cache futureStyle

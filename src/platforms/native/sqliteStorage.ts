@@ -1,11 +1,11 @@
-import SQLite, { SQLiteDatabase, ResultSet, SQLError } from 'src/platforms/web/indexedDbStorage';
+import SQLite, { SQLiteDatabase, ResultSet, SQLError } from 'react-native-sqlite-storage';
 import { IStorageService } from '../../core/types/services';
 
 // Enable promise support for the SQLite library
 SQLite.enablePromise(true);
 
 const DATABASE_NAME = 'HelloWord.db';
-const DATABASE_LOCATION = 'default'; // Standard location for src/platforms/web/indexedDbStorage
+const DATABASE_LOCATION = 'default'; // Standard location for react-native-sqlite-storage
 
 export class NativeStorageService implements IStorageService {
   private db: SQLiteDatabase | null = null;
@@ -201,3 +201,4 @@ export class NativeStorageService implements IStorageService {
 //   }
 // }
 // testDb();
+
