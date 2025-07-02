@@ -36,7 +36,8 @@ yarn-error.log*
 next-env.d.ts
 
 # build scripts and generated database
-/scripts/
+/scripts/*
+!/scripts/setup_environment.sh
 /assets/
 sanctissimissa.db
 
