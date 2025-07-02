@@ -9,14 +9,11 @@ try {
     if (workbox) {
         console.log(`Yay! Workbox is loaded 🎉`);
 
-        // Precaching: This list will be populated by the Workbox build process.
-        // workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
-        // For manual setup, you might define assets here, but it's better generated.
+        // Precaching core assets for offline use
         workbox.precaching.precacheAndRoute([
-            // Add URLs of assets to precache here if not using __WB_MANIFEST
-            // e.g., { url: '/index.html', revision: '1' },
-            //       { url: '/main.js', revision: '1' }, // Adjust based on your build output
-            //       { url: '/style.css', revision: '1' },
+            { url: '/index.html', revision: null },
+            { url: '/HelloWord/index.web.js', revision: null },
+            { url: '/sql-wasm.wasm', revision: null }
         ]);
 
         // Runtime Caching for fonts

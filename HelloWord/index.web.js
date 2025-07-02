@@ -19,6 +19,15 @@ if (window.document) {
     rootTag,
     initialProps: {}
   });
+
+  // Register service worker for offline functionality
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker
+        .register('/service-worker.js')
+        .catch(err => console.error('Service worker registration failed:', err));
+    });
+  }
 }
 
 export default App;
