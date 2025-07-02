@@ -1,25 +1,29 @@
-import { Platform } from 'react-native';
 import { IStorageService } from '../core/types/services';
-import { WebSqliteStorageService } from './web/webSqliteStorage';
+import { WebStorageService } from './web/StorageService';
 
 let storageServiceInstance: IStorageService | null = null;
+
+// Detect if we're in a browser environment
+const isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined';
 
 export async function createStorageService(): Promise<IStorageService> {
   if (storageServiceInstance) {
     return storageServiceInstance;
   }
 
-  if (Platform.OS === 'android' || Platform.OS === 'ios') {
-    console.log('Creating NativeStorageService (SQLite) for mobile platform.');
-    const { NativeStorageService } = await import('./native/sqliteStorage');
-    storageServiceInstance = new NativeStorageService();
-  } else if (Platform.OS === 'web') {
-    console.log('Creating WebSqliteStorageService (sql.js) for web platform.');
-    storageServiceInstance = new WebSqliteStorageService();
+  if (isBrowser) {
+    console.log('Creating WebStorageService (Dexie) for web platform.');
+    storageServiceInstance = new WebStorageService();
   } else {
-    // Fallback or error for unsupported platforms
-    console.warn(`Unsupported platform: ${Platform.OS}. Defaulting to web storage or consider a mock.`);
-    storageServiceInstance = new WebSqliteStorageService();
+    // For non-browser environments (like server-side rendering or native)
+    try {
+      console.log('Attempting to create NativeStorageService for mobile platform.');
+      const { NativeStorageService } = await import('./native/sqliteStorage');
+      storageServiceInstance = new NativeStorageService();
+    } catch (error) {
+      console.warn('Failed to initialize native storage, falling back to WebStorageService', error);
+      storageServiceInstance = new WebStorageService();
+    }
   }
 
   return storageServiceInstance;
