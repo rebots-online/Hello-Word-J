@@ -7,3 +7,4 @@ $(cat /tmp/test.log)
 ```
 
 As the environment restricts package installation, coverage could not be generated.
+The integration test now generates data programmatically instead of reading a large fixture file.
