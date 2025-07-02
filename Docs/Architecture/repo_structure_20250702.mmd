@@ -1,0 +1,16 @@
+flowchart TD
+  root((Repo Root))
+  root --> src
+  src --> core
+  src --> components
+  src --> platforms
+  src --> shared
+  root --> public
+  root --> Docs
+  Docs --> Architecture
+  Docs --> checklists
+  root --> HelloWord
+  HelloWord --> android
+  HelloWord --> ios
+  HelloWord --> RNsrc[src/]
+  HelloWord --> HelloWordLegacy[HelloWord/]
