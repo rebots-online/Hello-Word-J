@@ -51,3 +51,4 @@ Tabulae/
 
 # Perl codebase for clean room analysis (not included in distribution)
 divinum-officium-perl/
+dist/

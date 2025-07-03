@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import ActualLiturgicalApp from './ActualLiturgicalApp';
+import WebApp from './WebApp';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ActualLiturgicalApp />
+    <WebApp />
   </React.StrictMode>,
 )
