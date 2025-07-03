@@ -9,8 +9,7 @@
     "setup-liturgical-engine": "node scripts/setup-dynamic-liturgical-engine.js",
     "liturgical-cli": "node scripts/liturgical-cli.js",
     "import-database": "ts-node scripts/import-divinum-officium-database.ts",
-    "test-liturgical": "ts-node scripts/test-full-liturgical-generator.ts",
-    "prebuild": "npm run setup-liturgical-engine"
+    "test-liturgical": "ts-node scripts/test-full-liturgical-generator.ts"
   },
   "dependencies": {
     "@react-native/typescript-config": "^0.80.0",
