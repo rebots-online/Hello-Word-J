@@ -1,7 +1,7 @@
 // Imports
 import { IStorageService } from '../types/services';
 import { CalendarService, KalendarDayInfo } from './CalendarService';
-import { TextParsingService, LiturgicalTextPart, LiturgicalContext } from './TextParsingService';
+import { LiturgicalTextPart } from './TextParsingService';
 import { DirectoriumService } from './DirectoriumService';
 import { LiturgicalEngineService, OfficeComponentPaths } from './LiturgicalEngineService';
 
@@ -64,7 +64,6 @@ interface MergedTextPart {
 export class DataManager {
   private storageService: IStorageService;
   private calendarService: CalendarService;
-  private textParserService: TextParsingService;
   private directoriumService: DirectoriumService;
   private liturgicalEngineService: LiturgicalEngineService;
   private currentLiturgicalVersionId: string = "Rubrics 1960 - 1960";
@@ -72,7 +71,6 @@ export class DataManager {
   constructor(storageService: IStorageService) {
     this.storageService = storageService;
     this.calendarService = new CalendarService();
-    this.textParserService = new TextParsingService();
     this.directoriumService = new DirectoriumService();
     this.liturgicalEngineService = new LiturgicalEngineService(this.directoriumService);
   }
