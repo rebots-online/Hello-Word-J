@@ -1,0 +1,232 @@
+[
+  {
+    "entityType": "LinguisticUnit",
+    "name": "Morpheme",
+    "observations": [
+      "UUID: 69b4370d-324c-4eaf-acc9-353e1eebf359",
+      "Description: Smallest meaningful unit of language that encodes semantic or grammatical information",
+      "Created: 2025-07-05T08:00:38.287Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "LinguisticUnit",
+    "name": "Lemma",
+    "observations": [
+      "UUID: b17085b1-d59c-4c19-8d7a-8687a6f62766",
+      "Description: Dictionary form of a word representing its core semantic identity",
+      "Created: 2025-07-05T08:00:38.287Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "LinguisticUnit",
+    "name": "Word",
+    "observations": [
+      "UUID: 67295b1e-8d61-47b6-b335-cb46c4e8fd7b",
+      "Description: Inflected form of a lemma as it appears in textual context",
+      "Created: 2025-07-05T08:00:38.287Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "TextualUnit",
+    "name": "Passage",
+    "observations": [
+      "UUID: 0ba77749-235c-41b0-94f3-6a378ef0ff7a",
+      "Description: Coherent unit of text with theological or liturgical significance",
+      "Created: 2025-07-05T08:00:38.287Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "TheologicalConcept",
+    "name": "Trinity",
+    "observations": [
+      "UUID: ef7dbd86-77d4-4215-af92-aced9def0129",
+      "Description: Central Christian doctrine of God as Three Persons in One Divine Essence, encoded in Latin through case relationships and morphological precision",
+      "Created: 2025-07-05T08:00:38.287Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "TheologicalConcept",
+    "name": "Incarnation",
+    "observations": [
+      "UUID: eed95c9f-dc0d-4078-a622-3991e17be8cd",
+      "Description: Doctrine of God the Son becoming human, expressed through careful tense and aspect choices in Latin theological language",
+      "Created: 2025-07-05T08:00:38.287Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "TheologicalConcept",
+    "name": "Eucharist",
+    "observations": [
+      "UUID: 9a994815-d03c-4257-af9b-734f699bd2ee",
+      "Description: Sacrament of Christ's Body and Blood, with theological precision encoded in morphological construction (trans-substantia-tio)",
+      "Created: 2025-07-05T08:00:38.287Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "TheologicalLinguisticEvolution",
+    "name": "FiatLuxToFiatLex",
+    "observations": [
+      "UUID: 4e203137-1a97-42a1-be2b-6af31ecb73d1",
+      "Description: Transformation from divine creative command (fiat lux - let there be light) to systematic legal framework (fiat lex/leges - let there be law/laws), representing the evolution from charismatic divine action to institutional ecclesiastical order",
+      "Created: 2025-07-05T08:00:38.287Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "HistoricalPeriod",
+    "name": "PatristicPeriod",
+    "observations": [
+      "UUID: 9345dbff-7fac-45b5-b873-119ec3a3d2ac",
+      "Description: Foundational period (100-800 CE) of theological language development, characterized by Jerome's translation choices and patristic theological encoding",
+      "Created: 2025-07-05T08:00:38.287Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "HistoricalPeriod",
+    "name": "CarolingianPeriod",
+    "observations": [
+      "UUID: 59785bdb-6a5c-4db5-8460-b59b47a07577",
+      "Description: Standardization period (800-1000 CE) under Alcuin and Charlemagne, establishing systematic grammatical and liturgical norms",
+      "Created: 2025-07-05T08:00:38.287Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "HistoricalPeriod",
+    "name": "ScholasticPeriod",
+    "observations": [
+      "UUID: 74f5171f-b143-4139-b803-298855aba8e7",
+      "Description: Technical development period (1000-1500 CE) with Aquinas and university theology, creating precise technical theological vocabulary",
+      "Created: 2025-07-05T08:00:38.287Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "HistoricalPeriod",
+    "name": "TridendinePeriod",
+    "observations": [
+      "UUID: d6243438-60cb-4b74-8db0-f23219ebc58a",
+      "Description: Fixation period (1500-1962 CE) establishing absolute liturgical and theological linguistic standards through Counter-Reformation precision",
+      "Created: 2025-07-05T08:00:38.287Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "HistoricalFigure",
+    "name": "Jerome",
+    "observations": [
+      "UUID: 4e9d7713-dfc4-4328-88da-e29c27fdd741",
+      "Description: Translator of the Vulgate (347-420 CE), whose theological biases and linguistic choices shaped Western Christianity for 1500+ years through systematic translation preferences",
+      "Created: 2025-07-05T08:00:38.287Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "HistoricalFigure",
+    "name": "Augustine",
+    "observations": [
+      "UUID: 005ff491-cd74-4244-bd93-8f19b852b0fe",
+      "Description: Bishop of Hippo (354-430 CE), major influence on Western theological language through precise doctrinal formulations and anti-heretical precision",
+      "Created: 2025-07-05T08:00:38.287Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "AnalyticalFramework",
+    "name": "TheologicalArchaeology",
+    "observations": [
+      "UUID: 30d653cf-5689-41f7-ae53-43f88f001168",
+      "Description: Computational method for detecting theological biases and doctrinal encoding through morphological analysis of translation choices and linguistic patterns",
+      "Created: 2025-07-05T08:00:38.288Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "AnalyticalFramework",
+    "name": "JeromeSignatureAnalysis",
+    "observations": [
+      "UUID: c097efb9-70a6-4dcb-b933-9300f83f6a4f",
+      "Description: Specific computational method for identifying Jerome's theological preferences through systematic analysis of his translation choices vs. contemporary alternatives",
+      "Created: 2025-07-05T08:00:38.288Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "AnalyticalFramework",
+    "name": "MorphologicalTheology",
+    "observations": [
+      "UUID: fb5fa03d-6fdb-49b7-bd40-fade571cb3e6",
+      "Description: Method for discovering theological concepts encoded in grammatical structures, revealing doctrine preserved in morphological patterns across centuries",
+      "Created: 2025-07-05T08:00:38.288Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "AnalyticalMethod",
+    "name": "FiatTransformationAnalysis",
+    "observations": [
+      "UUID: 05ba3f28-c737-45b4-8502-49c05ca9a0a6",
+      "Description: Analysis of the evolution from fiat lux (divine creative command) to fiat lex/leges (systematic legal framework), representing the transformation from charismatic divine action to institutional ecclesiastical order",
+      "Created: 2025-07-05T08:00:38.288Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "TechnicalSystem",
+    "name": "Neo4jGraphDatabase",
+    "observations": [
+      "UUID: 55ad4729-812c-4340-8592-cc5277b293d4",
+      "Description: Graph database storing relational knowledge about ecclesiastical Latin, enabling complex theological and linguistic relationship queries",
+      "Created: 2025-07-05T08:00:38.288Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "TechnicalSystem",
+    "name": "QdrantVectorDatabase",
+    "observations": [
+      "UUID: 3be52984-a42e-42f6-bdfa-83321ab6ac88",
+      "Description: Vector database enabling semantic similarity search across theological concepts and linguistic patterns through embedding-based retrieval",
+      "Created: 2025-07-05T08:00:38.288Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "TechnicalSystem",
+    "name": "PostgreSQLAuditSystem",
+    "observations": [
+      "UUID: 90a61b87-a988-4c02-9a3d-789eb7c05ccb",
+      "Description: Relational database maintaining chronological audit logs and metadata for all analytical operations and discoveries",
+      "Created: 2025-07-05T08:00:38.288Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "TechnicalSystem",
+    "name": "SQLiteInterface",
+    "observations": [
+      "UUID: 4f47317a-963e-4eab-9c79-0afd9ce92564",
+      "Description: Portable relational database providing practical access interface for pastoral and educational applications",
+      "Created: 2025-07-05T08:00:38.288Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  },
+  {
+    "entityType": "ArchitecturalPattern",
+    "name": "HybridKnowledgeGraph",
+    "observations": [
+      "UUID: 76a5d0ab-3606-4372-baf5-8eeeaf724970",
+      "Description: Integrated knowledge management system combining graph, vector, and relational databases with UUID-linked entities for comprehensive theological and linguistic analysis",
+      "Created: 2025-07-05T08:00:38.288Z",
+      "System: Ecclesiastical Latin Analysis Platform"
+    ]
+  }
+]

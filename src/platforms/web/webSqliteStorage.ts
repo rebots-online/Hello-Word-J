@@ -7,6 +7,7 @@ const WASM_SQL_JS_PATH = '/sql-wasm.wasm'; // Path relative to public directory
 export class WebSqliteStorageService implements IStorageService {
   private db: Database | null = null;
   private SQL: any = null; // Will hold the sql.js module instance
+  private _inTransaction: boolean = false;
 
   constructor() {
     console.log('WebSqliteStorageService initialized');
@@ -146,10 +147,20 @@ export class WebSqliteStorageService implements IStorageService {
       throw new Error('Database not initialized. Call initialize() first.');
     }
 
-    console.log('WebSqliteStorageService: Starting transaction');
-    this.db.exec('BEGIN TRANSACTION;');
-    try {
+    if (this._inTransaction) {
+      console.log('WebSqliteStorageService: Already in a transaction. Skipping nested transaction.');
       await callback();
+      return;
+    }
+
+    this._inTransaction = true;
+    try {
+      console.log('WebSqliteStorageService: Attempting to begin transaction');
+      this.db.exec('BEGIN TRANSACTION;');
+      console.log('WebSqliteStorageService: Transaction started');
+
+      await callback();
+
       this.db.exec('COMMIT;');
       console.log('WebSqliteStorageService: Transaction committed');
       await this.persistDatabase(); // Persist after successful transaction
@@ -157,6 +168,8 @@ export class WebSqliteStorageService implements IStorageService {
       this.db.exec('ROLLBACK;');
       console.error('WebSqliteStorageService: Transaction rolled back due to error:', error);
       throw error;
+    } finally {
+      this._inTransaction = false;
     }
   }
 

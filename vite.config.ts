@@ -18,6 +18,8 @@ const sharedAliases = {
   'react-native': 'react-native-web',
   // Root src alias
   '@': resolve(__dirname, 'src'),
+  // HelloWord src alias for legacy imports
+  '@helloword': resolve(__dirname, 'HelloWord/src'),
 };
 
 export default defineConfig({
@@ -40,7 +42,18 @@ export default defineConfig({
     }),
   ],
   resolve: {
-    alias: Object.entries(sharedAliases).map(([find, replacement]) => ({
+    alias: Object.entries({
+      ...sharedAliases,
+      // Browser polyfills for Node.js modules
+      'fs': 'browserfs/dist/shims/fs.js',
+      'path': 'browserfs/dist/shims/path.js',
+      'crypto': 'crypto-browserify',
+      'stream': 'stream-browserify',
+      'util': 'util',
+      'process': 'process/browser',
+      'buffer': 'buffer',
+      'events': 'events'
+    }).map(([find, replacement]) => ({
       find,
       replacement,
     })),
@@ -71,10 +84,11 @@ export default defineConfig({
   },
   define: {
     'process.env': {},
-    global: 'window',
-    __DEV__: true
+    global: 'globalThis',
+    __DEV__: process.env.NODE_ENV !== 'production'
   },
   optimizeDeps: {
+    include: ['react-native-web', 'dexie', 'sql.js'],
     esbuildOptions: {
       // Fix for react-native-web
       resolveExtensions: ['.web.js', '.js', '.ts', '.tsx'],
@@ -82,21 +96,32 @@ export default defineConfig({
       mainFields: ['module', 'main'],
       // Add support for JSX
       loader: { '.js': 'jsx' },
+      // Define Node.js globals for browser
+      define: {
+        global: 'globalThis',
+        process: 'process',
+      },
     },
   },
   build: {
     outDir: 'dist',
     emptyOutDir: true,
     rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'HelloWord/index.html')
-      },
       external: [
         'react-native-sqlite-storage',
         'react-native-fs', 
-        '@react-native-async-storage/async-storage',
-        'react-native'
-      ]
+        '@react-native-async-storage/async-storage'
+      ],
+      output: {
+        globals: {
+          'react-native-sqlite-storage': 'ReactNativeSqliteStorage',
+          'react-native-fs': 'ReactNativeFS',
+          '@react-native-async-storage/async-storage': 'AsyncStorage'
+        }
+      }
+    },
+    commonjsOptions: {
+      transformMixedEsModules: true,
     }
   }
 });

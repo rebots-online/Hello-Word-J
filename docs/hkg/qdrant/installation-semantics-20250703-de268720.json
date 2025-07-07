@@ -1,0 +1,58 @@
+{
+  "event_uuid": "de268720-c912-483c-bdcd-0e68da47f8d7",
+  "timestamp": "2025-07-03T05:27:43Z",
+  "event_type": "npm_dependency_installation",
+  "semantic_vectors": {
+    "installation_context": {
+      "description": "Multi-platform React Native project with web support requiring dependency resolution for React version conflicts between root web package and React Native mobile package",
+      "keywords": ["react-native", "multi-platform", "dependency-resolution", "react-version-conflict", "vite", "liturgical-application"],
+      "domain": "software_engineering",
+      "subdomain": "dependency_management",
+      "complexity": "medium",
+      "resolution_strategy": "legacy_peer_deps"
+    },
+    "technical_semantics": {
+      "conflict_type": "peer_dependency_version_mismatch",
+      "package_manager": "npm",
+      "platforms": ["web", "mobile"],
+      "technologies": ["react", "react-native", "vite", "typescript"],
+      "architecture_pattern": "monorepo_multi_platform",
+      "build_tools": ["vite", "metro", "react-native-cli"]
+    },
+    "resolution_semantics": {
+      "problem": "React 18.3.1 found but React Native 0.80.1 requires React ^19.1.0",
+      "solution": "Used --legacy-peer-deps flag to accept potentially broken dependency resolution",
+      "outcome": "Successful installation with version compatibility warnings",
+      "risk_level": "low",
+      "monitoring_required": "version_compatibility_testing"
+    },
+    "project_context": {
+      "project_name": "SanctissiMissa (Hello Word)",
+      "project_type": "liturgical_application",
+      "target_platforms": ["web", "ios", "android"],
+      "primary_use_case": "traditional_latin_mass_breviary",
+      "offline_capability": "required",
+      "storage_technologies": ["sqlite", "indexeddb"]
+    },
+    "learning_insights": {
+      "lesson": "Multi-platform React Native projects with web support commonly experience React version conflicts",
+      "best_practice": "Use --legacy-peer-deps for complex dependency trees in monorepo setups",
+      "future_consideration": "Monitor React Native roadmap for React 19 compatibility",
+      "architectural_wisdom": "Separate package.json files for web and mobile platforms can help isolate dependency conflicts"
+    }
+  },
+  "embedding_metadata": {
+    "text_for_embedding": "NPM installation dependency resolution for multi-platform React Native liturgical application with React version conflict between web Vite build and mobile React Native build resolved using legacy peer dependencies flag resulting in successful installation with version compatibility warnings",
+    "categories": ["dependency_management", "react_native", "multi_platform", "version_conflicts", "npm"],
+    "importance": "high",
+    "reusability": "high",
+    "complexity_score": 7
+  },
+  "relationships": {
+    "related_components": ["package.json", "HelloWord/package.json", "vite.config.ts", "metro.config.js"],
+    "affected_services": ["build_system", "dependency_graph", "development_environment"],
+    "similar_events": [],
+    "predecessor_events": [],
+    "successor_events": []
+  }
+}

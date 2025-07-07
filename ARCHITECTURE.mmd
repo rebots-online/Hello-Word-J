@@ -1,0 +1,107 @@
+graph TB
+    %% Core Architecture Components
+    subgraph "Core Services"
+        LE[LiturgicalEngine]
+        CM[ContentManager]
+        CS[CalculationService]
+        CACHE[CacheService]
+    end
+    
+    subgraph "Abstraction Layer"
+        SI[StorageInterface]
+        PA[PlatformAdapter]
+    end
+    
+    subgraph "Platform Implementations"
+        WA[WebAdapter]
+        NA[NativeAdapter]
+        TA[TauriAdapter]
+    end
+    
+    subgraph "External Services"
+        DOS[DivinumOfficiumService]
+    end
+    
+    subgraph "UI Components"
+        LC[LiturgicalCalendar]
+        MT[MassTexts]
+        OT[OfficeTexts]
+        VJ[VoiceJournal]
+        SI_COMP[SaintsInfo]
+        PD[ParishDashboard]
+    end
+    
+    subgraph "Data Models"
+        LD[LiturgicalDay]
+        MP[MassProper]
+        OP[OfficeProper]
+        BT[BilingualText]
+        VN[VoiceNote]
+    end
+    
+    subgraph "Storage Backends"
+        SQLITE[SQLite]
+        INDEXEDDB[IndexedDB]
+        TAURI_SQL[TauriSQL]
+    end
+    
+    %% Core Service Relationships
+    LE --> CM
+    LE --> CS
+    LE --> DOS
+    CM --> SI
+    CM --> CACHE
+    CS --> LD
+    CACHE --> SI
+    
+    %% Platform Adapter Relationships
+    PA --> SI
+    WA --> PA
+    NA --> PA
+    TA --> PA
+    
+    %% Component Relationships
+    LC --> LE
+    MT --> CM
+    OT --> CM
+    VJ --> PA
+    SI_COMP --> CM
+    PD --> CM
+    
+    %% Data Model Relationships
+    LD --> MP
+    LD --> OP
+    MP --> BT
+    OP --> BT
+    CM --> BT
+    VJ --> VN
+    
+    %% Storage Implementation
+    WA --> INDEXEDDB
+    NA --> SQLITE
+    TA --> TAURI_SQL
+    
+    %% External Validation
+    DOS --> BT
+    
+    %% Platform-specific Storage
+    SI -.-> SQLITE
+    SI -.-> INDEXEDDB
+    SI -.-> TAURI_SQL
+    
+    %% Styling
+    classDef coreService fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    classDef abstraction fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef platform fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+    classDef component fill:#fff3e0,stroke:#ef6c00,stroke-width:2px
+    classDef dataModel fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    classDef storage fill:#f1f8e9,stroke:#558b2f,stroke-width:2px
+    classDef external fill:#ffebee,stroke:#d32f2f,stroke-width:2px
+    
+    class LE,CM,CS,CACHE coreService
+    class SI,PA abstraction
+    class WA,NA,TA platform
+    class LC,MT,OT,VJ,SI_COMP,PD component
+    class LD,MP,OP,BT,VN dataModel
+    class SQLITE,INDEXEDDB,TAURI_SQL storage
+    class DOS external

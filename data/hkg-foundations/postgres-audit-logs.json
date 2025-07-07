@@ -1,0 +1,278 @@
+[
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: Morpheme (LinguisticUnit)",
+    "metadata": {
+      "uuid": "69b4370d-324c-4eaf-acc9-353e1eebf359",
+      "entityType": "LinguisticUnit",
+      "entityName": "Morpheme",
+      "description": "Smallest meaningful unit of language that encodes semantic or grammatical information",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: Lemma (LinguisticUnit)",
+    "metadata": {
+      "uuid": "b17085b1-d59c-4c19-8d7a-8687a6f62766",
+      "entityType": "LinguisticUnit",
+      "entityName": "Lemma",
+      "description": "Dictionary form of a word representing its core semantic identity",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: Word (LinguisticUnit)",
+    "metadata": {
+      "uuid": "67295b1e-8d61-47b6-b335-cb46c4e8fd7b",
+      "entityType": "LinguisticUnit",
+      "entityName": "Word",
+      "description": "Inflected form of a lemma as it appears in textual context",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: Passage (TextualUnit)",
+    "metadata": {
+      "uuid": "0ba77749-235c-41b0-94f3-6a378ef0ff7a",
+      "entityType": "TextualUnit",
+      "entityName": "Passage",
+      "description": "Coherent unit of text with theological or liturgical significance",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: Trinity (TheologicalConcept)",
+    "metadata": {
+      "uuid": "ef7dbd86-77d4-4215-af92-aced9def0129",
+      "entityType": "TheologicalConcept",
+      "entityName": "Trinity",
+      "description": "Central Christian doctrine of God as Three Persons in One Divine Essence, encoded in Latin through case relationships and morphological precision",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: Incarnation (TheologicalConcept)",
+    "metadata": {
+      "uuid": "eed95c9f-dc0d-4078-a622-3991e17be8cd",
+      "entityType": "TheologicalConcept",
+      "entityName": "Incarnation",
+      "description": "Doctrine of God the Son becoming human, expressed through careful tense and aspect choices in Latin theological language",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: Eucharist (TheologicalConcept)",
+    "metadata": {
+      "uuid": "9a994815-d03c-4257-af9b-734f699bd2ee",
+      "entityType": "TheologicalConcept",
+      "entityName": "Eucharist",
+      "description": "Sacrament of Christ's Body and Blood, with theological precision encoded in morphological construction (trans-substantia-tio)",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: FiatLuxToFiatLex (TheologicalLinguisticEvolution)",
+    "metadata": {
+      "uuid": "4e203137-1a97-42a1-be2b-6af31ecb73d1",
+      "entityType": "TheologicalLinguisticEvolution",
+      "entityName": "FiatLuxToFiatLex",
+      "description": "Transformation from divine creative command (fiat lux - let there be light) to systematic legal framework (fiat lex/leges - let there be law/laws), representing the evolution from charismatic divine action to institutional ecclesiastical order",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: PatristicPeriod (HistoricalPeriod)",
+    "metadata": {
+      "uuid": "9345dbff-7fac-45b5-b873-119ec3a3d2ac",
+      "entityType": "HistoricalPeriod",
+      "entityName": "PatristicPeriod",
+      "description": "Foundational period (100-800 CE) of theological language development, characterized by Jerome's translation choices and patristic theological encoding",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: CarolingianPeriod (HistoricalPeriod)",
+    "metadata": {
+      "uuid": "59785bdb-6a5c-4db5-8460-b59b47a07577",
+      "entityType": "HistoricalPeriod",
+      "entityName": "CarolingianPeriod",
+      "description": "Standardization period (800-1000 CE) under Alcuin and Charlemagne, establishing systematic grammatical and liturgical norms",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: ScholasticPeriod (HistoricalPeriod)",
+    "metadata": {
+      "uuid": "74f5171f-b143-4139-b803-298855aba8e7",
+      "entityType": "HistoricalPeriod",
+      "entityName": "ScholasticPeriod",
+      "description": "Technical development period (1000-1500 CE) with Aquinas and university theology, creating precise technical theological vocabulary",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: TridendinePeriod (HistoricalPeriod)",
+    "metadata": {
+      "uuid": "d6243438-60cb-4b74-8db0-f23219ebc58a",
+      "entityType": "HistoricalPeriod",
+      "entityName": "TridendinePeriod",
+      "description": "Fixation period (1500-1962 CE) establishing absolute liturgical and theological linguistic standards through Counter-Reformation precision",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: Jerome (HistoricalFigure)",
+    "metadata": {
+      "uuid": "4e9d7713-dfc4-4328-88da-e29c27fdd741",
+      "entityType": "HistoricalFigure",
+      "entityName": "Jerome",
+      "description": "Translator of the Vulgate (347-420 CE), whose theological biases and linguistic choices shaped Western Christianity for 1500+ years through systematic translation preferences",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: Augustine (HistoricalFigure)",
+    "metadata": {
+      "uuid": "005ff491-cd74-4244-bd93-8f19b852b0fe",
+      "entityType": "HistoricalFigure",
+      "entityName": "Augustine",
+      "description": "Bishop of Hippo (354-430 CE), major influence on Western theological language through precise doctrinal formulations and anti-heretical precision",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: TheologicalArchaeology (AnalyticalFramework)",
+    "metadata": {
+      "uuid": "30d653cf-5689-41f7-ae53-43f88f001168",
+      "entityType": "AnalyticalFramework",
+      "entityName": "TheologicalArchaeology",
+      "description": "Computational method for detecting theological biases and doctrinal encoding through morphological analysis of translation choices and linguistic patterns",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: JeromeSignatureAnalysis (AnalyticalFramework)",
+    "metadata": {
+      "uuid": "c097efb9-70a6-4dcb-b933-9300f83f6a4f",
+      "entityType": "AnalyticalFramework",
+      "entityName": "JeromeSignatureAnalysis",
+      "description": "Specific computational method for identifying Jerome's theological preferences through systematic analysis of his translation choices vs. contemporary alternatives",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: MorphologicalTheology (AnalyticalFramework)",
+    "metadata": {
+      "uuid": "fb5fa03d-6fdb-49b7-bd40-fade571cb3e6",
+      "entityType": "AnalyticalFramework",
+      "entityName": "MorphologicalTheology",
+      "description": "Method for discovering theological concepts encoded in grammatical structures, revealing doctrine preserved in morphological patterns across centuries",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: FiatTransformationAnalysis (AnalyticalMethod)",
+    "metadata": {
+      "uuid": "05ba3f28-c737-45b4-8502-49c05ca9a0a6",
+      "entityType": "AnalyticalMethod",
+      "entityName": "FiatTransformationAnalysis",
+      "description": "Analysis of the evolution from fiat lux (divine creative command) to fiat lex/leges (systematic legal framework), representing the transformation from charismatic divine action to institutional ecclesiastical order",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: Neo4jGraphDatabase (TechnicalSystem)",
+    "metadata": {
+      "uuid": "55ad4729-812c-4340-8592-cc5277b293d4",
+      "entityType": "TechnicalSystem",
+      "entityName": "Neo4jGraphDatabase",
+      "description": "Graph database storing relational knowledge about ecclesiastical Latin, enabling complex theological and linguistic relationship queries",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: QdrantVectorDatabase (TechnicalSystem)",
+    "metadata": {
+      "uuid": "3be52984-a42e-42f6-bdfa-83321ab6ac88",
+      "entityType": "TechnicalSystem",
+      "entityName": "QdrantVectorDatabase",
+      "description": "Vector database enabling semantic similarity search across theological concepts and linguistic patterns through embedding-based retrieval",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: PostgreSQLAuditSystem (TechnicalSystem)",
+    "metadata": {
+      "uuid": "90a61b87-a988-4c02-9a3d-789eb7c05ccb",
+      "entityType": "TechnicalSystem",
+      "entityName": "PostgreSQLAuditSystem",
+      "description": "Relational database maintaining chronological audit logs and metadata for all analytical operations and discoveries",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: SQLiteInterface (TechnicalSystem)",
+    "metadata": {
+      "uuid": "4f47317a-963e-4eab-9c79-0afd9ce92564",
+      "entityType": "TechnicalSystem",
+      "entityName": "SQLiteInterface",
+      "description": "Portable relational database providing practical access interface for pastoral and educational applications",
+      "system": "hKG_foundations"
+    }
+  },
+  {
+    "userId": "system",
+    "action": "entity_creation",
+    "content": "Created foundational concept: HybridKnowledgeGraph (ArchitecturalPattern)",
+    "metadata": {
+      "uuid": "76a5d0ab-3606-4372-baf5-8eeeaf724970",
+      "entityType": "ArchitecturalPattern",
+      "entityName": "HybridKnowledgeGraph",
+      "description": "Integrated knowledge management system combining graph, vector, and relational databases with UUID-linked entities for comprehensive theological and linguistic analysis",
+      "system": "hKG_foundations"
+    }
+  }
+]

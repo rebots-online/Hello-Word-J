@@ -4,6 +4,17 @@ import { CalendarService, KalendarDayInfo } from './CalendarService';
 import { TextParsingService, LiturgicalTextPart, LiturgicalContext } from './TextParsingService';
 import { DirectoriumService } from './DirectoriumService';
 import { LiturgicalEngineService, OfficeComponentPaths } from './LiturgicalEngineService';
+import { 
+  CachedLiturgicalData, 
+  JournalEntry, 
+  SaintInfo, 
+  MartyrologicalEntry,
+  ParishInfo,
+  ParishEvent,
+  Newsletter,
+  BilingualText,
+  LiturgicalDay
+} from '../types/liturgical';
 
 const CREATE_CALENDAR_DAYS_TABLE = `
 CREATE TABLE IF NOT EXISTS calendar_days (
@@ -51,6 +62,77 @@ CREATE TABLE IF NOT EXISTS voice_notes (
   transcription TEXT
 );`;
 
+const CREATE_CACHED_LITURGICAL_DATA_TABLE = `
+CREATE TABLE IF NOT EXISTS cached_liturgical_data (
+  date TEXT PRIMARY KEY NOT NULL,
+  liturgical_data TEXT NOT NULL,
+  cached_at TEXT NOT NULL,
+  expires_at TEXT NOT NULL
+);`;
+
+const CREATE_JOURNAL_ENTRIES_TABLE = `
+CREATE TABLE IF NOT EXISTS journal_entries (
+  id TEXT PRIMARY KEY NOT NULL,
+  date TEXT NOT NULL,
+  title TEXT NOT NULL,
+  content TEXT NOT NULL,
+  liturgical_context TEXT,
+  tags TEXT,
+  created TEXT NOT NULL,
+  modified TEXT NOT NULL
+);`;
+
+const CREATE_SAINTS_INFO_TABLE = `
+CREATE TABLE IF NOT EXISTS saints_info (
+  name TEXT PRIMARY KEY NOT NULL,
+  feast_day TEXT NOT NULL,
+  biography TEXT NOT NULL,
+  patronage TEXT,
+  sources TEXT
+);`;
+
+const CREATE_MARTYROLOGY_TABLE = `
+CREATE TABLE IF NOT EXISTS martyrology (
+  date TEXT PRIMARY KEY NOT NULL,
+  entries TEXT NOT NULL
+);`;
+
+const CREATE_PARISH_INFO_TABLE = `
+CREATE TABLE IF NOT EXISTS parish_info (
+  id TEXT PRIMARY KEY NOT NULL,
+  name TEXT NOT NULL,
+  address TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  email TEXT NOT NULL,
+  website TEXT,
+  pastor TEXT NOT NULL,
+  mass_schedule TEXT NOT NULL
+);`;
+
+const CREATE_PARISH_EVENTS_TABLE = `
+CREATE TABLE IF NOT EXISTS parish_events (
+  id TEXT PRIMARY KEY NOT NULL,
+  parish_id TEXT NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  date TEXT NOT NULL,
+  time TEXT,
+  location TEXT,
+  category TEXT NOT NULL,
+  FOREIGN KEY (parish_id) REFERENCES parish_info(id)
+);`;
+
+const CREATE_NEWSLETTERS_TABLE = `
+CREATE TABLE IF NOT EXISTS newsletters (
+  id TEXT PRIMARY KEY NOT NULL,
+  parish_id TEXT NOT NULL,
+  title TEXT NOT NULL,
+  content TEXT NOT NULL,
+  publish_date TEXT NOT NULL,
+  author TEXT NOT NULL,
+  FOREIGN KEY (parish_id) REFERENCES parish_info(id)
+);`;
+
 interface MergedTextPart {
   celebration_key: string;
   part_type: string;
@@ -68,6 +150,7 @@ export class DataManager {
   private directoriumService: DirectoriumService;
   private liturgicalEngineService: LiturgicalEngineService;
   private currentLiturgicalVersionId: string = "Rubrics 1960 - 1960";
+  private _isInitialized: boolean = false;
 
   constructor(storageService: IStorageService) {
     this.storageService = storageService;
@@ -116,7 +199,12 @@ export class DataManager {
   }
 
   async initialize(): Promise<void> {
-    console.log('DataManager: Initializing pre-populated SQLite database...');
+    if (this._isInitialized) {
+      console.log('DataManager: Already initialized. Skipping.');
+      return;
+    }
+
+    console.log('DataManager: Initializing self-contained liturgical database...');
     await this.storageService.initialize();
 
     await this.storageService.transaction(async () => {
@@ -124,12 +212,17 @@ export class DataManager {
       await this.storageService.executeQuery(CREATE_MASS_TEXTS_TABLE);
       await this.storageService.executeQuery(CREATE_OFFICE_TEXTS_TABLE);
       await this.storageService.executeQuery(CREATE_VOICE_NOTES_TABLE);
+      await this.storageService.executeQuery(CREATE_CACHED_LITURGICAL_DATA_TABLE);
+      await this.storageService.executeQuery(CREATE_JOURNAL_ENTRIES_TABLE);
+      await this.storageService.executeQuery(CREATE_SAINTS_INFO_TABLE);
+      await this.storageService.executeQuery(CREATE_MARTYROLOGY_TABLE);
+      await this.storageService.executeQuery(CREATE_PARISH_INFO_TABLE);
+      await this.storageService.executeQuery(CREATE_PARISH_EVENTS_TABLE);
+      await this.storageService.executeQuery(CREATE_NEWSLETTERS_TABLE);
     });
 
-    // The SQLite database comes pre-populated with Divinum Officium content
-    // Import was done ONCE during build/development, not during app runtime
-    const dataCount = await this.storageService.executeQuery("SELECT COUNT(*) as count FROM calendar_days");
-    console.log(`DataManager: Ready with ${dataCount[0]?.count || 0} liturgical days in database.`);
+    console.log('DataManager: Ready with self-contained liturgical database.');
+    this._isInitialized = true;
   }
 
   // Query methods for accessing pre-populated SQLite database
@@ -217,5 +310,249 @@ export class DataManager {
     if (p.includes('vespera')) return 'Vespera';
     if (p.includes('completorium')) return 'Completorium';
     return 'Unknown';
+  }
+
+  // Dynamic liturgical data with caching
+  async getLiturgicalDataForDate(date: string): Promise<CachedLiturgicalData> {
+    // Check cache first
+    const cached = await this.getCachedLiturgicalData(date);
+    if (cached && new Date(cached.expiresAt) > new Date()) {
+      console.log(`DataManager: Using cached liturgical data for ${date}`);
+      return cached;
+    }
+
+    console.log(`DataManager: Calculating fresh liturgical data for ${date}`);
+    
+    // Calculate using liturgical engine
+    const liturgicalDay = await this.liturgicalEngineService.calculateLiturgicalDay(date);
+    const massTexts = await this.liturgicalEngineService.getMassTexts(date);
+    const officeTexts = await this.liturgicalEngineService.getOfficeTexts(date);
+    const martyrology = await this.getMartyrologicalEntry(date);
+    const saintInfo = await this.getSaintInfoForDate(date);
+
+    const cachedData: CachedLiturgicalData = {
+      date,
+      liturgicalDay,
+      massTexts,
+      officeTexts,
+      martyrology,
+      saintInfo,
+      cachedAt: new Date().toISOString(),
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
+    };
+
+    // Cache the result
+    await this.cacheLiturgicalData(cachedData);
+    return cachedData;
+  }
+
+  private async getCachedLiturgicalData(date: string): Promise<CachedLiturgicalData | null> {
+    const results = await this.storageService.executeQuery(
+      'SELECT liturgical_data FROM cached_liturgical_data WHERE date = ? AND expires_at > ?',
+      [date, new Date().toISOString()]
+    );
+    
+    if (results.length > 0) {
+      return JSON.parse(results[0].liturgical_data);
+    }
+    return null;
+  }
+
+  private async cacheLiturgicalData(data: CachedLiturgicalData): Promise<void> {
+    await this.storageService.executeQuery(
+      `INSERT OR REPLACE INTO cached_liturgical_data 
+       (date, liturgical_data, cached_at, expires_at) 
+       VALUES (?, ?, ?, ?)`,
+      [data.date, JSON.stringify(data), data.cachedAt, data.expiresAt]
+    );
+  }
+
+  // Journal entries
+  async createJournalEntry(entry: Omit<JournalEntry, 'id' | 'created' | 'modified'>): Promise<JournalEntry> {
+    const id = `journal_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const now = new Date().toISOString();
+    const fullEntry: JournalEntry = {
+      ...entry,
+      id,
+      created: now,
+      modified: now
+    };
+
+    await this.storageService.executeQuery(
+      `INSERT INTO journal_entries 
+       (id, date, title, content, liturgical_context, tags, created, modified)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        fullEntry.id,
+        fullEntry.date,
+        fullEntry.title,
+        fullEntry.content,
+        fullEntry.liturgicalContext || null,
+        JSON.stringify(fullEntry.tags),
+        fullEntry.created,
+        fullEntry.modified
+      ]
+    );
+
+    return fullEntry;
+  }
+
+  async getJournalEntries(date?: string): Promise<JournalEntry[]> {
+    let sql = 'SELECT * FROM journal_entries';
+    const params: any[] = [];
+    
+    if (date) {
+      sql += ' WHERE date = ?';
+      params.push(date);
+    }
+    
+    sql += ' ORDER BY created DESC';
+
+    const results = await this.storageService.executeQuery(sql, params);
+    return results.map(row => ({
+      ...row,
+      tags: JSON.parse(row.tags || '[]')
+    }));
+  }
+
+  // Saints information
+  async getSaintInfo(saintName: string): Promise<SaintInfo | null> {
+    const results = await this.storageService.executeQuery(
+      'SELECT * FROM saints_info WHERE name = ?',
+      [saintName]
+    );
+    
+    if (results.length > 0) {
+      const row = results[0];
+      return {
+        name: row.name,
+        feastDay: row.feast_day,
+        biography: row.biography,
+        patronage: JSON.parse(row.patronage || '[]'),
+        sources: JSON.parse(row.sources || '[]')
+      };
+    }
+    return null;
+  }
+
+  async getSaintInfoForDate(date: string): Promise<SaintInfo[]> {
+    // Get saints for this date from martyrology
+    const martyrology = await this.getMartyrologicalEntry(date);
+    if (!martyrology) return [];
+
+    const saints: SaintInfo[] = [];
+    for (const entry of martyrology.entries) {
+      const saintInfo = await this.getSaintInfo(entry.saint);
+      if (saintInfo) {
+        saints.push(saintInfo);
+      }
+    }
+    return saints;
+  }
+
+  // Martyrology
+  async getMartyrologicalEntry(date: string): Promise<MartyrologicalEntry | null> {
+    const results = await this.storageService.executeQuery(
+      'SELECT entries FROM martyrology WHERE date = ?',
+      [date]
+    );
+    
+    if (results.length > 0) {
+      return {
+        date,
+        entries: JSON.parse(results[0].entries)
+      };
+    }
+    return null;
+  }
+
+  // Parish features
+  async getParishInfo(parishId: string): Promise<ParishInfo | null> {
+    const results = await this.storageService.executeQuery(
+      'SELECT * FROM parish_info WHERE id = ?',
+      [parishId]
+    );
+    
+    if (results.length > 0) {
+      const row = results[0];
+      return {
+        id: row.id,
+        name: row.name,
+        address: row.address,
+        phone: row.phone,
+        email: row.email,
+        website: row.website,
+        pastor: row.pastor,
+        massSchedule: JSON.parse(row.mass_schedule)
+      };
+    }
+    return null;
+  }
+
+  async getParishEvents(parishId: string, date?: string): Promise<ParishEvent[]> {
+    let sql = 'SELECT * FROM parish_events WHERE parish_id = ?';
+    const params: any[] = [parishId];
+    
+    if (date) {
+      sql += ' AND date = ?';
+      params.push(date);
+    }
+    
+    sql += ' ORDER BY date ASC, time ASC';
+
+    const results = await this.storageService.executeQuery(sql, params);
+    return results;
+  }
+
+  async getNewsletters(parishId: string): Promise<Newsletter[]> {
+    const results = await this.storageService.executeQuery(
+      'SELECT * FROM newsletters WHERE parish_id = ? ORDER BY publish_date DESC',
+      [parishId]
+    );
+    return results;
+  }
+
+  async createParishEvent(event: Omit<ParishEvent, 'id'>): Promise<ParishEvent> {
+    const id = `event_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const fullEvent: ParishEvent = { ...event, id };
+
+    await this.storageService.executeQuery(
+      `INSERT INTO parish_events 
+       (id, parish_id, title, description, date, time, location, category)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        fullEvent.id,
+        fullEvent.parishId,
+        fullEvent.title,
+        fullEvent.description,
+        fullEvent.date,
+        fullEvent.time || null,
+        fullEvent.location || null,
+        fullEvent.category
+      ]
+    );
+
+    return fullEvent;
+  }
+
+  async createNewsletter(newsletter: Omit<Newsletter, 'id'>): Promise<Newsletter> {
+    const id = `newsletter_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const fullNewsletter: Newsletter = { ...newsletter, id };
+
+    await this.storageService.executeQuery(
+      `INSERT INTO newsletters 
+       (id, parish_id, title, content, publish_date, author)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [
+        fullNewsletter.id,
+        fullNewsletter.parishId,
+        fullNewsletter.title,
+        fullNewsletter.content,
+        fullNewsletter.publishDate,
+        fullNewsletter.author
+      ]
+    );
+
+    return fullNewsletter;
   }
 }
