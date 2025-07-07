@@ -8,6 +8,9 @@ import {
   ActivityIndicator,
   StatusBar,
   useColorScheme,
+  Button,
+  TextInput,
+  ScrollView,
 } from 'react-native';
 
 import { DataManager } from '../src/core/services/dataManager';
@@ -27,6 +30,17 @@ function App(): React.JSX.Element {
   const [error, setError] = useState<string | null>(null);
   const [calendarDays, setCalendarDays] = useState<CalendarDayItem[]>([]);
   const [dataManager, setDataManager] = useState<DataManager | null>(null);
+  const [officeTexts, setOfficeTexts] = useState<any[]>([]);
+  const [showOffice, setShowOffice] = useState<boolean>(false);
+  const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [selectedHour, setSelectedHour] = useState<string>('Laudes');
+
+  const loadOfficeTexts = async () => {
+    if (!dataManager) return;
+    const texts = await dataManager.getOfficeTextsForDate(selectedDate, selectedHour);
+    setOfficeTexts(texts);
+    setShowOffice(true);
+  };
 
   useEffect(() => {
     let isMounted = true; // Flag to prevent state updates if component is unmounted
@@ -116,6 +130,30 @@ function App(): React.JSX.Element {
       <View style={styles.headerContainer}>
         <Text style={[styles.headerText, textStyle]}>Liturgical Calendar (Fixed Feasts)</Text>
       </View>
+      <View style={styles.officeControls}>
+        <TextInput
+          style={styles.dateInput}
+          value={selectedDate}
+          onChangeText={setSelectedDate}
+        />
+        <TextInput
+          style={styles.hourInput}
+          value={selectedHour}
+          onChangeText={setSelectedHour}
+        />
+        <Button title="Show Breviary" onPress={loadOfficeTexts} />
+      </View>
+      {showOffice && (
+        <ScrollView style={styles.officeContainer}>
+          {officeTexts.map((t, idx) => (
+            <View key={idx} style={styles.officeItem}>
+              <Text style={styles.officePart}>{t.hour} - {t.part_type}</Text>
+              {t.latin ? <Text>{t.latin}</Text> : null}
+              {t.english ? <Text>{t.english}</Text> : null}
+            </View>
+          ))}
+        </ScrollView>
+      )}
       {calendarDays.length === 0 && !isLoading ? (
          <View style={styles.container}>
             <Text style={[styles.itemText, textStyle]}>No calendar data found. Database might be empty or import failed.</Text>
@@ -169,6 +207,35 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontSize: 16,
+  },
+  officeControls: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+  },
+  dateInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 5,
+    marginRight: 5,
+    flex: 1,
+  },
+  hourInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 5,
+    marginRight: 5,
+    width: 80,
+  },
+  officeContainer: {
+    maxHeight: 200,
+    marginVertical: 10,
+  },
+  officeItem: {
+    marginBottom: 10,
+  },
+  officePart: {
+    fontWeight: 'bold',
   },
 });
 
