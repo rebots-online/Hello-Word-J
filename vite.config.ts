@@ -67,7 +67,8 @@ export default defineConfig({
   server: {
     port: 5173,
     host: '0.0.0.0',
-    open: true
+    // Open the correct entry HTML to avoid 404 on start
+    open: '/HelloWord/index.html'
   },
   define: {
     'process.env': {},
