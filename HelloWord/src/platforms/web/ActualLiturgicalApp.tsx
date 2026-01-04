@@ -2,6 +2,26 @@ import React, { useState, useEffect } from 'react';
 import './FullWebApp.css';
 import { LiturgicalEngineInterface, LiturgicalData } from '../../../../src/core/services/liturgicalEngineInterface';
 
+// Version and build info per global-rules.md
+const VERSION = '0.1.0';
+const BUILD_NUMBER = Math.floor(Date.now() / 60000) % 100000; // Last 5 digits of epoch minutes
+const COPYRIGHT = 'Copyright (C) 2025 Robin L. M. Cheung, MBA. All rights reserved.';
+
+// Theme definitions per global-rules.md
+const THEMES = {
+  kinetic: { name: 'Kinetic', description: 'Colorful, dynamic, Gumroad-inspired' },
+  brutalist: { name: 'Brutalist', description: 'Raw, honest, monospace aesthetic' },
+  retro: { name: 'Retro', description: 'CRT terminal vibes with scanlines' },
+  neumorphism: { name: 'Neumorphism', description: 'Soft shadows, extruded surfaces' },
+  glassmorphism: { name: 'Glassmorphism', description: 'Frosted glass with depth' },
+  y2k: { name: 'Y2K', description: 'Early 2000s web maximalism' },
+  cyberpunk: { name: 'Cyberpunk', description: 'Neon-soaked dystopian future' },
+  minimal: { name: 'Minimal', description: 'Clean Swiss design' },
+} as const;
+
+type ThemeMode = 'light' | 'dark' | 'system';
+type ThemeName = keyof typeof THEMES;
+
 interface JournalEntry {
   id: string;
   date: string;
@@ -10,7 +30,7 @@ interface JournalEntry {
   created_at: string;
 }
 
-type ViewMode = 'calendar' | 'mass' | 'office' | 'journal';
+type ViewMode = 'calendar' | 'mass' | 'office' | 'journal' | 'settings' | 'about';
 
 function ActualLiturgicalApp(): React.JSX.Element {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -26,6 +46,11 @@ function ActualLiturgicalApp(): React.JSX.Element {
   // Journal form
   const [journalTitle, setJournalTitle] = useState('');
   const [journalContent, setJournalContent] = useState('');
+  
+  // Theme and settings per global-rules.md
+  const [showSplash, setShowSplash] = useState(true);
+  const [currentTheme, setCurrentTheme] = useState<ThemeName>('minimal');
+  const [themeMode, setThemeMode] = useState<ThemeMode>('system');
 
   useEffect(() => {
     let isMounted = true;
@@ -131,12 +156,30 @@ function ActualLiturgicalApp(): React.JSX.Element {
     setJournalContent('');
   };
 
+  // Copyright splash screen per global-rules.md
+  if (showSplash) {
+    return (
+      <div className="splash-screen" onClick={() => setShowSplash(false)}>
+        <div className="splash-content">
+          <h1>SanctissiMissa</h1>
+          <p className="splash-subtitle">Traditional Latin Liturgical Companion</p>
+          <div className="splash-copyright">
+            <p>{COPYRIGHT}</p>
+            <p>Version {VERSION} (Build {BUILD_NUMBER})</p>
+          </div>
+          <p className="splash-continue">Click anywhere to continue...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (isLoading) {
     return (
       <div className="container">
         <div className="loading-spinner"></div>
         <p className="loading-text">Loading Traditional Latin Calendar from Divinum Officium...</p>
         <p className="loading-text">Calculating liturgical dates for {new Date().getFullYear()}...</p>
+        <p className="version-text">v{VERSION} (Build {BUILD_NUMBER})</p>
       </div>
     );
   }
@@ -177,7 +220,58 @@ function ActualLiturgicalApp(): React.JSX.Element {
       >
         📖 Journal
       </button>
+      <button 
+        className={currentView === 'settings' ? 'nav-button active' : 'nav-button'}
+        onClick={() => setCurrentView('settings')}
+      >
+        ⚙️ Settings
+      </button>
     </nav>
+  );
+
+  const renderSettingsView = () => (
+    <div className="view-content settings-view">
+      <h2>Settings</h2>
+      
+      <div className="settings-section">
+        <h3>Theme Mode</h3>
+        <div className="theme-mode-selector">
+          {(['light', 'dark', 'system'] as ThemeMode[]).map((mode) => (
+            <button
+              key={mode}
+              className={themeMode === mode ? 'theme-button active' : 'theme-button'}
+              onClick={() => setThemeMode(mode)}
+            >
+              {mode === 'light' ? '☀️' : mode === 'dark' ? '🌙' : '🖥️'} {mode.charAt(0).toUpperCase() + mode.slice(1)}
+            </button>
+          ))}
+        </div>
+      </div>
+      
+      <div className="settings-section">
+        <h3>Theme Style</h3>
+        <div className="theme-grid">
+          {(Object.keys(THEMES) as ThemeName[]).map((themeName) => (
+            <button
+              key={themeName}
+              className={currentTheme === themeName ? 'theme-card active' : 'theme-card'}
+              onClick={() => setCurrentTheme(themeName)}
+            >
+              <strong>{THEMES[themeName].name}</strong>
+              <span>{THEMES[themeName].description}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+      
+      <div className="settings-section about-section">
+        <h3>About</h3>
+        <p><strong>SanctissiMissa</strong> - Traditional Latin Liturgical Companion</p>
+        <p>Version {VERSION} (Build {BUILD_NUMBER})</p>
+        <p>{COPYRIGHT}</p>
+        <p>Target: 1962 Missal and Breviary (Extraordinary Form)</p>
+      </div>
+    </div>
   );
 
   const renderCalendarView = () => (
@@ -341,10 +435,12 @@ function ActualLiturgicalApp(): React.JSX.Element {
       {currentView === 'mass' && renderMassView()}
       {currentView === 'office' && renderOfficeView()}
       {currentView === 'journal' && renderJournalView()}
+      {currentView === 'settings' && renderSettingsView()}
       
       <div className="footer">
         <p>Today: {todayInfo?.primaryCelebrationName || 'Feria'} | Tomorrow: {tomorrowInfo?.primaryCelebrationName || 'Feria'}</p>
         <p>Calendar: ✅ Live | Mass Texts: 🔧 Pending | Office: 🔧 Pending | Journal: ✅ Working ({journalEntries.length} entries)</p>
+        <p className="version-footer">v{VERSION} (Build {BUILD_NUMBER})</p>
       </div>
     </div>
   );

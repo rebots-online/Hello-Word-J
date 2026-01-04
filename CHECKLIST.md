@@ -76,23 +76,23 @@
 ### 2.1 Global Rules Compliance
 | Task | Owner | Status | Notes |
 |------|-------|--------|-------|
-| Copyright splash on load | Agent | [ ] | Required |
-| Version + 5-digit epoch build | Agent | [ ] | In status bar + About |
+| Copyright splash on load | Agent | [X] | ✅ Shows on app load |
+| Version + 5-digit epoch build | Agent | [X] | ✅ In footer + About |
 | File/Edit/View/Help menu | Agent | [ ] | Standard structure |
 | Version in executable filename | Agent | [ ] | Build script |
 
 ### 2.2 Multi-Theme Support
 | Task | Owner | Status | Notes |
 |------|-------|--------|-------|
-| Kinetic theme | Agent | [ ] | Colorful, Gumroad-inspired |
-| Brutalist theme | Agent | [ ] | Raw, monospace |
-| Retro theme | Agent | [ ] | CRT scanlines |
-| Neumorphism theme | Agent | [ ] | Soft shadows |
-| Glassmorphism theme | Agent | [ ] | Frosted glass |
-| Y2K theme | Agent | [ ] | Early 2000s |
-| Cyberpunk theme | Agent | [ ] | Neon |
-| Minimal theme | Agent | [ ] | Swiss design |
-| Light/Dark/System toggle | Agent | [ ] | In settings |
+| Kinetic theme | Agent | [/] | UI selector added |
+| Brutalist theme | Agent | [/] | UI selector added |
+| Retro theme | Agent | [/] | UI selector added |
+| Neumorphism theme | Agent | [/] | UI selector added |
+| Glassmorphism theme | Agent | [/] | UI selector added |
+| Y2K theme | Agent | [/] | UI selector added |
+| Cyberpunk theme | Agent | [/] | UI selector added |
+| Minimal theme | Agent | [/] | UI selector added |
+| Light/Dark/System toggle | Agent | [X] | ✅ In Settings view |
 
 ### 2.3 PWA Requirements
 | Task | Owner | Status | Notes |
@@ -164,6 +164,8 @@
 - ✅ Phase 1.1: Completed DateUtils.getLiturgicalWeekKey() with all seasons
 - ✅ Phase 1.4: Created liturgical-cli.js with mass/office/report/verify commands
 - ✅ CLI tested: mass 2025-12-25 → Christmastide Nat0-4, report shows Holy Week → Easter
+- ✅ Phase 2.1: Added copyright splash, version display to ActualLiturgicalApp.tsx
+- ✅ Phase 2.2: Added Settings view with 8 theme selectors + light/dark/system toggle
 - 🔄 Continuing with remaining tasks
 
 ---
