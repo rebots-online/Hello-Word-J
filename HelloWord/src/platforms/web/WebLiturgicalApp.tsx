@@ -157,20 +157,10 @@ function WebLiturgicalApp(): React.JSX.Element {
       setIsRecording(true);
       console.log('Voice recording would start here - requires MediaRecorder API implementation');
       
-      // Simulate recording
-      setTimeout(() => {
-        setIsRecording(false);
-        const newVoiceNote: VoiceNote = {
-          id: `voice_${Date.now()}`,
-          date: new Date().toISOString().split('T')[0],
-          title: 'Voice Note',
-          filePath: 'mock://recording.wav',
-          duration: 3,
-          transcription: 'Voice recording functionality ready for implementation'
-        };
-        setVoiceNotes(prev => [newVoiceNote, ...prev]);
-        console.log('Voice recording completed (simulated)');
-      }, 3000);
+      // Voice recording requires MediaRecorder API - to be implemented with real audio capture
+      console.log('Voice recording started - awaiting MediaRecorder implementation');
+      // TODO: Implement real MediaRecorder capture when audio permissions are available
+      setIsRecording(false);
     } catch (error) {
       console.error('Error starting voice recording:', error);
       setIsRecording(false);
