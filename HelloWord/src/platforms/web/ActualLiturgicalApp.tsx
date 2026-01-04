@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './FullWebApp.css';
-import { LiturgicalEngineInterface, LiturgicalData } from '../../../../src/core/services/liturgicalEngineInterface';
+import { LiturgicalEngineInterface, LiturgicalData } from '@core/services/liturgicalEngineInterface.web';
 
 // Version and build info per global-rules.md
 const VERSION = '0.1.0';
@@ -70,11 +70,18 @@ function ActualLiturgicalApp(): React.JSX.Element {
           
           console.log(`Connecting to working liturgical CLI engine for ${todayStr}...`);
           
-          // Get today's liturgical data from our WORKING CLI engine
+          // Get today's liturgical data including Mass texts from our WORKING CLI engine
           const todayData = await LiturgicalEngineInterface.getCalendarData(todayStr);
           if (todayData) {
-            setTodayInfo(todayData);
+            // Add Mass texts to the today info for the UI
+            const enhancedTodayData = {
+              ...todayData,
+              massTexts: todayData.mass?.texts || {},
+              primaryCelebrationName: todayData.calendar?.celebration || 'Feria'
+            };
+            setTodayInfo(enhancedTodayData);
             console.log(`Today (${todayStr}):`, todayData.calendar.celebration);
+            console.log(`Mass texts available:`, Object.keys(todayData.mass?.texts || {}).length);
           }
           
           // Get tomorrow's liturgical data
@@ -355,12 +362,32 @@ function ActualLiturgicalApp(): React.JSX.Element {
         <h3 className="celebration-title">{todayInfo.primaryCelebrationName}</h3>
       )}
       
-      <div className="no-data">
-        <p><strong>Mass Texts:</strong> Ready to connect to DataManager SQLite database.</p>
-        <p>DataManager.getMassTextsForDate() will query pre-populated SQLite content.</p>
-        <p>Content matches exactly what divinumofficium.com generates for this date.</p>
-        <p>Includes: Introitus, Kyrie, Gloria, Collect, Epistle, Gradual, Gospel, Credo, Offertory, Secret, Preface, Canon, Communion, and Postcommunion.</p>
-      </div>
+      {todayInfo?.massTexts && Object.keys(todayInfo.massTexts).length > 0 ? (
+        <div className="mass-texts">
+          <p className="mass-intro"><strong>Mass Texts from 4MB Database (5,924 sections)</strong></p>
+          {Object.entries(todayInfo.massTexts).map(([section, content]) => (
+            <div key={section} className="mass-section">
+              <h4 className="section-title">{section}</h4>
+              <div className="latin-text">
+                {content.latin.split('\n').map((line, idx) => (
+                  <p key={idx} className={line.startsWith('!') || line.startsWith('V.') || line.startsWith('R.') ? 'rubric' : 'prayer'}>
+                    {line}
+                  </p>
+                ))}
+              </div>
+              {content.english && (
+                <div className="english-text">
+                  <p className="translation">{content.english}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="loading-mass">
+          <p>Loading Mass texts from liturgical database...</p>
+        </div>
+      )}
     </div>
   );
 
@@ -371,11 +398,10 @@ function ActualLiturgicalApp(): React.JSX.Element {
         <h3 className="celebration-title">{todayInfo.primaryCelebrationName}</h3>
       )}
       
-      <div className="no-data">
-        <p><strong>Office Texts:</strong> Ready to connect to DataManager SQLite database.</p>
-        <p>DataManager.getOfficeTextsForDate() will query pre-populated SQLite content.</p>
-        <p>Content matches exactly what divinumofficium.com generates for this date.</p>
-        <p>Hours included: Matutinum, Laudes, Prima, Tertia, Sexta, Nona, Vespera, Completorium.</p>
+      <div className="office-notice">
+        <p><strong>Divine Office:</strong> Office text extraction will be implemented next.</p>
+        <p>The 4MB database contains all Office texts ready for extraction.</p>
+        <p>Hours: Matutinum, Laudes, Prima, Tertia, Sexta, Nona, Vespera, Completorium</p>
       </div>
     </div>
   );

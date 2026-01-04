@@ -220,78 +220,10 @@ export class NativeStorageService implements IStorageService {
       console.error('[SQL-TX] Error in transaction:', error);
       throw error;
     }
-        // So, the callback itself doesn't need the 'tx' object directly if it uses this.
-        // This is a bit of a workaround because DataManager's transaction callback
-        // uses `this.storageService.executeQuery` which is not transaction-aware by itself.
-        // A cleaner way would be for `DataManager.initialize` to pass the `tx` object down
-        // or for `IStorageService.transaction` to provide a transactional version of `executeQuery`.
-        // For now, we'll pass a dummy transaction object as the DataManager's callback
-        // doesn't use the passed transaction object directly but relies on executeQuery
-        // being called on a service that is transaction-aware.
-        // The current DataManager's `await this.storageService.executeQuery` will call the
-        // main executeQuery, not a transaction-specific one. This needs refinement.
-
-        // Corrected approach: The callback should use the passed transaction object.
-        // The `DataManager` will need to be adjusted to use the `tx` object
-        // if it wants to run queries within this specific transaction.
-        // For now, this IStorageService.transaction will execute the callback,
-        // and the callback is responsible for using the transaction if needed.
-        // The `DataManager`'s current `initialize` method's transaction block
-        // `await this.storageService.transaction(async () => { ... })` will work if
-        // the `executeQuery` it calls within the callback is somehow tied to this transaction.
-
-        // Let's simplify the `IStorageService.transaction` to match `src/platforms/web/indexedDbStorage` more closely.
-        // The callback will receive the transaction object `tx`.
-        // The `DataManager` will need to be updated to use this `tx` if it's passed one.
-        // However, the current `IStorageService` signature for `transaction` is `(callback: () => Promise<void>)`.
-        // This means `DataManager`'s callback `async () => { await this.storageService.executeQuery(...) }`
-        // will call the *outer* `executeQuery`, not one bound to `tx`.
-
-        // Re-thinking: The `DataManager`'s `initialize` method's transaction:
-        // await this.storageService.transaction(async () => {
-        //   await this.storageService.executeQuery(CREATE_CALENDAR_DAYS_TABLE); ...
-        // });
-        // This structure means the `NativeStorageService.transaction` method needs to ensure
-        // that calls to `this.executeQuery` *within its callback execution scope* are routed to the transaction.
-        // This can be achieved by temporarily overriding `this.executeQuery`.
-
-        const originalExecuteQuery = this.executeQuery;
-        this.executeQuery = async (sql: string, params?: any[]): Promise<any[]> => {
-          console.log(`TX (via override) Executing SQL: ${sql} with params: ${JSON.stringify(params)}`);
-          const [results]: [ResultSet] = await tx.executeSql(sql, params);
-          const rows: any[] = [];
-          if (results && results.rows && results.rows.length > 0) {
-            for (let i = 0; i < results.rows.length; i++) {
-              rows.push(results.rows.item(i));
-            }
-          }
-          return rows;
-        };
-
-        await callback(tx); // Pass tx in case the callback wants to use it, though our current DataManager won't.
-
-        this.executeQuery = originalExecuteQuery; // Restore original executeQuery
-      });
-      console.log('Transaction successful');
-    } catch (error) {
-      console.error('Transaction error: ', error);
-      throw error;
-    } finally {
-      // Ensure executeQuery is restored even if callback fails
-      if (this.executeQuery !== NativeStorageService.prototype.executeQuery) {
-         // Check if it was overridden (simple check, might need more robust for complex scenarios)
-         // This assumes 'this.executeQuery' was set to the transactional one.
-         // A cleaner way is to use a class field for the original method.
-         // For now, this addresses the immediate issue.
-         // Re-setting to prototype's method:
-         // this.executeQuery = NativeStorageService.prototype.executeQuery;
-         // This is problematic if called on an instance that might have a bound version initially.
-         // The temporary override approach is tricky.
          // A better IStorageService.transaction would be:
          // async transaction<T>(scope: (tx: ITransaction) => Promise<T>): Promise<T>
          // where ITransaction has an executeQuery method.
          // Given the current IStorageService, the override is a plausible, if imperfect, way.
-    }
   }
 
   // async close(): Promise<void> {

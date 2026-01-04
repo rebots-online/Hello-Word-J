@@ -1,0 +1,137 @@
+[
+  {
+    "from": "Morpheme",
+    "to": "Lemma",
+    "relationType": "composes"
+  },
+  {
+    "from": "Lemma",
+    "to": "Word",
+    "relationType": "inflects_to"
+  },
+  {
+    "from": "Word",
+    "to": "Passage",
+    "relationType": "appears_in"
+  },
+  {
+    "from": "Trinity",
+    "to": "Incarnation",
+    "relationType": "doctrinally_related"
+  },
+  {
+    "from": "Incarnation",
+    "to": "Eucharist",
+    "relationType": "sacramentally_connected"
+  },
+  {
+    "from": "FiatLuxToFiatLex",
+    "to": "Trinity",
+    "relationType": "theological_evolution_exemplifies"
+  },
+  {
+    "from": "Jerome",
+    "to": "PatristicPeriod",
+    "relationType": "historically_situated_in"
+  },
+  {
+    "from": "Augustine",
+    "to": "PatristicPeriod",
+    "relationType": "historically_situated_in"
+  },
+  {
+    "from": "PatristicPeriod",
+    "to": "CarolingianPeriod",
+    "relationType": "historically_precedes"
+  },
+  {
+    "from": "CarolingianPeriod",
+    "to": "ScholasticPeriod",
+    "relationType": "historically_precedes"
+  },
+  {
+    "from": "ScholasticPeriod",
+    "to": "TridendinePeriod",
+    "relationType": "historically_precedes"
+  },
+  {
+    "from": "TheologicalArchaeology",
+    "to": "JeromeSignatureAnalysis",
+    "relationType": "methodologically_contains"
+  },
+  {
+    "from": "MorphologicalTheology",
+    "to": "TheologicalArchaeology",
+    "relationType": "methodologically_supports"
+  },
+  {
+    "from": "FiatTransformationAnalysis",
+    "to": "MorphologicalTheology",
+    "relationType": "exemplifies"
+  },
+  {
+    "from": "Neo4jGraphDatabase",
+    "to": "HybridKnowledgeGraph",
+    "relationType": "technically_implements"
+  },
+  {
+    "from": "QdrantVectorDatabase",
+    "to": "HybridKnowledgeGraph",
+    "relationType": "technically_implements"
+  },
+  {
+    "from": "PostgreSQLAuditSystem",
+    "to": "HybridKnowledgeGraph",
+    "relationType": "technically_implements"
+  },
+  {
+    "from": "SQLiteInterface",
+    "to": "HybridKnowledgeGraph",
+    "relationType": "technically_provides_access_to"
+  },
+  {
+    "from": "Trinity",
+    "to": "Morpheme",
+    "relationType": "encoded_by"
+  },
+  {
+    "from": "Incarnation",
+    "to": "Word",
+    "relationType": "expressed_through"
+  },
+  {
+    "from": "FiatLuxToFiatLex",
+    "to": "Passage",
+    "relationType": "manifested_in"
+  },
+  {
+    "from": "Jerome",
+    "to": "Word",
+    "relationType": "influenced_choice_of"
+  },
+  {
+    "from": "Augustine",
+    "to": "TheologicalConcept",
+    "relationType": "doctrinally_shaped"
+  },
+  {
+    "from": "JeromeSignatureAnalysis",
+    "to": "PatristicPeriod",
+    "relationType": "analytically_focuses_on"
+  },
+  {
+    "from": "TheologicalArchaeology",
+    "to": "HistoricalPeriod",
+    "relationType": "analytically_studies"
+  },
+  {
+    "from": "HybridKnowledgeGraph",
+    "to": "TheologicalArchaeology",
+    "relationType": "technically_enables"
+  },
+  {
+    "from": "MorphologicalTheology",
+    "to": "Neo4jGraphDatabase",
+    "relationType": "implemented_in"
+  }
+]

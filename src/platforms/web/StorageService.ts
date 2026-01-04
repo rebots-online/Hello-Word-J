@@ -13,20 +13,14 @@ export class WebStorageService implements IStorageService {
     // Schema version 1 - initial setup
     this.db.version(1).stores({
       calendar_days: 'date, season, rank',
-      mass_texts: 'id, date, type, [date+type]',
-      office_texts: 'id, date, hour, [date+hour]',
-      voice_notes: 'id, date, [date+createdAt]',
+      mass_texts: '++id, date, type, [date+type]',
+      office_texts: '++id, date, hour, [date+hour]',
+      voice_notes: '++id, date, [date+createdAt]',
       settings: 'key',
-      // Enable full-text search on relevant fields
-      $: 'texts(*)',
-    });
-
-    // Add full-text search extension
-    this.db.version(1).stores({
-      texts: null, // Clear previous version if any
-      texts_documents: '&id, [content+locale]',
-      texts_terms: '[a+_], [d+loc+word+field], [f+field]',
-      texts_ranking: '&[table+id], rank',
+      journal_entries: '++id, date, content, liturgicalContext',
+      saints_info: '++id, date, name, type',
+      parish_info: '++id, name, type',
+      cached_liturgical_data: 'date, data, cachedAt, expiresAt'
     });
   }
 
@@ -46,7 +40,11 @@ export class WebStorageService implements IStorageService {
       // Map SQL-like queries to Dexie operations
       const query = sql.trim().toUpperCase();
       
-      if (query.startsWith('SELECT')) {
+      if (query.startsWith('CREATE TABLE')) {
+        // Ignore CREATE TABLE statements - Dexie handles schema through version system
+        console.log('Ignoring CREATE TABLE statement (handled by Dexie schema)');
+        return [];
+      } else if (query.startsWith('SELECT')) {
         return this.handleSelectQuery(sql, params);
       } else if (query.startsWith('INSERT')) {
         await this.handleInsertQuery(sql, params);
