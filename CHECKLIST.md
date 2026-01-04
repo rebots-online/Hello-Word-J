@@ -58,9 +58,10 @@
 ### 1.3 Complete LiturgicalEngineService
 | Task | Owner | Status | Notes |
 |------|-------|--------|-------|
-| Implement real rank fetching | Agent | [ ] | From file Rank: lines |
-| Implement real precedence logic | Agent | [ ] | occurrence → winner |
-| Add commemorations logic | Agent | [ ] | Per rubrics |
+| Implement real rank fetching | Agent | [X] | ✅ parseRank() + RANKS constants |
+| Implement real precedence logic | Agent | [X] | ✅ occurrence sorting by rank |
+| Add commemorations logic | Agent | [X] | ✅ Up to 3 per rubrics |
+| Add getLiturgicalCalendar() | Agent | [X] | ✅ Date range queries |
 
 ### 1.4 CLI Tool Fixes
 | Task | Owner | Status | Notes |
@@ -168,7 +169,8 @@
 - ✅ Phase 2.1: Added copyright splash, version display to ActualLiturgicalApp.tsx
 - ✅ Phase 2.2: Added Settings view with 8 theme selectors + light/dark/system toggle
 - ✅ Phase 1.2: Implemented DirectoriumService.getTransferRules() and getFixedTemporalAssignments()
-- 🔄 Continuing with remaining tasks
+- ✅ Phase 1.3: Implemented LiturgicalEngineService rank parsing, precedence, commemorations
+- 🔄 Core liturgical engine complete - continuing with remaining tasks
 
 ---
 
