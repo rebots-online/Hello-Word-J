@@ -182,18 +182,110 @@ export class DirectoriumService {
     return currentVersionKalendar;
   }
 
-  // Stub for transfer rule fetching
-  public async getTransferRules(versionId: string, year: number): Promise<any> {
-    // This will involve complex logic based on Easter date and specific rule files
-    // (e.g., Tabulae/Transfer/a.txt, Tabulae/Transfer/DA_Easter_dependent.txt)
-    console.warn(`DirectoriumService: getTransferRules for ${versionId}, ${year} - NOT IMPLEMENTED YET.`);
-    return {};
+  /**
+   * Get transfer rules for a specific version and year.
+   * Transfer rules handle feast movements when dates conflict (e.g., feast on Sunday).
+   * Based on Divinum Officium Tabulae/Transfer/*.txt files.
+   */
+  public async getTransferRules(versionId: string, year: number): Promise<Map<string, string>> {
+    const transferRules = new Map<string, string>();
+    
+    if (this.versions.size === 0) {
+      await this.initialize();
+    }
+    
+    const versionInfo = this.versions.get(versionId);
+    if (!versionInfo || !versionInfo.transferFileBase) {
+      console.log(`DirectoriumService: No transfer rules defined for ${versionId}`);
+      return transferRules;
+    }
+    
+    try {
+      // Load the base transfer file (e.g., Transfer/1960.txt)
+      const transferFilePath = `Transfer/${versionInfo.transferFileBase}.txt`;
+      const content = await this.fetchRawFile(transferFilePath);
+      
+      // Parse transfer rules: format is typically "MM-DD=NewPath" or "MM-DD=TRANSFER:NewDate"
+      const lines = content.split('\n');
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (trimmed.startsWith('#') || trimmed === '') continue;
+        
+        const [dateKey, rule] = trimmed.split('=');
+        if (dateKey && rule) {
+          transferRules.set(dateKey.trim(), rule.trim());
+        }
+      }
+      
+      console.log(`DirectoriumService: Loaded ${transferRules.size} transfer rules for ${versionId}`);
+    } catch (e) {
+      // Transfer file may not exist for all versions
+      console.log(`DirectoriumService: No transfer file found for ${versionId}`);
+    }
+    
+    return transferRules;
   }
 
-  // Stub for fixed temporal assignments
-  public async getFixedTemporalAssignments(versionId: string): Promise<any> {
-    // This would load files like Tabulae/Tempora/1960.txt (if it exists and is defined in data.txt)
-    console.warn(`DirectoriumService: getFixedTemporalAssignments for ${versionId} - NOT IMPLEMENTED YET.`);
-    return {};
+  /**
+   * Get fixed temporal assignments for a specific version.
+   * These define which Tempora files to use for specific liturgical days.
+   * Based on Divinum Officium Tabulae/Tempora/*.txt files.
+   */
+  public async getFixedTemporalAssignments(versionId: string): Promise<Map<string, string>> {
+    const temporalAssignments = new Map<string, string>();
+    
+    if (this.versions.size === 0) {
+      await this.initialize();
+    }
+    
+    const versionInfo = this.versions.get(versionId);
+    if (!versionInfo) {
+      console.log(`DirectoriumService: Version ${versionId} not found`);
+      return temporalAssignments;
+    }
+    
+    // Use temporalBaseVersionId if available, otherwise use the version's own file
+    const temporaBase = versionInfo.temporalBaseVersionId || versionInfo.kalendarFile;
+    
+    try {
+      // Load the tempora file (e.g., Tempora/1960.txt)
+      const temporaFilePath = `Tempora/${temporaBase}.txt`;
+      const content = await this.fetchRawFile(temporaFilePath);
+      
+      // Parse temporal assignments: format is "WeekKey=TemporaPath"
+      // e.g., "Adv1-0=Tempora/Adv1-0" or "Quad1-3=Tempora/Quad1-3"
+      const lines = content.split('\n');
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (trimmed.startsWith('#') || trimmed === '') continue;
+        
+        const [weekKey, temporaPath] = trimmed.split('=');
+        if (weekKey && temporaPath) {
+          temporalAssignments.set(weekKey.trim(), temporaPath.trim());
+        }
+      }
+      
+      console.log(`DirectoriumService: Loaded ${temporalAssignments.size} temporal assignments for ${versionId}`);
+    } catch (e) {
+      // Tempora file may not exist - use default paths based on week keys
+      console.log(`DirectoriumService: No tempora file found for ${versionId}, using default paths`);
+    }
+    
+    return temporalAssignments;
+  }
+  
+  /**
+   * Get the Tempora path for a specific liturgical week key.
+   * Falls back to constructing path from week key if no specific assignment exists.
+   */
+  public async getTemporaPath(versionId: string, weekKey: string): Promise<string> {
+    const assignments = await this.getFixedTemporalAssignments(versionId);
+    
+    if (assignments.has(weekKey)) {
+      return assignments.get(weekKey)!;
+    }
+    
+    // Default: construct path from week key (e.g., "Adv1-0" -> "Tempora/Adv1-0")
+    return `Tempora/${weekKey}`;
   }
 }

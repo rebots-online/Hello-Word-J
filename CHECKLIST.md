@@ -51,8 +51,9 @@
 ### 1.2 Complete DirectoriumService
 | Task | Owner | Status | Notes |
 |------|-------|--------|-------|
-| Implement `getTransferRules()` | Agent | [ ] | Currently returns `{}` |
-| Implement `getFixedTemporalAssignments()` | Agent | [ ] | Currently returns `{}` |
+| Implement `getTransferRules()` | Agent | [X] | ✅ Loads from Transfer/*.txt |
+| Implement `getFixedTemporalAssignments()` | Agent | [X] | ✅ Loads from Tempora/*.txt |
+| Add `getTemporaPath()` helper | Agent | [X] | ✅ Fallback path construction |
 
 ### 1.3 Complete LiturgicalEngineService
 | Task | Owner | Status | Notes |
@@ -166,6 +167,7 @@
 - ✅ CLI tested: mass 2025-12-25 → Christmastide Nat0-4, report shows Holy Week → Easter
 - ✅ Phase 2.1: Added copyright splash, version display to ActualLiturgicalApp.tsx
 - ✅ Phase 2.2: Added Settings view with 8 theme selectors + light/dark/system toggle
+- ✅ Phase 1.2: Implemented DirectoriumService.getTransferRules() and getFixedTemporalAssignments()
 - 🔄 Continuing with remaining tasks
 
 ---
