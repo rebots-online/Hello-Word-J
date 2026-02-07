@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Dominical Letter Guide</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1f68f9",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#0f1623",
+                        "surface-dark": "#1a2436", // Added for card backgrounds in dark mode
+                        "border-dark": "#2f436a", // Matching the component style
+                        "text-muted": "#8ea3cc", // Matching the component style
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-gray-900 dark:text-white">
+<!-- Main Container -->
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden pb-10">
+<!-- Bottom Sheet Handle Area -->
+<div class="sticky top-0 z-10 w-full pt-3 pb-2 bg-background-light dark:bg-background-dark/95 backdrop-blur-sm">
+<div class="flex flex-col items-center justify-center">
+<div class="h-1.5 w-12 rounded-full bg-slate-300 dark:bg-border-dark"></div>
+</div>
+<!-- Close Button (Absolute) -->
+<button class="absolute right-4 top-3 p-1 rounded-full text-text-muted hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+</div>
+<!-- Header Section -->
+<div class="px-5 pt-2 pb-4">
+<h1 class="text-3xl font-bold tracking-tight leading-tight text-slate-900 dark:text-white">
+                The Dominical Letter Guide
+            </h1>
+<p class="mt-3 text-base font-normal leading-relaxed text-slate-600 dark:text-gray-300 font-body">
+                The Dominical Letter relates the days of the week to calendar dates. It consists of letters A through G, marking the first seven days of the year to determine Sundays.
+            </p>
+</div>
+<!-- Chart Section -->
+<div class="px-4 py-2">
+<div class="flex flex-col gap-4 rounded-xl border border-slate-200 dark:border-border-dark bg-white dark:bg-surface-dark p-6 shadow-sm">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<p class="text-sm font-medium uppercase tracking-wider text-slate-500 dark:text-text-muted">Math of Easter</p>
+<p class="text-2xl font-bold leading-tight text-slate-900 dark:text-white">Leap Year Shift</p>
+</div>
+<span class="material-symbols-outlined text-primary text-3xl">bar_chart</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-gray-400 font-body">
+                    The cycle shifts backwards one letter each regular year, and two letters every leap year.
+                </p>
+<!-- Visualization -->
+<div class="mt-4 grid grid-cols-4 gap-3 items-end h-[160px] px-2">
+<!-- Bar 1 -->
+<div class="flex flex-col items-center gap-2 h-full justify-end group">
+<div class="relative w-full rounded-t-sm bg-primary/20 group-hover:bg-primary/30 transition-all border-t-2 border-primary h-[60%]">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">-1</div>
+</div>
+<p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-text-muted">Year 1</p>
+</div>
+<!-- Bar 2 -->
+<div class="flex flex-col items-center gap-2 h-full justify-end group">
+<div class="relative w-full rounded-t-sm bg-primary/20 group-hover:bg-primary/30 transition-all border-t-2 border-primary h-[60%]">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">-1</div>
+</div>
+<p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-text-muted">Year 2</p>
+</div>
+<!-- Bar 3 -->
+<div class="flex flex-col items-center gap-2 h-full justify-end group">
+<div class="relative w-full rounded-t-sm bg-primary/20 group-hover:bg-primary/30 transition-all border-t-2 border-primary h-[60%]">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">-1</div>
+</div>
+<p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-text-muted">Year 3</p>
+</div>
+<!-- Bar 4 (Leap) -->
+<div class="flex flex-col items-center gap-2 h-full justify-end group">
+<div class="relative w-full rounded-t-sm bg-white/10 dark:bg-white/5 border-t-2 border-slate-400 dark:border-white h-[90%] group-hover:bg-white/20 transition-all">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold text-slate-900 dark:text-white opacity-0 group-hover:opacity-100 transition-opacity">-2</div>
+</div>
+<p class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">Leap</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Reference Table Section -->
+<div class="mt-6 px-5">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">table_rows</span>
+                Letter Reference
+            </h3>
+<div class="grid grid-cols-1 divide-y divide-slate-200 dark:divide-border-dark border-t border-b border-slate-200 dark:border-border-dark">
+<!-- Row A -->
+<div class="grid grid-cols-[80px_1fr] py-4 items-start gap-4">
+<div class="flex items-center gap-2">
+<div class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 dark:bg-border-dark text-sm font-bold text-slate-900 dark:text-white">A</div>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-sm font-bold text-slate-900 dark:text-white">Jan 1 is Sunday</p>
+<p class="text-sm text-slate-500 dark:text-text-muted font-body">Sundays fall on: 1, 8, 15, 22...</p>
+</div>
+</div>
+<!-- Row B -->
+<div class="grid grid-cols-[80px_1fr] py-4 items-start gap-4">
+<div class="flex items-center gap-2">
+<div class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 dark:bg-border-dark text-sm font-bold text-slate-900 dark:text-white">B</div>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-sm font-bold text-slate-900 dark:text-white">Jan 1 is Saturday</p>
+<p class="text-sm text-slate-500 dark:text-text-muted font-body">Sundays fall on: 2, 9, 16, 23...</p>
+</div>
+</div>
+<!-- Row C -->
+<div class="grid grid-cols-[80px_1fr] py-4 items-start gap-4">
+<div class="flex items-center gap-2">
+<div class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 dark:bg-border-dark text-sm font-bold text-slate-900 dark:text-white">C</div>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-sm font-bold text-slate-900 dark:text-white">Jan 1 is Friday</p>
+<p class="text-sm text-slate-500 dark:text-text-muted font-body">Sundays fall on: 3, 10, 17, 24...</p>
+</div>
+</div>
+<!-- Row D -->
+<div class="grid grid-cols-[80px_1fr] py-4 items-start gap-4">
+<div class="flex items-center gap-2">
+<div class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 dark:bg-border-dark text-sm font-bold text-slate-900 dark:text-white">D</div>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-sm font-bold text-slate-900 dark:text-white">Jan 1 is Thursday</p>
+<p class="text-sm text-slate-500 dark:text-text-muted font-body">Sundays fall on: 4, 11, 18, 25...</p>
+</div>
+</div>
+<!-- Row E -->
+<div class="grid grid-cols-[80px_1fr] py-4 items-start gap-4">
+<div class="flex items-center gap-2">
+<div class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 dark:bg-border-dark text-sm font-bold text-slate-900 dark:text-white">E</div>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-sm font-bold text-slate-900 dark:text-white">Jan 1 is Wednesday</p>
+<p class="text-sm text-slate-500 dark:text-text-muted font-body">Sundays fall on: 5, 12, 19, 26...</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Spacer -->
+<div class="h-12"></div>
+</div>
+</body></html>

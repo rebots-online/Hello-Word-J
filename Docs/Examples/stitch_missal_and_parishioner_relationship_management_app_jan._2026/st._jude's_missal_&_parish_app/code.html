@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>St. Jude's Missal & Parish App</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- React & Router Libraries (v6.3.0) -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/history@5/umd/history.development.js"></script>
+    <script src="https://unpkg.com/react-router@6.3.0/umd/react-router.development.js"></script>
+    <script src="https://unpkg.com/react-router-dom@6.3.0/umd/react-router-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+    <!-- Theme Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1152d4",
+                        "primary-glow": "#3b82f6", 
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "liturgical-green": "#2d6a4f",
+                        "liturgical-gold": "#d4af37",
+                        "surface-dark": "#1a2233",
+                        "surface-light": "#ffffff",
+                        "rubric": "#f87171",
+                        "text-latin": "#ffffff",
+                        "text-english": "#9ca3af",
+                    },
+                    fontFamily: {
+                        "display": ["Noto Serif", "serif"],
+                        "sans": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                    animation: {
+                        'ping-slow': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+                    }
+                },
+            },
+        }
+    </script>
+
+    <style>
+        .timeline-line-gradient {
+            background: linear-gradient(to bottom, #2d6a4f 0%, #2d6a4f 80%, rgba(45, 106, 79, 0) 100%);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .drop-cap::first-letter {
+            float: left;
+            font-size: 3.5rem;
+            line-height: 0.7;
+            font-weight: 400;
+            margin-right: 0.1em;
+            margin-top: 0.1em;
+            color: #1152d4;
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white transition-colors duration-200 overflow-hidden">
+    <div id="root" class="h-full min-h-screen"></div>
+
+    <script type="text/babel">
+        // Global Destructuring - REQUIRED
+        const { useState, useEffect } = React;
+        const { createRoot } = ReactDOM;
+        const { MemoryRouter, Routes, Route, Link, useNavigate } = ReactRouterDOM;
+
+        // --- Screen 1: Mass Navigation Map ---
+        const MassMapScreen = () => {
+            const navigate = useNavigate();
+
+            return (
+                <div className="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex flex-col overflow-hidden h-full">
+                    {/* Top App Bar */}
+                    <div className="relative z-20 flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between border-b border-gray-200 dark:border-gray-800">
+                        <Link to="/" className="text-gray-900 dark:text-white flex size-12 shrink-0 items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+                            <span className="material-symbols-outlined text-2xl">arrow_back</span>
+                        </Link>
+                        <h2 className="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Ordo Missae</h2>
+                        <button className="flex size-12 items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+                            <span className="material-symbols-outlined text-[#92a4c9]">settings</span>
+                        </button>
+                    </div>
+
+                    {/* Scrollable Content Area */}
+                    <main className="flex-1 overflow-y-auto no-scrollbar pb-24 relative">
+                        {/* Liturgical Header Info */}
+                        <div className="px-6 pt-6 pb-2 text-center">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-liturgical-green/20 border border-liturgical-green/30 mb-3">
+                                <span className="material-symbols-outlined text-liturgical-green text-[18px]">circle</span>
+                                <span className="text-liturgical-green text-xs font-bold uppercase tracking-wide">Class II • Green</span>
+                            </div>
+                            <h2 className="text-gray-900 dark:text-white text-[28px] font-bold leading-tight mb-1">Third Sunday after Pentecost</h2>
+                            <p className="text-gray-500 dark:text-gray-400 text-sm italic">Dominica III Post Pentecosten</p>
+                        </div>
+
+                        {/* Start Button (Quick Action) */}
+                        <div className="px-6 py-4 flex justify-center">
+                            <Link to="/missal" className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-full font-medium shadow-lg shadow-primary/20 transition-all active:scale-95">
+                                <span className="material-symbols-outlined">play_arrow</span>
+                                <span>Start Mass</span>
+                            </Link>
+                        </div>
+
+                        {/* Timeline Container */}
+                        <div className="relative px-6 mt-4">
+                            {/* SECTION 1: Mass of the Catechumens */}
+                            <div className="mb-2">
+                                <h3 className="text-gray-900 dark:text-white text-xl font-bold px-2 mb-4 flex items-center gap-3">
+                                    <span className="w-8 h-8 rounded-full bg-gray-200 dark:bg-surface-dark flex items-center justify-center text-xs font-bold text-gray-500">I</span>
+                                    Mass of the Catechumens
+                                </h3>
+                                <div className="grid grid-cols-[40px_1fr] gap-x-4">
+                                    {/* Line segment */}
+                                    <div className="relative flex flex-col items-center">
+                                        <div className="absolute top-4 bottom-0 w-[2px] bg-liturgical-green/50"></div>
+                                        {/* Node: Prayers */}
+                                        <div className="relative z-10 w-8 h-8 rounded-full bg-background-light dark:bg-background-dark border-2 border-liturgical-green flex items-center justify-center mb-10 shadow-sm mt-1">
+                                            <span className="material-symbols-outlined text-liturgical-green text-[16px]">church</span>
+                                        </div>
+                                        {/* Simple Nodes */}
+                                        <div className="relative z-10 w-3 h-3 rounded-full bg-liturgical-green mb-10"></div>
+                                        <div className="relative z-10 w-3 h-3 rounded-full bg-liturgical-green mb-10"></div>
+                                        <div className="relative z-10 w-3 h-3 rounded-full bg-liturgical-green mb-10"></div>
+                                        <div className="relative z-10 w-3 h-3 rounded-full bg-liturgical-green mb-10"></div>
+                                        {/* Node: Epistle */}
+                                        <div className="relative z-10 w-8 h-8 rounded-full bg-liturgical-green flex items-center justify-center mb-10 shadow-md shadow-liturgical-green/20">
+                                            <span className="material-symbols-outlined text-white text-[16px]">menu_book</span>
+                                        </div>
+                                        {/* Node: Gospel */}
+                                        <div className="relative z-10 w-8 h-8 rounded-full bg-liturgical-green flex items-center justify-center mb-10 shadow-md shadow-liturgical-green/20">
+                                            <span className="material-symbols-outlined text-white text-[16px]">auto_stories</span>
+                                        </div>
+                                        {/* Node: Credo */}
+                                        <div className="relative z-10 w-3 h-3 rounded-full bg-liturgical-green"></div>
+                                    </div>
+
+                                    {/* Text segment */}
+                                    <div className="pb-6">
+                                        <div className="h-10 flex flex-col justify-center mb-10 cursor-pointer group">
+                                            <p className="text-gray-900 dark:text-white text-base font-medium leading-none group-hover:text-primary transition-colors">Prayers at the Foot of the Altar</p>
+                                            <p className="text-gray-500 text-sm mt-1">Ordinary</p>
+                                        </div>
+                                        <div className="h-4 flex flex-col justify-center mb-10 cursor-pointer group">
+                                            <div className="flex justify-between items-center w-full pr-4">
+                                                <p className="text-gray-900 dark:text-white text-base font-normal leading-none group-hover:text-primary transition-colors">Introit</p>
+                                                <span className="text-xs text-liturgical-green bg-liturgical-green/10 px-1.5 py-0.5 rounded border border-liturgical-green/20">Proper</span>
+                                            </div>
+                                        </div>
+                                        <div className="h-4 flex flex-col justify-center mb-10 cursor-pointer group">
+                                            <div className="flex justify-between items-center w-full pr-4">
+                                                <p className="text-gray-900 dark:text-white text-base font-normal leading-none group-hover:text-primary transition-colors">Kyrie</p>
+                                                <span className="text-xs text-gray-500">Ordinary</span>
+                                            </div>
+                                        </div>
+                                        <div className="h-4 flex flex-col justify-center mb-10 cursor-pointer group">
+                                            <div className="flex justify-between items-center w-full pr-4">
+                                                <p className="text-gray-900 dark:text-white text-base font-normal leading-none group-hover:text-primary transition-colors">Gloria</p>
+                                                <span className="text-xs text-gray-500">Ordinary</span>
+                                            </div>
+                                        </div>
+                                        <div className="h-4 flex flex-col justify-center mb-10 cursor-pointer group">
+                                            <div className="flex justify-between items-center w-full pr-4">
+                                                <p className="text-gray-900 dark:text-white text-base font-normal leading-none group-hover:text-primary transition-colors">Collect</p>
+                                                <span className="text-xs text-liturgical-green bg-liturgical-green/10 px-1.5 py-0.5 rounded border border-liturgical-green/20">Proper</span>
+                                            </div>
+                                        </div>
+                                        <div className="h-10 flex flex-col justify-center mb-10 cursor-pointer group">
+                                            <div className="flex justify-between items-center w-full pr-4">
+                                                <div>
+                                                    <p className="text-gray-900 dark:text-white text-lg font-medium leading-none group-hover:text-primary transition-colors">Epistle</p>
+                                                    <p className="text-gray-500 text-sm mt-1">Lectio Epistolae</p>
+                                                </div>
+                                                <span className="text-xs text-liturgical-green bg-liturgical-green/10 px-1.5 py-0.5 rounded border border-liturgical-green/20">Proper</span>
+                                            </div>
+                                        </div>
+                                        <div className="h-10 flex flex-col justify-center mb-10 cursor-pointer group">
+                                            <div className="flex justify-between items-center w-full pr-4">
+                                                <div>
+                                                    <p className="text-gray-900 dark:text-white text-lg font-bold leading-none group-hover:text-primary transition-colors">Gospel</p>
+                                                    <p className="text-gray-500 text-sm mt-1">Initium Sancti Evangelii</p>
+                                                </div>
+                                                <span className="text-xs text-liturgical-green bg-liturgical-green/10 px-1.5 py-0.5 rounded border border-liturgical-green/20">Proper</span>
+                                            </div>
+                                        </div>
+                                        <div className="h-4 flex flex-col justify-center cursor-pointer group">
+                                            <div className="flex justify-between items-center w-full pr-4">
+                                                <p className="text-gray-900 dark:text-white text-base font-normal leading-none group-hover:text-primary transition-colors">Credo</p>
+                                                <span className="text-xs text-gray-500">Ordinary</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                    {/* FAB */}
+                    <div className="absolute bottom-6 right-6 z-30">
+                        <button className="flex items-center justify-center w-14 h-14 bg-surface-dark dark:bg-white text-white dark:text-black rounded-full shadow-xl hover:scale-105 transition-transform active:scale-95">
+                            <span className="material-symbols-outlined text-[28px]">bookmark</span>
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- Screen 2: Parish Bulletin (Home) ---
+        const ParishBulletinScreen = () => {
+            const [journalText, setJournalText] = useState("");
+            const [posts, setPosts] = useState([
+                {
+                    id: 1,
+                    name: "Thomas Aquinas",
+                    avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBHjb5k01LO2rb31you6ppE70LmsQ0Du_9Tzx2nHnra5mdjYmXyvFNhrwmb9B-_xIxFYvz1WusQqYdrWqNMFyxp1HKZS0aAmDVOVQc6DVigJFrYMxoieRifOpCQMIA37yzhNF5nB_rlx5U4U5lAGOCNkDMyyEFBIqrx9psgy82Jiz0AtQX4nQn7gzJSmVDJ1D5wE4QY6ilypthRrKt9gLV0mIna9lCO66z12kHu_kQ3ScFrC_15S77-vniHgKxx-WevibxPeVP10Swt",
+                    time: "2 hours ago",
+                    content: "The chant for the Kyrie was particularly moving today. It really helped me focus on the penitential nature of the season.",
+                    tags: "#GregorianChant",
+                    likes: 12,
+                    comments: 0
+                },
+                {
+                    id: 2,
+                    name: "Parish Office",
+                    avatar: null,
+                    isAdmin: true,
+                    time: "5 hours ago",
+                    content: "We are still looking for two volunteers to help set up the coffee hour after the 10am High Mass next Sunday. Please sign up above if you can help!",
+                    likes: 8,
+                    comments: 2
+                }
+            ]);
+
+            const handlePost = () => {
+                if (!journalText.trim()) return;
+                const newPost = {
+                    id: Date.now(),
+                    name: "Me",
+                    avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDv2PeFo5gaEmmtRNpTSTKlzVzWnErJCoxb7WDPQVjRj9apN88gGC1iYdiefas788T7U2Zy3TRI4IpcDbne_lxWAJzK-7n9XCckf72YPAJtWIW--PaafxQX_J0GRrdZ3pPwsPB2PCOmlPxkQ1HdrXzqmbMk0gpDGN_P3gxsmJyrPVAsHKnE6svXTvac9yLNRq9yJqsPUwznsVJwrhHlZiuP-dxtTN6Y3awK19FXb2zECSCHln1fldxs6xRnOC25IUhS8uK5a8LKp5q3",
+                    time: "Just now",
+                    content: journalText,
+                    likes: 0,
+                    comments: 0
+                };
+                setPosts([newPost, ...posts]);
+                setJournalText("");
+            };
+
+            return (
+                <div className="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden pb-20 bg-background-light dark:bg-background-dark">
+                    {/* Top App Bar */}
+                    <div className="sticky top-0 z-50 flex items-center bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm p-4 border-b border-slate-200 dark:border-slate-800 justify-between">
+                        <button className="flex size-10 shrink-0 items-center justify-center rounded-full text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+                            <span className="material-symbols-outlined">menu</span>
+                        </button>
+                        <div className="flex flex-col items-center">
+                            <h2 className="text-lg font-bold leading-tight tracking-[-0.015em] text-center">St. Jude’s Parish</h2>
+                            <span className="text-xs font-medium text-primary uppercase tracking-widest">Vita Parochialis</span>
+                        </div>
+                        <button className="flex size-10 shrink-0 items-center justify-center rounded-full text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors relative">
+                            <span className="material-symbols-outlined">notifications</span>
+                            <span className="absolute top-2 right-2 size-2 bg-red-500 rounded-full"></span>
+                        </button>
+                    </div>
+
+                    {/* Announcements Section */}
+                    <div className="flex flex-col pt-4">
+                        <div className="px-4 flex items-center justify-between pb-2">
+                            <h3 className="text-lg font-bold leading-tight">Announcements <span className="text-slate-400 dark:text-slate-500 text-sm font-normal italic ml-1">(Nuntii)</span></h3>
+                            <button className="text-primary text-sm font-bold">See All</button>
+                        </div>
+                        {/* Carousel */}
+                        <div className="flex overflow-y-auto no-scrollbar pb-2">
+                            <div className="flex items-stretch px-4 gap-4">
+                                {/* Card 1 */}
+                                <div className="flex h-full flex-col gap-3 min-w-[280px] group cursor-pointer">
+                                    <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-md">
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
+                                        <div className="w-full h-full bg-center bg-cover transform group-hover:scale-105 transition-transform duration-500" style={{backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuD01iJ-EcGbFaTAP0iWmme7px6fPXGC7G6-WzDADVJraGCXrc2TYqKlgCeJF5ADTdgNvHZoWuiIyMgJxZ6hq8A8-gGKXPWslN6qx4UCiv6Y27oigPeso2X16al2SQoVoqGFZCYHfocOSGn4NIJ8nRnpsLQ9aKeJAcQLRDCYUFqTS2VcBEcE7MfwdAlx5aL_zqh-Osj3fI7x9sVU1XdmX5tCV3xrexFc7TfNyv1APHHIzZ7993aVLLbmmkqI7k48u8IgtAwa40QO1sgj")'}}></div>
+                                        <div className="absolute bottom-3 left-3 z-20">
+                                            <span className="px-2 py-1 rounded bg-primary text-white text-xs font-bold mb-1 inline-block">Nov 2</span>
+                                            <p className="text-white text-lg font-bold leading-tight shadow-sm">Requiem Mass</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between items-start">
+                                        <p className="text-slate-500 dark:text-slate-400 text-sm">All Souls Day - 10:00 AM</p>
+                                    </div>
+                                </div>
+                                {/* Card 2 */}
+                                <div className="flex h-full flex-col gap-3 min-w-[280px] group cursor-pointer">
+                                    <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-md">
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
+                                        <div className="w-full h-full bg-center bg-cover transform group-hover:scale-105 transition-transform duration-500" style={{backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDfizUIXqvHbsshQC81RKqre9BIeZ5aEXDFXB1KwkxkGp4CRQHJ-nXUVnhfkqsfKqWcIkzNAIJmduq5DgXpSrMmdjf1merWO9DIsDAzpKLgbExfpShu6f9aXDKAe0IPet0XlDkvq4KtZs-ZduWi5_Jbg-JwnTAUz_Dt0rUxO05fCdoK7TgAXy5X8ADGngzaVolseFeo85toI7cjCi6ql-hXXveYRSc1k2nVpZ6vTUpBG6FnyZxNbjfHqML0RM-OQwOI84aS9W7WX5EG")'}}></div>
+                                        <div className="absolute bottom-3 left-3 z-20">
+                                            <span className="px-2 py-1 rounded bg-primary text-white text-xs font-bold mb-1 inline-block">Sunday</span>
+                                            <p className="text-white text-lg font-bold leading-tight shadow-sm">Parish Picnic</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between items-start">
+                                        <p className="text-slate-500 dark:text-slate-400 text-sm">After High Mass</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="h-px bg-slate-200 dark:bg-slate-800 mx-4 my-6"></div>
+
+                    {/* Weekly Schedule */}
+                    <div className="flex flex-col">
+                        <h3 className="text-lg font-bold leading-tight px-4 pb-3">Weekly Schedule <span className="text-slate-400 dark:text-slate-500 text-sm font-normal italic ml-1">(Ordo Hebdomadae)</span></h3>
+                        <div className="flex flex-col gap-1">
+                            <div className="flex items-center gap-4 px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors cursor-pointer border-b border-slate-100 dark:border-slate-800/50 last:border-0">
+                                <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                                    <span className="material-symbols-outlined">church</span>
+                                </div>
+                                <div className="flex flex-col justify-center flex-1">
+                                    <p className="text-base font-medium leading-normal line-clamp-1">Missa Cantata</p>
+                                    <p className="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal line-clamp-2">Sunday, 10:00 AM</p>
+                                </div>
+                                <div className="shrink-0 flex items-center gap-2">
+                                    <span className="text-xs font-medium text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">High Altar</span>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-4 px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors cursor-pointer border-b border-slate-100 dark:border-slate-800/50 last:border-0">
+                                <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-purple-500/10 text-purple-500">
+                                    <span className="material-symbols-outlined">key_visualizer</span>
+                                </div>
+                                <div className="flex flex-col justify-center flex-1">
+                                    <p className="text-base font-medium leading-normal line-clamp-1">Confession (Confessio)</p>
+                                    <p className="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal line-clamp-2">Sat, 3:00 PM - 4:45 PM</p>
+                                </div>
+                                <div className="shrink-0 flex items-center gap-2">
+                                    <span className="text-xs font-medium text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">Chapel</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="h-px bg-slate-200 dark:bg-slate-800 mx-4 my-6"></div>
+
+                    {/* Fellowship Section */}
+                    <div className="flex flex-col bg-surface-light dark:bg-surface-dark py-6 rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.1)] dark:shadow-none min-h-[400px]">
+                        <div className="px-4 flex items-center justify-between mb-4">
+                            <h3 className="text-lg font-bold leading-tight">Fellowship <span className="text-slate-400 dark:text-slate-500 text-sm font-normal italic ml-1">(Communio)</span></h3>
+                        </div>
+
+                        {/* Input Area */}
+                        <div className="px-4 mb-6">
+                            <div className="bg-slate-50 dark:bg-[#111722] border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus-within:ring-1 focus-within:ring-primary focus-within:border-primary transition-all">
+                                <div className="flex gap-3">
+                                    <div className="size-8 rounded-full bg-slate-300 dark:bg-slate-600 bg-cover bg-center shrink-0" style={{backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDv2PeFo5gaEmmtRNpTSTKlzVzWnErJCoxb7WDPQVjRj9apN88gGC1iYdiefas788T7U2Zy3TRI4IpcDbne_lxWAJzK-7n9XCckf72YPAJtWIW--PaafxQX_J0GRrdZ3pPwsPB2PCOmlPxkQ1HdrXzqmbMk0gpDGN_P3gxsmJyrPVAsHKnE6svXTvac9yLNRq9yJqsPUwznsVJwrhHlZiuP-dxtTN6Y3awK19FXb2zECSCHln1fldxs6xRnOC25IUhS8uK5a8LKp5q3")'}}></div>
+                                    <textarea 
+                                        className="w-full bg-transparent border-none text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-base font-sans resize-none focus:ring-0 p-0 min-h-[60px]" 
+                                        placeholder="Share a reflection from today's Homily..."
+                                        value={journalText}
+                                        onChange={(e) => setJournalText(e.target.value)}
+                                    ></textarea>
+                                </div>
+                                <div className="flex justify-between items-center mt-2 pt-2 border-t border-slate-200 dark:border-slate-800/50">
+                                    <div className="flex items-center gap-1 bg-slate-200 dark:bg-slate-800 rounded-full px-3 py-1 cursor-pointer hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+                                        <span className="material-symbols-outlined text-xs text-slate-600 dark:text-slate-400">lock</span>
+                                        <span className="text-xs font-bold text-slate-600 dark:text-slate-400">Private Journal</span>
+                                        <span className="material-symbols-outlined text-xs text-slate-600 dark:text-slate-400 ml-1">expand_more</span>
+                                    </div>
+                                    <button 
+                                        className="bg-primary hover:bg-blue-700 text-white text-sm font-bold px-4 py-1.5 rounded-lg transition-colors"
+                                        onClick={handlePost}
+                                    >
+                                        Post
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Feed List */}
+                        <div className="flex flex-col gap-6 px-4">
+                            {posts.map(post => (
+                                <div key={post.id} className="flex flex-col gap-3">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-3">
+                                            {post.isAdmin ? (
+                                                <div className="size-10 rounded-full bg-primary flex items-center justify-center text-white">
+                                                    <span className="material-symbols-outlined">church</span>
+                                                </div>
+                                            ) : (
+                                                <div className="size-10 rounded-full bg-cover bg-center" style={{backgroundImage: `url("${post.avatar}")`}}></div>
+                                            )}
+                                            <div className="flex flex-col">
+                                                <div className="flex items-center gap-2">
+                                                    <p className="text-sm font-bold text-slate-900 dark:text-white">{post.name}</p>
+                                                    {post.isAdmin && <span className="bg-primary/20 text-primary text-[10px] px-1.5 py-0.5 rounded font-bold uppercase">Admin</span>}
+                                                </div>
+                                                <p className="text-xs text-slate-500 dark:text-slate-400">{post.time}</p>
+                                            </div>
+                                        </div>
+                                        <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                                            <span className="material-symbols-outlined">more_horiz</span>
+                                        </button>
+                                    </div>
+                                    <div className="pl-[52px]">
+                                        <p className="text-slate-700 dark:text-slate-300 text-sm font-sans leading-relaxed">
+                                            {post.content} {post.tags && <span className="text-primary cursor-pointer hover:underline">{post.tags}</span>}
+                                        </p>
+                                        <div className="flex gap-4 mt-3">
+                                            <button className="flex items-center gap-1 text-slate-400 hover:text-primary transition-colors">
+                                                <span className="material-symbols-outlined text-lg">favorite</span>
+                                                <span className="text-xs">{post.likes}</span>
+                                            </button>
+                                            <button className="flex items-center gap-1 text-slate-400 hover:text-primary transition-colors">
+                                                <span className="material-symbols-outlined text-lg">chat_bubble</span>
+                                                <span className="text-xs">{post.comments > 0 ? post.comments : "Reply"}</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Bottom Navigation */}
+                    <div className="fixed bottom-0 left-0 w-full bg-background-light dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 pb-safe pt-2 px-6 flex justify-between items-center z-50 h-[80px]">
+                        <Link to="/map" className="flex flex-col items-center gap-1 text-slate-400 hover:text-primary cursor-pointer transition-colors group">
+                            <span className="material-symbols-outlined text-2xl group-hover:-translate-y-0.5 transition-transform">auto_stories</span>
+                            <span className="text-[10px] font-bold">Missal</span>
+                        </Link>
+                        <div className="flex flex-col items-center gap-1 text-primary cursor-pointer transition-colors">
+                            <span className="material-symbols-outlined text-2xl fill-current">diversity_3</span>
+                            <span className="text-[10px] font-bold">Parish</span>
+                        </div>
+                        <div className="flex flex-col items-center gap-1 text-slate-400 hover:text-primary cursor-pointer transition-colors group">
+                            <span className="material-symbols-outlined text-2xl group-hover:-translate-y-0.5 transition-transform">calendar_month</span>
+                            <span className="text-[10px] font-bold">Calendar</span>
+                        </div>
+                        <div className="flex flex-col items-center gap-1 text-slate-400 hover:text-primary cursor-pointer transition-colors group">
+                            <span className="material-symbols-outlined text-2xl group-hover:-translate-y-0.5 transition-transform">settings</span>
+                            <span className="text-[10px] font-bold">Settings</span>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- Screen 3: Missal Text ---
+        const MissalScreen = () => {
+            const [showDeiPopup, setShowDeiPopup] = useState(true);
+
+            return (
+                <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display antialiased selection:bg-primary/30 selection:text-white relative overflow-x-hidden">
+                    {/* Floating Progress Indicator */}
+                    <div className="fixed right-1 top-1/2 -translate-y-1/2 h-[60%] w-8 z-40 flex flex-col items-center justify-between pointer-events-auto opacity-80 hover:opacity-100 transition-opacity hidden sm:flex">
+                        <div className="absolute top-0 bottom-0 left-1/2 w-[1px] bg-gray-300 dark:bg-white/10 -translate-x-1/2 rounded-full"></div>
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary relative z-10 cursor-pointer shadow-[0_0_8px_#3b82f6]" title="Asperges"></div>
+                        <div className="w-2 h-2 rounded-full bg-primary-glow relative z-10 cursor-pointer shadow-[0_0_12px_#3b82f6] ring-2 ring-background-dark" title="Introit"></div>
+                        <div className="w-1 h-1 rounded-full bg-gray-400 dark:bg-gray-600 relative z-10 cursor-pointer hover:bg-white hover:scale-150 transition-all" title="Kyrie"></div>
+                        <div className="w-1 h-1 rounded-full bg-gray-400 dark:bg-gray-600 relative z-10 cursor-pointer hover:bg-white hover:scale-150 transition-all" title="Gloria"></div>
+                    </div>
+
+                    {/* Header */}
+                    <header className="sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-200 dark:border-white/10 shadow-lg shadow-black/5">
+                        <div className="flex items-center justify-between p-4 pb-2">
+                            <Link to="/map" className="text-gray-900 dark:text-white flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
+                                <span className="material-symbols-outlined text-2xl">arrow_back</span>
+                            </Link>
+                            <div className="flex flex-col items-center">
+                                <span className="text-xs font-sans font-medium uppercase tracking-widest text-primary glow-text">Sunday Mass</span>
+                                <h1 className="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-tight">Ordinary of the Mass</h1>
+                            </div>
+                            <button className="text-gray-900 dark:text-white flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
+                                <span className="material-symbols-outlined text-2xl">settings</span>
+                            </button>
+                        </div>
+                        {/* Interactive Timeline Top */}
+                        <div className="relative w-full h-16 flex items-center px-4 bg-background-light dark:bg-background-dark overflow-hidden">
+                            <div className="absolute top-[28px] left-8 right-8 h-[1px] bg-primary-glow/50 dark:bg-primary-glow/40 z-0 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></div>
+                            <div className="w-full flex justify-between items-start pt-1 h-full z-10 px-2">
+                                <button className="group flex flex-col items-center gap-2 cursor-pointer focus:outline-none w-12">
+                                    <div className="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#3b82f6] ring-4 ring-background-light dark:ring-background-dark"></div>
+                                    <span className="text-[8px] font-sans font-bold uppercase tracking-wider text-primary truncate w-full text-center opacity-80">Asperges</span>
+                                </button>
+                                <button className="group flex flex-col items-center gap-2 cursor-pointer focus:outline-none w-12 -mt-1">
+                                    <div className="relative flex items-center justify-center">
+                                        <div className="absolute w-8 h-8 bg-primary-glow rounded-full animate-ping opacity-20"></div>
+                                        <div className="absolute w-5 h-5 bg-primary-glow rounded-full animate-pulse opacity-40"></div>
+                                        <div className="w-2.5 h-2.5 rounded-full bg-cyan-300 shadow-[0_0_12px_#22d3ee] relative z-10 ring-2 ring-background-light dark:ring-background-dark"></div>
+                                    </div>
+                                    <span className="text-[9px] font-sans font-bold uppercase tracking-wider text-cyan-300 drop-shadow-[0_0_5px_rgba(34,211,238,0.5)] truncate w-full text-center mt-1.5">Introit</span>
+                                </button>
+                                <button className="group flex flex-col items-center gap-2 cursor-pointer opacity-50 hover:opacity-100 focus:outline-none w-12">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-gray-400 dark:bg-gray-600 ring-4 ring-background-light dark:ring-background-dark"></div>
+                                    <span className="text-[8px] font-sans font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400 truncate w-full text-center">Kyrie</span>
+                                </button>
+                                <button className="group flex flex-col items-center gap-2 cursor-pointer opacity-50 hover:opacity-100 focus:outline-none w-12">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-gray-400 dark:bg-gray-600 ring-4 ring-background-light dark:ring-background-dark"></div>
+                                    <span className="text-[8px] font-sans font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400 truncate w-full text-center">Gloria</span>
+                                </button>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="flex-1 flex flex-col pb-32">
+                        {/* Section 1 */}
+                        <section className="border-b border-gray-200 dark:border-white/5 py-8">
+                            <div className="w-full max-w-md mx-auto px-4 mb-6">
+                                <p className="text-rubric font-serif italic text-sm text-center font-medium">[The Priest stands at the foot of the altar.]</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-6 px-4">
+                                <div className="text-gray-900 dark:text-text-latin text-lg leading-relaxed text-left drop-cap">
+                                    In nómine Patris, et Fílii, et Spíritus Sancti. Amen.
+                                </div>
+                                <div className="text-gray-600 dark:text-text-english text-base leading-relaxed italic text-left pt-1 font-light">
+                                    In the name of the Father, and of the Son, and of the Holy Ghost. Amen.
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Section 2 (Interactive) */}
+                        <section className="py-8 relative"> 
+                            <div className="w-full max-w-md mx-auto px-4 mb-8">
+                                <h2 className="text-rubric font-serif font-bold text-2xl sm:text-3xl text-center uppercase tracking-wide leading-tight drop-shadow-sm">Psalm 42:1-5</h2>
+                            </div>
+                            <div className="grid grid-cols-2 gap-6 px-4">
+                                <div className="text-gray-900 dark:text-text-latin text-lg leading-relaxed text-left">
+                                    <p className="mb-4">Introíbo ad altáre <span onClick={() => setShowDeiPopup(!showDeiPopup)} className="bg-primary/30 text-white rounded px-0.5 cursor-pointer border-b-2 border-primary relative">Dei</span>.</p>
+                                    <p>Ad Deum qui lætíficat juventútem meam.</p>
+                                </div>
+                                <div className="text-gray-600 dark:text-text-english text-base leading-relaxed italic text-left font-light">
+                                    <p className="mb-4">I will go in to the altar of God.</p>
+                                    <p>To God, the joy of my youth.</p>
+                                </div>
+                            </div>
+                            
+                            {showDeiPopup && (
+                                <div className="absolute left-1/2 -translate-x-1/2 top-32 z-30 w-64 bg-gray-900 dark:bg-[#1e2532] shadow-2xl rounded-xl border border-gray-700 dark:border-white/10 p-3 animate-in fade-in slide-in-from-bottom-2 duration-200">
+                                    <div className="flex justify-between items-start mb-2 border-b border-white/5 pb-2">
+                                        <div>
+                                            <h3 className="text-white font-serif font-bold text-lg">Dei</h3>
+                                            <span className="text-xs text-gray-400 font-sans uppercase tracking-wider">Noun • Genitive Singular</span>
+                                        </div>
+                                        <button onClick={() => setShowDeiPopup(false)} className="text-gray-400 hover:text-white">
+                                            <span className="material-symbols-outlined text-sm">close</span>
+                                        </button>
+                                    </div>
+                                    <p className="text-gray-300 text-sm leading-snug font-serif">
+                                        <span className="italic text-white">of God.</span> Referring here to the Supreme Being, the creator and ruler of the universe and source of all moral authority.
+                                    </p>
+                                    <div className="mt-3 pt-2 border-t border-white/5 flex gap-2">
+                                        <span className="text-[10px] font-sans font-bold text-primary uppercase cursor-pointer hover:underline">Theology</span>
+                                        <span className="text-[10px] font-sans font-bold text-gray-500 uppercase cursor-pointer hover:text-gray-300">Conjugation</span>
+                                    </div>
+                                    <div className="absolute -bottom-1.5 left-8 w-3 h-3 bg-gray-900 dark:bg-[#1e2532] border-r border-b border-gray-700 dark:border-white/10 rotate-45 transform"></div>
+                                </div>
+                            )}
+                        </section>
+
+                        {/* Section 3 */}
+                        <section className="py-8 border-t border-gray-200 dark:border-white/5 bg-gray-50/50 dark:bg-white/[0.02]">
+                            <div className="grid grid-cols-2 gap-6 px-4">
+                                <div className="text-gray-900 dark:text-text-latin text-lg leading-relaxed text-left">
+                                    Júdica me, Deus, et discérne causam meam de gente non sancta: ab hómine iníquo, et dolóso érue me.
+                                </div>
+                                <div className="text-gray-600 dark:text-text-english text-base leading-relaxed italic text-left font-light">
+                                    Judge me, O God, and distinguish my cause from the nation that is not holy: deliver me from the unjust and deceitful man.
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Section 4 */}
+                        <section className="py-8 border-t border-gray-200 dark:border-white/5">
+                            <div className="w-full max-w-md mx-auto px-4 mb-6">
+                                <p className="text-rubric font-serif italic text-sm text-center font-medium">[The Priest bows slightly.]</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-6 px-4">
+                                <div className="text-gray-900 dark:text-text-latin text-lg leading-relaxed text-left">
+                                    Quia tu es, Deus, fortitúdo mea: quare me repulísti? et quare tristis incédo, dum afflígit me inimícus?
+                                </div>
+                                <div className="text-gray-600 dark:text-text-english text-base leading-relaxed italic text-left font-light">
+                                    For Thou art God my strength: why hast Thou cast me off? and why do I go sorrowful whilst the enemy afflicteth me?
+                                </div>
+                            </div>
+                        </section>
+                    </main>
+
+                    {/* FAB */}
+                    <button className="fixed bottom-24 right-6 z-40 flex items-center justify-center w-14 h-14 rounded-full bg-primary text-white shadow-lg shadow-primary/40 hover:scale-105 active:scale-95 transition-all focus:outline-none focus:ring-4 focus:ring-primary/30">
+                        <span className="material-symbols-outlined text-3xl">add</span>
+                    </button>
+
+                    {/* Bottom Nav */}
+                    <nav className="fixed bottom-0 w-full z-50 bg-background-light/95 dark:bg-[#0c111a]/95 backdrop-blur-xl border-t border-gray-200 dark:border-white/10 pb-safe pt-2 pb-5">
+                        <div className="flex justify-around items-center h-full max-w-lg mx-auto">
+                            <Link to="/" className="flex flex-col items-center justify-center gap-1 w-16 text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-white transition-colors">
+                                <span className="material-symbols-outlined text-[26px]">home</span>
+                                <span className="text-[10px] font-sans font-medium">Home</span>
+                            </Link>
+                            <button className="flex flex-col items-center justify-center gap-1 w-16 text-primary dark:text-white">
+                                <span className="material-symbols-outlined text-[26px] fill-current">menu_book</span>
+                                <span className="text-[10px] font-sans font-bold">Missal</span>
+                            </button>
+                            <button className="flex flex-col items-center justify-center gap-1 w-16 text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-white transition-colors">
+                                <span className="material-symbols-outlined text-[26px]">calendar_month</span>
+                                <span className="text-[10px] font-sans font-medium">Calendar</span>
+                            </button>
+                            <button className="flex flex-col items-center justify-center gap-1 w-16 text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-white transition-colors">
+                                <span className="material-symbols-outlined text-[26px]">favorite</span>
+                                <span className="text-[10px] font-sans font-medium">Prayers</span>
+                            </button>
+                            <button className="flex flex-col items-center justify-center gap-1 w-16 text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-white transition-colors">
+                                <span className="material-symbols-outlined text-[26px]">person</span>
+                                <span className="text-[10px] font-sans font-medium">Profile</span>
+                            </button>
+                        </div>
+                    </nav>
+                </div>
+            );
+        };
+
+        const App = () => {
+            return (
+                <MemoryRouter>
+                    <Routes>
+                        <Route path="/" element={<ParishBulletinScreen />} />
+                        <Route path="/map" element={<MassMapScreen />} />
+                        <Route path="/missal" element={<MissalScreen />} />
+                    </Routes>
+                </MemoryRouter>
+            );
+        };
+
+        const root = createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

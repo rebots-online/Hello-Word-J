@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Project Ontology &amp; Flow Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b6cee",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for better mobile feel */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(43, 108, 238, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(43, 108, 238, 0.4);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display transition-colors duration-200">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Top App Bar -->
+<div class="flex items-center p-4 pb-2 justify-between border-b border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark z-20">
+<div class="text-slate-900 dark:text-white flex size-12 shrink-0 items-center justify-start cursor-pointer">
+<span class="material-symbols-outlined" style="font-size: 24px;">arrow_back</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center truncate">Project Ontology &amp; Map</h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-transparent text-slate-900 dark:text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0">
+<span class="material-symbols-outlined" style="font-size: 24px;">more_horiz</span>
+</button>
+</div>
+</div>
+<!-- Meta Info -->
+<div class="bg-primary/5 dark:bg-[#1a2333] border-b border-primary/20 dark:border-[#2a374f]">
+<p class="text-primary dark:text-[#92a4c9] text-xs font-mono font-medium leading-normal py-3 px-4 text-center tracking-widest uppercase opacity-80">
+                Sancta Nocte // Blueprint v1.0 // Flow Logic
+            </p>
+</div>
+<!-- Main Content Area -->
+<div class="flex-1 overflow-y-auto pb-10">
+<!-- Lane 1: Liturgy Core -->
+<div class="relative pl-6 border-l-2 border-primary/30 dark:border-primary/20 ml-6 my-6">
+<div class="absolute -left-[9px] top-6 size-4 rounded-full bg-primary ring-4 ring-background-light dark:ring-background-dark"></div>
+<h3 class="text-primary dark:text-[#6a9bf6] text-sm font-bold font-mono tracking-wider px-4 pb-4 pt-1 opacity-90">[01_LITURGY_CORE]</h3>
+<div class="flex flex-col gap-3 px-4">
+<!-- Chips Container -->
+<div class="flex flex-wrap gap-2">
+<div class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#232f48] border border-slate-200 dark:border-[#354360] pl-3 pr-4 shadow-sm">
+<span class="material-symbols-outlined text-primary dark:text-[#92a4c9]" style="font-size: 20px;">book_2</span>
+<p class="text-slate-700 dark:text-slate-200 text-sm font-medium leading-normal">Ordo Missae</p>
+</div>
+<div class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#232f48] border border-slate-200 dark:border-[#354360] pl-3 pr-4 shadow-sm">
+<span class="material-symbols-outlined text-primary dark:text-[#92a4c9]" style="font-size: 20px;">event_note</span>
+<p class="text-slate-700 dark:text-slate-200 text-sm font-medium leading-normal">Propers of the Day</p>
+</div>
+<div class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#232f48] border border-slate-200 dark:border-[#354360] pl-3 pr-4 shadow-sm">
+<span class="material-symbols-outlined text-primary dark:text-[#92a4c9]" style="font-size: 20px;">music_note</span>
+<p class="text-slate-700 dark:text-slate-200 text-sm font-medium leading-normal">Kyriale</p>
+</div>
+<div class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#232f48] border border-slate-200 dark:border-[#354360] pl-3 pr-4 shadow-sm">
+<span class="material-symbols-outlined text-primary dark:text-[#92a4c9]" style="font-size: 20px;">menu_book</span>
+<p class="text-slate-700 dark:text-slate-200 text-sm font-medium leading-normal">Rubrics Guide</p>
+</div>
+<div class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#232f48] border border-slate-200 dark:border-[#354360] pl-3 pr-4 shadow-sm">
+<span class="material-symbols-outlined text-primary dark:text-[#92a4c9]" style="font-size: 20px;">water_drop</span>
+<p class="text-slate-700 dark:text-slate-200 text-sm font-medium leading-normal">Sacraments</p>
+</div>
+</div>
+</div>
+<!-- Connector Line -->
+<div class="absolute left-[-2px] bottom-[-24px] h-12 w-0.5 bg-gradient-to-b from-primary/30 to-transparent dark:from-primary/20"></div>
+</div>
+<!-- Lane 2: Sacred Knowledge -->
+<div class="relative pl-6 border-l-2 border-slate-300 dark:border-[#2a374f] ml-6 my-6">
+<div class="absolute -left-[7px] top-6 size-3 rounded-full bg-slate-400 dark:bg-[#3e5070] ring-4 ring-background-light dark:ring-background-dark"></div>
+<h3 class="text-slate-600 dark:text-[#92a4c9] text-sm font-bold font-mono tracking-wider px-4 pb-4 pt-1 opacity-90">[02_SACRED_KNOWLEDGE]</h3>
+<div class="flex flex-col gap-3 px-4">
+<div class="flex flex-wrap gap-2">
+<div class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#1e2738] border border-slate-200 dark:border-[#2a374f] pl-3 pr-4 opacity-90 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-slate-500 dark:text-[#5d7299]" style="font-size: 20px;">library_books</span>
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal">Patristic Library</p>
+</div>
+<div class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#1e2738] border border-slate-200 dark:border-[#2a374f] pl-3 pr-4 opacity-90 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-slate-500 dark:text-[#5d7299]" style="font-size: 20px;">school</span>
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal">Catechism (CCC/Trent)</p>
+</div>
+<div class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#1e2738] border border-slate-200 dark:border-[#2a374f] pl-3 pr-4 opacity-90 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-slate-500 dark:text-[#5d7299]" style="font-size: 20px;">history_edu</span>
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal">Latin Dictionary</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Lane 3: Parish Community -->
+<div class="relative pl-6 border-l-2 border-slate-300 dark:border-[#2a374f] ml-6 my-6">
+<div class="absolute -left-[7px] top-6 size-3 rounded-full bg-slate-400 dark:bg-[#3e5070] ring-4 ring-background-light dark:ring-background-dark"></div>
+<h3 class="text-slate-600 dark:text-[#92a4c9] text-sm font-bold font-mono tracking-wider px-4 pb-4 pt-1 opacity-90">[03_PARISH_COMMUNITY]</h3>
+<div class="flex flex-col gap-3 px-4">
+<div class="flex flex-wrap gap-2">
+<div class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#1e2738] border border-slate-200 dark:border-[#2a374f] pl-3 pr-4 opacity-90 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-slate-500 dark:text-[#5d7299]" style="font-size: 20px;">church</span>
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal">Mass Times</p>
+</div>
+<div class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#1e2738] border border-slate-200 dark:border-[#2a374f] pl-3 pr-4 opacity-90 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-slate-500 dark:text-[#5d7299]" style="font-size: 20px;">groups</span>
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal">Guilds &amp; Groups</p>
+</div>
+<div class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#1e2738] border border-slate-200 dark:border-[#2a374f] pl-3 pr-4 opacity-90 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-slate-500 dark:text-[#5d7299]" style="font-size: 20px;">campaign</span>
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal">Bulletin</p>
+</div>
+<div class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#1e2738] border border-slate-200 dark:border-[#2a374f] pl-3 pr-4 opacity-90 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-slate-500 dark:text-[#5d7299]" style="font-size: 20px;">volunteer_activism</span>
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal">Tithing</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Lane 4: Back Office -->
+<div class="relative pl-6 border-l-2 border-dotted border-slate-400 dark:border-[#3e5070] ml-6 my-6 pb-4">
+<div class="absolute -left-[7px] top-6 size-3 rounded-full bg-slate-500 dark:bg-[#4a5f80] ring-4 ring-background-light dark:ring-background-dark"></div>
+<h3 class="text-slate-500 dark:text-[#6e81a3] text-sm font-bold font-mono tracking-wider px-4 pb-4 pt-1 opacity-90">[04_BACK_OFFICE]</h3>
+<div class="flex flex-col gap-3 px-4">
+<div class="flex flex-wrap gap-2">
+<div class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-slate-100 dark:bg-[#151c2b] border border-slate-200 dark:border-[#232e42] pl-3 pr-4 opacity-80">
+<span class="material-symbols-outlined text-slate-400 dark:text-[#4a5f80]" style="font-size: 20px;">settings</span>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal">App Settings</p>
+</div>
+<div class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-slate-100 dark:bg-[#151c2b] border border-slate-200 dark:border-[#232e42] pl-3 pr-4 opacity-80">
+<span class="material-symbols-outlined text-slate-400 dark:text-[#4a5f80]" style="font-size: 20px;">badge</span>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal">Admin Portal</p>
+</div>
+<div class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-slate-100 dark:bg-[#151c2b] border border-slate-200 dark:border-[#232e42] pl-3 pr-4 opacity-80">
+<span class="material-symbols-outlined text-slate-400 dark:text-[#4a5f80]" style="font-size: 20px;">analytics</span>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal">Usage Data</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Technical Footer -->
+<div class="mt-8 mx-6 border-t border-dashed border-slate-300 dark:border-slate-700 pt-4 pb-8">
+<div class="flex justify-between items-center text-[10px] font-mono text-slate-400 dark:text-slate-600 uppercase tracking-widest">
+<span>SYS_ID: 884-29X</span>
+<span>Status: ACTIVE</span>
+</div>
+</div>
+</div>
+</div>
+</body></html>

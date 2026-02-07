@@ -1,0 +1,134 @@
+{
+  "project": {
+    "name": "SanctissiMissa",
+    "codename": "Hello, Word",
+    "version": "1.0.0",
+    "author": "Robin L. M. Cheung, MBA",
+    "generated": "2026-02-06",
+    "description": "Liturgical application for traditional Latin Catholic texts and prayers (1962 Missal)"
+  },
+  "entry_points": {
+    "web_vite": "index.html",
+    "web_main": "HelloWord/src/platforms/web/main.tsx",
+    "react_native": "HelloWord/index.js",
+    "react_native_web": "HelloWord/index.web.js",
+    "tauri_desktop": "src-tauri/src/main.rs",
+    "liturgical_api": "liturgical-api/server.js"
+  },
+  "core_modules": {
+    "services": {
+      "CalendarService": {
+        "path": "src/core/services/CalendarService.ts",
+        "purpose": "Liturgical calendar calculations (Easter, seasons, moveable feasts)"
+      },
+      "DirectoriumService": {
+        "path": "src/core/services/DirectoriumService.ts",
+        "purpose": "Transfer rules and temporal assignments"
+      },
+      "LiturgicalEngineService": {
+        "path": "src/core/services/LiturgicalEngineService.ts",
+        "purpose": "Precedence and rank logic for feast/feria resolution"
+      },
+      "TextFileParserService": {
+        "path": "src/core/services/TextFileParserService.ts",
+        "purpose": "Parse Divinum Officium text files"
+      },
+      "TextParsingService": {
+        "path": "src/core/services/TextParsingService.ts",
+        "purpose": "Text parsing utilities"
+      },
+      "dataManager": {
+        "path": "src/core/services/dataManager.ts",
+        "purpose": "Data access layer"
+      },
+      "textService": {
+        "path": "src/core/services/textService.ts",
+        "purpose": "Liturgical text management"
+      }
+    },
+    "types": {
+      "liturgical": {
+        "path": "src/core/types/liturgical.ts",
+        "exports": ["LiturgicalSeason", "BilingualText", "LiturgicalDay", "VoiceNote", "LiturgicalRank"]
+      },
+      "services": {
+        "path": "src/core/types/services.ts",
+        "exports": ["Service interfaces"]
+      }
+    },
+    "utils": {
+      "DateUtils": {
+        "path": "src/core/utils/DateUtils.ts",
+        "purpose": "Date utility functions"
+      }
+    },
+    "components": [
+      { "name": "LiturgicalApp", "path": "src/components/LiturgicalApp.tsx" },
+      { "name": "CalendarDashboard", "path": "src/components/CalendarDashboard.tsx" },
+      { "name": "LiturgicalCalendar", "path": "src/components/LiturgicalCalendar.tsx" },
+      { "name": "MassTexts", "path": "src/components/MassTexts.tsx" },
+      { "name": "SaintsInfo", "path": "src/components/SaintsInfo.tsx" },
+      { "name": "ParishDashboard", "path": "src/components/ParishDashboard.tsx" },
+      { "name": "Journal", "path": "src/components/Journal.tsx" }
+    ],
+    "platforms": {
+      "factory": "src/platforms/storageFactory.ts",
+      "web": ["src/platforms/web/StorageService.ts", "src/platforms/web/webSqliteStorage.ts"],
+      "native": ["src/platforms/native/sqliteStorage.ts"]
+    },
+    "themes": {
+      "provider": "src/shared/themes/ThemeProvider.tsx",
+      "themes": ["base", "brutalist", "skeuomorphic"]
+    }
+  },
+  "backend": {
+    "liturgical_api": {
+      "entry": "liturgical-api/server.js",
+      "engine": "liturgical-api/liturgical-engine.js",
+      "setup": "liturgical-api/setup-database.js",
+      "test": "liturgical-api/test-api.js",
+      "framework": "express",
+      "database": "sqlite3"
+    }
+  },
+  "configuration": {
+    "vite.config.ts": "Root Vite build config",
+    "HelloWord/vite.config.ts": "HelloWord Vite config",
+    "tsconfig.json": "TypeScript compiler",
+    "tailwind.config.js": "TailwindCSS",
+    "workbox-config.js": "PWA service worker",
+    "src-tauri/tauri.conf.json": "Tauri desktop",
+    "HelloWord/app.json": "React Native app",
+    ".github/workflows/claude-code-review.yml": "CI code review",
+    ".github/workflows/claude.yml": "CI Claude"
+  },
+  "tests": {
+    "files": [
+      "HelloWord/__tests__/App.test.tsx",
+      "HelloWord/__tests__/integration.test.ts"
+    ],
+    "runner": "jest",
+    "command": "cd HelloWord && npm test"
+  },
+  "data": {
+    "hkg_foundations": "data/hkg-foundations/",
+    "word_network": "data/word-network/",
+    "test_output": "test-output/"
+  },
+  "file_counts": {
+    "source_ts_tsx": 31,
+    "services": 7,
+    "components": 7,
+    "tests": 2,
+    "documentation_md": 70,
+    "data_json": 10
+  },
+  "commands": {
+    "dev": "npm run dev",
+    "build": "npm run build",
+    "test": "cd HelloWord && npm test",
+    "api_dev": "cd liturgical-api && npm run dev",
+    "tauri_dev": "npm run tauri:dev",
+    "pwa_build": "npm run pwa:build"
+  }
+}

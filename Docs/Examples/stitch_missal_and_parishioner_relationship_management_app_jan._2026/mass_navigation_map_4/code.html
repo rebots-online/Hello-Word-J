@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Project Ontology &amp; Flow Map</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1152d4",
+                        "background-light": "#f2f2f7", // iOS grouped background style
+                        "background-dark": "#000000",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1c1c1e",
+                        "liturgical-green": "#2d6a4f",
+                        "liturgical-green-light": "#e8f5e9",
+                        "liturgical-green-dark": "#1b4d3e",
+                        "liturgical-red": "#c1121f",
+                        "liturgical-red-light": "#fce4e6",
+                        "liturgical-red-dark": "#8a0b14",
+                        "liturgical-white": "#f8f9fa",
+                        "liturgical-white-dark": "#e9ecef",
+                        "liturgical-violet": "#7209b7",
+                        "liturgical-violet-light": "#f3e5f5",
+                        "liturgical-violet-dark": "#4a0578",
+                        "liturgical-gold": "#cca43b",
+                    },
+                    fontFamily: {
+                        "serif": ["Noto Serif", "serif"],
+                        "sans": ["Inter", "sans-serif"]
+                    },
+                    animation: {
+                        'ping-slow': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+                        'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: 1, boxShadow: '0 0 10px rgba(204,164,59,0.5)' },
+                            '50%': { opacity: .8, boxShadow: '0 0 20px rgba(204,164,59,0.8)' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-sans antialiased h-screen flex flex-col overflow-hidden text-gray-900 dark:text-gray-100">
+<div class="flex-none bg-surface-light dark:bg-surface-dark border-b border-gray-200 dark:border-gray-800 pt-12 pb-3 px-4 shadow-sm z-30">
+<div class="flex items-center justify-between">
+<button class="flex items-center text-primary dark:text-blue-400 -ml-2">
+<span class="material-symbols-outlined text-3xl">chevron_left</span>
+<span class="text-base font-medium">Dashboard</span>
+</button>
+<h1 class="text-lg font-bold font-serif tracking-tight text-center">Project Ontology</h1>
+<button class="text-primary dark:text-blue-400">
+<span class="material-symbols-outlined text-2xl">account_tree</span>
+</button>
+</div>
+<div class="mt-4 bg-gray-200 dark:bg-gray-800 p-0.5 rounded-lg flex text-[13px] font-medium">
+<button class="flex-1 py-1.5 rounded-md bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-white">Structure</button>
+<button class="flex-1 py-1.5 rounded-md text-gray-500 dark:text-gray-400">Data Flow</button>
+<button class="flex-1 py-1.5 rounded-md text-gray-500 dark:text-gray-400">Assets</button>
+</div>
+</div>
+<div class="flex-none bg-background-light dark:bg-background-dark px-4 py-3 flex items-center justify-between border-b border-gray-200 dark:border-gray-800">
+<h2 class="text-xs font-bold uppercase tracking-wider text-liturgical-gold drop-shadow-[0_0_8px_rgba(204,164,59,0.4)]">System Architecture Map</h2>
+<span class="text-[10px] text-gray-500 font-mono">v2.4.0-RC</span>
+</div>
+<main class="flex-1 overflow-y-auto no-scrollbar px-4 pt-6 pb-24 relative">
+<div class="absolute left-[34px] top-6 bottom-12 w-0.5 bg-liturgical-gold shadow-[0_0_12px_rgba(204,164,59,0.6)] z-0 rounded-full"></div>
+<div class="relative pl-10 mb-8 z-10">
+<div class="absolute left-[20px] top-3 w-8 h-0.5 bg-liturgical-gold shadow-[0_0_8px_rgba(204,164,59,0.6)]"></div>
+<div class="absolute left-[26px] top-[9px] w-3 h-3 rounded-full bg-surface-dark border border-liturgical-gold shadow-[0_0_10px_rgba(204,164,59,0.8)] z-20"></div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
+<div class="px-4 py-2 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+<h3 class="text-sm font-bold text-liturgical-gold uppercase tracking-wider font-serif">[MISSAL - Liturgical Core]</h3>
+<span class="material-symbols-outlined text-gray-400 text-sm">menu_book</span>
+</div>
+<div class="p-3 space-y-2">
+<div class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 hover:border-liturgical-gold/50 transition-colors">
+<span class="material-symbols-outlined text-gray-400 text-lg">auto_stories</span>
+<span class="text-xs font-medium font-mono text-gray-700 dark:text-gray-300">MISSAL - Dual-Rite Reader</span>
+</div>
+<div class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 hover:border-liturgical-gold/50 transition-colors">
+<span class="material-symbols-outlined text-gray-400 text-lg">calendar_month</span>
+<span class="text-xs font-medium font-mono text-gray-700 dark:text-gray-300">MISSAL - Calendar Concordance</span>
+</div>
+<div class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 hover:border-liturgical-gold/50 transition-colors">
+<span class="material-symbols-outlined text-gray-400 text-lg">format_list_numbered</span>
+<span class="text-xs font-medium font-mono text-gray-700 dark:text-gray-300">MISSAL - Order of Mass</span>
+</div>
+</div>
+</div>
+</div>
+<div class="relative pl-10 mb-8 z-10">
+<div class="absolute left-[20px] top-3 w-8 h-0.5 bg-liturgical-gold shadow-[0_0_8px_rgba(204,164,59,0.6)]"></div>
+<div class="absolute left-[26px] top-[9px] w-3 h-3 rounded-full bg-surface-dark border border-liturgical-gold shadow-[0_0_10px_rgba(204,164,59,0.8)] z-20"></div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
+<div class="px-4 py-2 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+<h3 class="text-sm font-bold text-liturgical-gold uppercase tracking-wider font-serif">[EDUCATION - Sacred Knowledge]</h3>
+<span class="material-symbols-outlined text-gray-400 text-sm">school</span>
+</div>
+<div class="p-3 space-y-2">
+<div class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 hover:border-liturgical-gold/50 transition-colors">
+<span class="material-symbols-outlined text-gray-400 text-lg">calculate</span>
+<span class="text-xs font-medium font-mono text-gray-700 dark:text-gray-300">EDUCATION - Butcher's Algorithm</span>
+</div>
+<div class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 hover:border-liturgical-gold/50 transition-colors">
+<span class="material-symbols-outlined text-gray-400 text-lg">translate</span>
+<span class="text-xs font-medium font-mono text-gray-700 dark:text-gray-300">EDUCATION - Latin Dictionary</span>
+</div>
+<div class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 hover:border-liturgical-gold/50 transition-colors">
+<span class="material-symbols-outlined text-gray-400 text-lg">history_edu</span>
+<span class="text-xs font-medium font-mono text-gray-700 dark:text-gray-300">EDUCATION - Catechism Index</span>
+</div>
+</div>
+</div>
+</div>
+<div class="relative pl-10 mb-8 z-10">
+<div class="absolute left-[20px] top-3 w-8 h-0.5 bg-liturgical-gold shadow-[0_0_8px_rgba(204,164,59,0.6)]"></div>
+<div class="absolute left-[26px] top-[9px] w-3 h-3 rounded-full bg-surface-dark border border-liturgical-gold shadow-[0_0_10px_rgba(204,164,59,0.8)] z-20"></div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
+<div class="px-4 py-2 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+<h3 class="text-sm font-bold text-liturgical-gold uppercase tracking-wider font-serif">[PARISH - Community]</h3>
+<span class="material-symbols-outlined text-gray-400 text-sm">church</span>
+</div>
+<div class="p-3 space-y-2">
+<div class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 hover:border-liturgical-gold/50 transition-colors">
+<span class="material-symbols-outlined text-gray-400 text-lg">dashboard</span>
+<span class="text-xs font-medium font-mono text-gray-700 dark:text-gray-300">PARISH - Community Hub</span>
+</div>
+<div class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 hover:border-liturgical-gold/50 transition-colors">
+<span class="material-symbols-outlined text-gray-400 text-lg">event</span>
+<span class="text-xs font-medium font-mono text-gray-700 dark:text-gray-300">PARISH - Mass Schedule</span>
+</div>
+</div>
+</div>
+</div>
+<div class="relative pl-10 mb-8 z-10">
+<div class="absolute left-[20px] top-3 w-8 h-0.5 bg-liturgical-gold shadow-[0_0_8px_rgba(204,164,59,0.6)]"></div>
+<div class="absolute left-[26px] top-[9px] w-3 h-3 rounded-full bg-surface-dark border border-liturgical-gold shadow-[0_0_10px_rgba(204,164,59,0.8)] z-20"></div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
+<div class="px-4 py-2 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+<h3 class="text-sm font-bold text-liturgical-gold uppercase tracking-wider font-serif">[ADMIN - Stewardship]</h3>
+<span class="material-symbols-outlined text-gray-400 text-sm">admin_panel_settings</span>
+</div>
+<div class="p-3 space-y-2">
+<div class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 hover:border-liturgical-gold/50 transition-colors">
+<span class="material-symbols-outlined text-gray-400 text-lg">monitoring</span>
+<span class="text-xs font-medium font-mono text-gray-700 dark:text-gray-300">ADMIN - Stewardship Dashboard</span>
+</div>
+<div class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 hover:border-liturgical-gold/50 transition-colors">
+<span class="material-symbols-outlined text-gray-400 text-lg">manage_accounts</span>
+<span class="text-xs font-medium font-mono text-gray-700 dark:text-gray-300">ADMIN - User Management</span>
+</div>
+<div class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 hover:border-liturgical-gold/50 transition-colors">
+<span class="material-symbols-outlined text-gray-400 text-lg">tune</span>
+<span class="text-xs font-medium font-mono text-gray-700 dark:text-gray-300">ADMIN - App Configuration</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="flex-none bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-800 pb-6 pt-2 z-30">
+<div class="grid grid-cols-4 h-12">
+<button class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-2xl mb-0.5">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-2xl mb-0.5">calendar_today</span>
+<span class="text-[10px] font-medium">Calendar</span>
+</button>
+<button class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-2xl mb-0.5">menu_book</span>
+<span class="text-[10px] font-medium">Missal</span>
+</button>
+<button class="flex flex-col items-center justify-center text-primary dark:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-2xl mb-0.5 filled">settings</span>
+<span class="text-[10px] font-medium">Settings</span>
+</button>
+</div>
+</div>
+
+</body></html>

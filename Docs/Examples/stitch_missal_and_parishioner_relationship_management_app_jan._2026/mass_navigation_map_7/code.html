@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dual Rite &amp; Parish Meso-Office</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af37",
+                        "background-dark": "#05080f",
+                        "surface-dark": "#111620",
+                        "surface-highlight": "#1a2233",
+                        "liturgical-gold": "#d4af37",
+                        "neon-gold": "#ffd700",
+                        "text-secondary": "#94a3b8",
+                    },
+                    fontFamily: {
+                        "display": ["Noto Serif", "serif"],
+                        "sans": ["Inter", "sans-serif"],
+                        "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
+                    },
+                    boxShadow: {
+                        "neon": "0 0 10px rgba(212, 175, 55, 0.5), 0 0 20px rgba(212, 175, 55, 0.3)",
+                        "inner-glow": "inset 0 0 20px rgba(212, 175, 55, 0.05)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .text-neon {
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+        }
+        .math-symbol {
+            font-family: 'Noto Serif', serif;
+            font-style: italic;
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-gray-200 font-sans antialiased min-h-screen flex flex-col overflow-hidden selection:bg-liturgical-gold selection:text-black">
+<div class="relative z-20 flex items-center bg-background-dark/80 backdrop-blur-md p-4 justify-between border-b border-white/10 sticky top-0">
+<button class="text-white/70 hover:text-white flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="flex flex-col items-center">
+<span class="text-[10px] font-bold tracking-[0.2em] text-liturgical-gold uppercase">St. John Cantius</span>
+<h2 class="text-white text-sm font-semibold tracking-wide">Parish Portal</h2>
+</div>
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-white/5 transition-colors text-white/70">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+<main class="flex-1 overflow-y-auto no-scrollbar relative pb-12">
+<div class="px-6 pt-8 pb-4 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-64 h-64 bg-liturgical-gold/5 rounded-full blur-[60px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+<h1 class="font-display text-4xl font-bold text-white mb-2 leading-tight">
+                Parish <br/>
+<span class="text-liturgical-gold text-neon">Meso-Office</span>
+</h1>
+<p class="text-text-secondary text-xs leading-relaxed max-w-prose">
+                Manage liturgical schedules, musical selections, and pastoral reflections across both forms of the Roman Rite.
+            </p>
+</div>
+<div class="px-6 mb-8">
+<div class="bg-surface-dark border border-white/10 p-1 rounded-full flex relative shadow-inner-glow">
+<button class="flex-1 py-2.5 rounded-full bg-liturgical-gold text-black font-bold text-xs shadow-neon transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]">church</span>
+                    Extraordinary Form
+                </button>
+<button class="flex-1 py-2.5 rounded-full text-gray-400 font-medium text-xs hover:text-white transition-all flex items-center justify-center gap-2">
+                    Ordinary Form
+                </button>
+</div>
+</div>
+<div class="px-6 mb-10">
+<div class="bg-surface-dark border border-white/10 rounded-xl overflow-hidden shadow-lg relative group">
+<div class="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(68,68,68,.2)_50%,transparent_75%,transparent_100%)] bg-[length:4px_4px] opacity-10 pointer-events-none"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-surface-dark via-surface-dark/90 to-surface-dark/50 z-10 pointer-events-none"></div>
+<div class="flex flex-row relative z-20">
+<div class="w-28 shrink-0 relative border-r border-white/5 overflow-hidden bg-[#d9d0c1]">
+<img alt="Rev. Samuel Butcher Portrait" class="h-full w-full object-cover mix-blend-multiply filter grayscale contrast-125 brightness-110 sepia-[0.4]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzXY7eJRaqz9tc0KM9L6t5T-Cy2CJBJzYtn_fU173uD0PQYXKJ9lNqGpdWZ8upHPnROCa0EbRIB-_mBsa46tksXu5ZMxdhNKaSL1bH8SyXrzOJ6Mdc4h7KbEdvAAPmCWx3Q2lxabV5JbcMeqcgR1aygmu1q8l2wvv0BoTdDZ66z2QZsCwxnu0wpNzjyaKmd5_RPYB5lmAftvlw958E6GbqWCzWDDdr0bKRuGYa5alEmHiVTNXBda6VQgDkG1R4Qr479B6dhnYVKJRv"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 pointer-events-none"></div>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-center">
+<div class="mb-2">
+<span class="text-[10px] font-bold text-liturgical-gold uppercase tracking-widest block mb-1">Weekly Reflection</span>
+<h3 class="font-display font-bold text-lg text-white leading-tight">Rev. Fr. Butcher</h3>
+<span class="text-[10px] text-gray-400 italic font-serif">Pastor &amp; Music Director</span>
+</div>
+<div class="w-8 h-px bg-white/10 mb-2"></div>
+<p class="text-xs text-gray-300 leading-relaxed line-clamp-2">
+                            "The dual mysteries of the liturgy invite us to a deeper silence. Observe the chant today with a contrite heart..."
+                        </p>
+</div>
+</div>
+</div>
+</div>
+<div class="px-6">
+<div class="flex items-center gap-3 mb-6">
+<div class="h-px bg-gradient-to-r from-transparent via-liturgical-gold/50 to-transparent flex-1"></div>
+<h3 class="font-display text-xl text-white text-center">Liturgy &amp; Music</h3>
+<div class="h-px bg-gradient-to-r from-transparent via-liturgical-gold/50 to-transparent flex-1"></div>
+</div>
+<div class="space-y-6 relative">
+<div class="absolute left-[19px] top-4 bottom-4 w-[2px] bg-gradient-to-b from-liturgical-gold/40 via-liturgical-gold/20 to-transparent"></div>
+<div class="relative pl-12 group">
+<div class="absolute left-0 top-1 w-10 h-10 rounded-full bg-surface-dark border border-liturgical-gold flex items-center justify-center shadow-neon z-10">
+<span class="material-symbols-outlined text-sm text-liturgical-gold">library_music</span>
+</div>
+<div class="bg-surface-dark/50 border border-white/5 rounded-lg p-3 hover:bg-surface-dark transition-colors hover:border-liturgical-gold/30">
+<div class="flex justify-between items-start mb-1">
+<h4 class="text-white font-medium text-sm">Introit</h4>
+<span class="text-[10px] text-neon-gold uppercase tracking-wider border border-liturgical-gold/30 px-1.5 py-0.5 rounded">Mode IV</span>
+</div>
+<p class="text-lg font-display text-white mb-1">Respice in me</p>
+<div class="flex items-center gap-2 text-[10px] text-gray-400 font-mono">
+<span class="text-gray-500">Source:</span>
+<span class="text-liturgical-gold">Liber Usualis, p. 1024</span>
+</div>
+</div>
+</div>
+<div class="relative pl-12 group">
+<div class="absolute left-1 top-3 w-8 h-8 rounded-full bg-surface-dark border border-white/20 flex items-center justify-center z-10 group-hover:border-liturgical-gold transition-colors">
+<span class="material-symbols-outlined text-xs text-gray-400 group-hover:text-liturgical-gold">menu_book</span>
+</div>
+<div class="bg-surface-dark/50 border border-white/5 rounded-lg p-3 hover:bg-surface-dark transition-colors">
+<div class="flex justify-between items-start mb-1">
+<h4 class="text-white font-medium text-sm">Epistle</h4>
+</div>
+<p class="text-sm text-gray-300 mb-2 font-display italic">1 Peter 5:6-11</p>
+<div class="bg-surface-highlight/50 rounded border border-white/5 p-2 flex items-start gap-2">
+<span class="material-symbols-outlined text-liturgical-gold text-sm mt-0.5">format_quote</span>
+<p class="text-[11px] text-gray-400 italic leading-snug">
+                                 "God resisteth the proud... note the connection to the Introit's plea for mercy." 
+                                 <span class="text-liturgical-gold not-italic font-bold cursor-pointer hover:underline">– Fr. B</span>
+</p>
+</div>
+</div>
+</div>
+<div class="relative pl-12 group">
+<div class="absolute left-1 top-3 w-8 h-8 rounded-full bg-surface-dark border border-white/20 flex items-center justify-center z-10 group-hover:border-liturgical-gold transition-colors">
+<span class="material-symbols-outlined text-xs text-gray-400 group-hover:text-liturgical-gold">queue_music</span>
+</div>
+<div class="bg-surface-dark/50 border border-white/5 rounded-lg p-3 hover:bg-surface-dark transition-colors">
+<div class="flex justify-between items-start mb-1">
+<h4 class="text-white font-medium text-sm">Gradual</h4>
+<span class="text-[10px] text-neon-gold uppercase tracking-wider border border-liturgical-gold/30 px-1.5 py-0.5 rounded">Mode V</span>
+</div>
+<p class="text-lg font-display text-white mb-1">Jacta cogitatum</p>
+<div class="flex items-center gap-2 text-[10px] text-gray-400 font-mono">
+<span class="text-gray-500">Source:</span>
+<span class="text-liturgical-gold">Liber Usualis, p. 1026</span>
+</div>
+</div>
+</div>
+<div class="relative pl-12 group">
+<div class="absolute left-1 top-3 w-8 h-8 rounded-full bg-surface-dark border border-white/20 flex items-center justify-center z-10 group-hover:border-liturgical-gold transition-colors">
+<span class="material-symbols-outlined text-xs text-gray-400 group-hover:text-liturgical-gold">auto_stories</span>
+</div>
+<div class="bg-surface-dark/50 border border-white/5 rounded-lg p-3 hover:bg-surface-dark transition-colors">
+<div class="flex justify-between items-start mb-1">
+<h4 class="text-white font-medium text-sm">Gospel</h4>
+</div>
+<p class="text-sm text-gray-300 mb-2 font-display italic">Luke 15:1-10</p>
+<div class="bg-surface-highlight/50 rounded border border-white/5 p-2 flex items-start gap-2">
+<span class="material-symbols-outlined text-liturgical-gold text-sm mt-0.5">format_quote</span>
+<p class="text-[11px] text-gray-400 italic leading-snug">
+                                 "The lost sheep represents the soul in need of the sacraments..." 
+                                 <span class="text-liturgical-gold not-italic font-bold cursor-pointer hover:underline">– Fr. B</span>
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="px-6 mt-10">
+<h3 class="font-display text-sm font-bold text-white mb-4 uppercase tracking-wider text-opacity-80">Official Documents</h3>
+<div class="grid grid-cols-2 gap-3">
+<button class="bg-surface-highlight border border-white/5 rounded-lg p-4 flex flex-col items-center gap-2 hover:bg-white/5 hover:border-liturgical-gold/50 transition-all group">
+<span class="material-symbols-outlined text-liturgical-gold/70 group-hover:text-neon-gold text-2xl">receipt_long</span>
+<span class="text-xs text-gray-300 font-medium">Tax Receipt</span>
+</button>
+<button class="bg-surface-highlight border border-white/5 rounded-lg p-4 flex flex-col items-center gap-2 hover:bg-white/5 hover:border-liturgical-gold/50 transition-all group">
+<span class="material-symbols-outlined text-liturgical-gold/70 group-hover:text-neon-gold text-2xl">verified</span>
+<span class="text-xs text-gray-300 font-medium">Certificates</span>
+</button>
+</div>
+</div>
+<div class="px-8 py-8 text-center opacity-60">
+<p class="font-display italic text-xs text-gray-500">
+                "Servite Domino in laetitia."
+            </p>
+</div>
+</main>
+<div class="absolute bottom-6 right-6 z-30">
+<button class="flex items-center justify-center w-12 h-12 bg-liturgical-gold text-black rounded-full shadow-neon hover:scale-105 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[24px]">calendar_month</span>
+</button>
+</div>
+
+</body></html>

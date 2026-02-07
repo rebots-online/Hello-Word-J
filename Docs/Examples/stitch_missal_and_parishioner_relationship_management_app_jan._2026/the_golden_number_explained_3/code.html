@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Golden Number Explained</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f4c025",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#221e10",
+                        "surface-dark": "#2c2616",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Noto Serif", "serif"],
+                        "sans": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .neon-text-glow {
+            text-shadow: 0 0 10px rgba(244, 192, 37, 0.3);
+        }
+        .neon-border-glow {
+            box-shadow: 0 0 8px rgba(244, 192, 37, 0.2);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-neutral-900 dark:text-white font-display antialiased transition-colors duration-300">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden pb-10">
+<header class="sticky top-0 z-50 flex items-center justify-between bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md p-4 border-b border-neutral-200 dark:border-white/10">
+<button class="flex size-10 items-center justify-center rounded-full text-neutral-600 dark:text-primary hover:bg-neutral-100 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+<h2 class="text-base font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">Did You Know?</h2>
+<div class="size-10"></div>
+</header>
+<main class="flex-1 flex flex-col items-center w-full px-4 md:px-0">
+<div class="w-full max-w-lg lg:max-w-2xl mx-auto flex flex-col items-center">
+<div class="w-full pt-8 pb-4 px-2 md:px-6 text-center">
+<div class="inline-flex items-center justify-center size-12 mb-4 rounded-full bg-primary/10 dark:bg-primary/20 text-primary border border-primary/20">
+<span class="material-symbols-outlined">calculate</span>
+</div>
+<h1 class="text-3xl md:text-5xl font-black leading-tight tracking-tight text-neutral-900 dark:text-primary neon-text-glow">
+                            The Golden Number
+                        </h1>
+</div>
+<div class="w-full px-2 md:px-6 pb-6 max-w-xl mx-auto">
+<p class="text-lg md:text-xl text-neutral-600 dark:text-neutral-300 font-normal leading-relaxed text-center font-sans">
+                            The Golden Number indicates the position of a specific year within the 19-year <span class="text-primary font-medium">Metonic cycle</span>. In this ancient cycle, the phases of the moon recur on the exact same calendar days.
+                        </p>
+</div>
+<div class="w-full px-0 md:px-6 mb-8 max-w-xl mx-auto">
+<div class="relative overflow-hidden flex flex-col items-center gap-4 rounded-2xl bg-surface-light dark:bg-surface-dark p-8 md:p-10 border border-neutral-200 dark:border-primary/30 neon-border-glow shadow-lg dark:shadow-none">
+<div class="absolute -top-10 -right-10 size-32 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+<p class="text-sm font-bold uppercase tracking-widest text-neutral-400 dark:text-primary/80 font-sans">The Formula</p>
+<div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-center">
+<span class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white font-mono whitespace-nowrap">
+                                    (Year % 19)
+                                </span>
+<span class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white font-mono">
+                                    + 1
+                                </span>
+</div>
+<div class="h-px w-24 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-2"></div>
+<p class="text-sm md:text-base text-center text-neutral-500 dark:text-neutral-400 italic">
+                                Example: For 2024, the Golden Number is 11.
+                            </p>
+</div>
+</div>
+<div class="w-full px-2 md:px-6 pt-2 pb-3 max-w-xl mx-auto">
+<h3 class="text-xl md:text-2xl font-bold leading-tight tracking-tight border-l-4 border-primary pl-4 text-neutral-900 dark:text-white">
+                            Historical Significance
+                        </h3>
+</div>
+<div class="w-full px-2 md:px-6 pb-8 max-w-xl mx-auto">
+<p class="text-base md:text-lg text-neutral-600 dark:text-neutral-300 font-normal leading-relaxed mb-6 font-sans">
+                            This number was traditionally written in gold in medieval calendars, hence the name "Golden Number." It played a crucial role in the computus—the calculation of the date of Easter.
+                        </p>
+<div class="p-5 rounded-xl bg-primary/5 dark:bg-primary/10 border border-primary/10 dark:border-primary/20 flex gap-4 items-start">
+<span class="material-symbols-outlined text-primary mt-0.5 shrink-0 text-2xl">church</span>
+<p class="text-sm md:text-base text-neutral-700 dark:text-neutral-200 font-medium">
+                                It helps determine the Paschal Full Moon, which is the first full moon on or after the vernal equinox.
+                            </p>
+</div>
+</div>
+<div class="w-full px-0 md:px-6 pb-8 max-w-xl mx-auto">
+<div class="relative h-40 md:h-56 w-full rounded-xl overflow-hidden group shadow-md dark:shadow-none">
+<div class="absolute inset-0 bg-gradient-to-r from-background-dark to-primary/30 z-10 opacity-60"></div>
+<img alt="Astronomical clock detail" class="h-full w-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700" data-alt="Close up of an ancient mechanical astronomical clock face with gold details" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrANFksaclJBW7SEyd1gkMAwvEWWSBS1yqRm9-KLc4PF_MyO3xBlmLN9roM26Fx9EPXwAda_UYx-UK4cEQDsBCGXmU6rramz3pD2YXyP9rI7snMgX3otKoblUX2IY9qw_d6nocKCX4HKSBF2J6nlFotZD6IIH5woPs70UFss2ljfxFjfUyAhLxDMTGJF55tRDnAbGjbF67XxvcXnM3WtVhG3Qf4vhKmQ5YVDfGmVA5MCyJRW6sJxBiWfynk9IhOOw3euYbFGpSnAPt"/>
+<div class="absolute bottom-4 left-5 z-20">
+<span class="text-xs md:text-sm font-bold text-white uppercase tracking-wider bg-black/50 px-3 py-1.5 rounded backdrop-blur-sm">Astronomy &amp; Faith</span>
+</div>
+</div>
+</div>
+<div class="w-full px-2 md:px-6 mt-auto max-w-md mx-auto">
+<button class="w-full py-4 px-6 bg-primary hover:bg-primary/90 text-background-dark font-bold text-lg rounded-xl shadow-lg shadow-primary/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">check</span>
+<span>I Understand</span>
+</button>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Altar Server Sanctuary Guide</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1152d4",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "liturgical-gold": "#d4af37",
+                        "liturgical-red": "#9b2226",
+                        "surface-dark": "#1a2233",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Noto Serif", "serif"],
+                        "sans": ["Noto Sans", "sans-serif"]
+                    },
+                    boxShadow: {
+                        'glow': '0 0 10px rgba(212, 175, 55, 0.2)',
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #2a3441 1px, transparent 1px), linear-gradient(to bottom, #2a3441 1px, transparent 1px)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .bg-grid {
+            background-size: 20px 20px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex flex-col overflow-hidden">
+<div class="relative z-20 flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between border-b border-gray-200 dark:border-gray-800">
+<button class="text-gray-900 dark:text-white flex size-12 shrink-0 items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h2 class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Server Guide</h2>
+<button class="flex size-12 items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-[#92a4c9]">info</span>
+</button>
+</div>
+<main class="flex-1 overflow-y-auto no-scrollbar pb-24 relative">
+<div class="px-6 pt-6 pb-2">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-gray-900 dark:text-white text-xl font-bold">Sanctuary Map</h3>
+<span class="text-xs font-bold text-liturgical-gold border border-liturgical-gold/30 bg-liturgical-gold/10 px-2 py-1 rounded">TECHNICAL VIEW</span>
+</div>
+<div class="relative w-full aspect-[4/3] bg-surface-dark rounded-xl border border-gray-700 shadow-2xl overflow-hidden mb-2">
+<div class="absolute inset-0 bg-grid-pattern bg-grid opacity-10"></div>
+<div class="absolute top-3 left-4 text-[10px] font-sans font-bold text-gray-500 tracking-widest">GOSPEL SIDE</div>
+<div class="absolute top-3 right-4 text-[10px] font-sans font-bold text-gray-500 tracking-widest">EPISTLE SIDE</div>
+<div class="absolute top-12 left-1/2 -translate-x-1/2 w-[70%] h-24 border border-gray-600 rounded-sm bg-white/5 z-0">
+<div class="absolute -right-16 top-0 h-[1px] w-12 bg-gray-600 rotate-0"></div> 
+<span class="absolute -right-28 top-[-4px] text-[10px] text-gray-400 font-sans">Predella</span>
+</div>
+<div class="absolute top-12 left-1/2 -translate-x-1/2 w-[85%] h-32 border-b border-x border-gray-700 rounded-b-sm z-[-1]"></div>
+<div class="absolute top-8 left-1/2 -translate-x-1/2 w-[40%] h-10 bg-liturgical-gold/10 border-2 border-liturgical-gold shadow-glow z-10 flex items-center justify-center">
+<span class="text-[10px] font-bold text-liturgical-gold tracking-widest uppercase">Mensa</span>
+</div>
+<div class="absolute top-5 left-1/2 -translate-x-1/2 w-10 h-6 bg-liturgical-gold/20 border border-liturgical-gold/50 z-0"></div>
+<div class="absolute top-[50%] right-6 w-14 h-10 border border-gray-500 bg-gray-800 rounded-sm flex items-center justify-center shadow-lg">
+<span class="text-[8px] text-gray-300 text-center leading-none font-sans">Credence<br/>Table</span>
+</div>
+<div class="absolute bottom-[25%] right-[20%] flex flex-col items-center z-20">
+<div class="w-8 h-8 rounded-full bg-surface-dark border border-liturgical-gold flex items-center justify-center shadow-glow">
+<span class="material-symbols-outlined text-liturgical-gold text-[16px]">notifications</span>
+</div>
+<span class="text-[9px] text-liturgical-gold mt-1 font-bold">Bells</span>
+</div>
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center z-20">
+<div class="w-4 h-4 rounded-full bg-white border-2 border-primary shadow-[0_0_10px_rgba(255,255,255,0.5)] animate-pulse"></div>
+<span class="text-[9px] text-white mt-1 font-sans">Server Start</span>
+</div>
+<svg class="absolute inset-0 w-full h-full pointer-events-none opacity-30" xmlns="http://www.w3.org/2000/svg">
+<path d="M 50% 85% L 50% 60%" fill="none" stroke="white" stroke-dasharray="4 2" stroke-width="1"></path>
+</svg>
+</div>
+<p class="text-xs text-gray-500 dark:text-gray-400 italic text-center px-4">
+                Schematic layout showing the positioning for a standard Missa Lecta.
+            </p>
+</div>
+<div class="px-6 my-6">
+<div class="bg-surface-dark dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-1 flex relative">
+<div class="absolute left-1 top-1 bottom-1 w-[calc(50%-4px)] bg-liturgical-gold rounded-md shadow-sm transition-all"></div>
+<button class="flex-1 relative z-10 py-2 text-sm font-bold text-black rounded-md transition-colors">
+                    Missa Lecta
+                </button>
+<button class="flex-1 relative z-10 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                    Missa Cantata
+                </button>
+</div>
+</div>
+<div class="relative px-6">
+<h3 class="text-gray-900 dark:text-white text-lg font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-liturgical-gold">directions_walk</span>
+                Movement Sequence
+            </h3>
+<div class="grid grid-cols-[32px_1fr] gap-x-4">
+<div class="relative flex flex-col items-center">
+<div class="absolute top-2 bottom-0 w-[2px] bg-gray-700"></div>
+</div>
+<div class="pb-8 space-y-8">
+<div class="relative group">
+<div class="absolute -left-[3.05rem] top-1 w-6 h-6 rounded-full bg-surface-dark border-2 border-liturgical-gold flex items-center justify-center z-10">
+<span class="text-[10px] font-bold text-white">1</span>
+</div>
+<div class="bg-surface-dark border border-gray-700 rounded-lg p-4 shadow-sm group-hover:border-liturgical-gold/50 transition-colors">
+<div class="flex justify-between items-start mb-2">
+<h4 class="text-white font-bold text-base">Prayers at the Foot</h4>
+<span class="text-[10px] uppercase font-bold text-gray-500 bg-gray-800 px-1.5 py-0.5 rounded">Center</span>
+</div>
+<p class="text-gray-400 text-sm leading-relaxed">
+                                Kneel on the floor (not the step) slightly to the right or left of the priest. Respond to the <em>Confiteor</em>.
+                            </p>
+</div>
+</div>
+<div class="relative group">
+<div class="absolute -left-[3.05rem] top-1 w-6 h-6 rounded-full bg-surface-dark border-2 border-gray-600 group-hover:border-liturgical-gold flex items-center justify-center z-10 bg-background-dark">
+<span class="text-[10px] font-bold text-gray-400 group-hover:text-liturgical-gold">2</span>
+</div>
+<div class="bg-surface-dark border border-gray-700 rounded-lg p-4 shadow-sm group-hover:border-liturgical-gold/50 transition-colors">
+<div class="flex justify-between items-start mb-2">
+<h4 class="text-white font-bold text-base">Introit &amp; Epistle</h4>
+<span class="text-[10px] uppercase font-bold text-gray-500 bg-gray-800 px-1.5 py-0.5 rounded">Epistle Side</span>
+</div>
+<p class="text-gray-400 text-sm leading-relaxed">
+                                Ascend to the lowest step on the Epistle side. Kneel for the Introit, Kyrie, and Collects. Sit if the priest sits.
+                            </p>
+</div>
+</div>
+<div class="relative group">
+<div class="absolute -left-[3.05rem] top-1 w-6 h-6 rounded-full bg-liturgical-gold flex items-center justify-center z-10 shadow-glow">
+<span class="material-symbols-outlined text-black text-[14px]">auto_stories</span>
+</div>
+<div class="bg-surface-dark border border-liturgical-gold rounded-lg p-4 shadow-lg shadow-liturgical-gold/5">
+<div class="flex justify-between items-start mb-2">
+<h4 class="text-liturgical-gold font-bold text-base">Move the Missal</h4>
+<span class="text-[10px] uppercase font-bold text-liturgical-gold bg-liturgical-gold/10 px-1.5 py-0.5 rounded border border-liturgical-gold/20">Critical</span>
+</div>
+<div class="flex gap-3 mb-2">
+<div class="bg-gray-800 rounded p-1">
+<span class="text-[10px] text-gray-400 block text-center">EPISTLE</span>
+</div>
+<span class="material-symbols-outlined text-gray-500 text-sm self-center">arrow_forward</span>
+<div class="bg-gray-800 rounded p-1">
+<span class="text-[10px] text-gray-400 block text-center">GOSPEL</span>
+</div>
+</div>
+<p class="text-white text-sm leading-relaxed">
+                                After the Epistle, take the Missal stand. Descend to the floor, genuflect at the center, and place the Missal on the Gospel side of the Altar at an angle.
+                            </p>
+</div>
+</div>
+<div class="relative group">
+<div class="absolute -left-[3.05rem] top-1 w-6 h-6 rounded-full bg-surface-dark border-2 border-gray-600 group-hover:border-liturgical-gold flex items-center justify-center z-10 bg-background-dark">
+<span class="material-symbols-outlined text-gray-400 text-[14px]">water_drop</span>
+</div>
+<div class="bg-surface-dark border border-gray-700 rounded-lg p-4 shadow-sm group-hover:border-liturgical-gold/50 transition-colors">
+<div class="flex justify-between items-start mb-2">
+<h4 class="text-white font-bold text-base">Offertory &amp; Lavabo</h4>
+<span class="text-[10px] uppercase font-bold text-gray-500 bg-gray-800 px-1.5 py-0.5 rounded">Epistle Side</span>
+</div>
+<p class="text-gray-400 text-sm leading-relaxed">
+                                Bring the cruets to the Altar. Pour wine and water into the chalice. Then, pour water over the priest's fingers (Lavabo) with the dish and towel ready.
+                            </p>
+</div>
+</div>
+<div class="relative group">
+<div class="absolute -left-[3.05rem] top-1 w-6 h-6 rounded-full bg-surface-dark border-2 border-gray-600 group-hover:border-liturgical-gold flex items-center justify-center z-10 bg-background-dark">
+<span class="material-symbols-outlined text-liturgical-gold text-[14px]">notifications_active</span>
+</div>
+<div class="bg-surface-dark border border-gray-700 rounded-lg p-4 shadow-sm group-hover:border-liturgical-gold/50 transition-colors">
+<div class="flex justify-between items-start mb-2">
+<h4 class="text-white font-bold text-base">Sanctus &amp; Consecration</h4>
+<span class="text-[10px] uppercase font-bold text-gray-500 bg-gray-800 px-1.5 py-0.5 rounded">Kneel</span>
+</div>
+<ul class="text-sm text-gray-400 space-y-1 list-disc pl-4">
+<li><strong>Sanctus:</strong> Ring bells 3 times.</li>
+<li><strong>Hanc Igitur:</strong> Ring once when priest extends hands.</li>
+<li><strong>Consecration:</strong> Ring 3x for Host, 3x for Chalice.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="absolute bottom-6 right-6 z-30">
+<button class="flex items-center justify-center w-14 h-14 bg-liturgical-gold text-black rounded-full shadow-xl hover:scale-105 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[28px]">play_arrow</span>
+</button>
+</div>
+
+</body></html>

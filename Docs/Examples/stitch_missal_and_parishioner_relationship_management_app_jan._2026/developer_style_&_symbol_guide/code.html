@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Developer Style &amp; Symbol Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#D4AF37", // Neon Gold override to match context
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#0F0F0F", // Deep Onyx override
+                        "liturgical-red": "#FF0000",
+                        "text-secondary": "#cec48d",
+                    },
+                    fontFamily: {
+                        "display": ["Newsreader", "serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display min-h-screen text-gray-900 dark:text-gray-100">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto bg-background-light dark:bg-background-dark overflow-x-hidden border-x border-gray-200 dark:border-gray-800">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-10 flex items-center bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md p-4 pb-2 border-b border-gray-200 dark:border-gray-800/50 justify-between">
+<div class="text-gray-900 dark:text-white flex size-12 shrink-0 items-center justify-center cursor-pointer hover:bg-gray-200 dark:hover:bg-white/10 rounded-full transition-colors">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</div>
+<h2 class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12">Style &amp; Symbol Guide</h2>
+</div>
+<!-- Color Palette Section -->
+<div class="pt-6">
+<h2 class="text-gray-900 dark:text-white tracking-tight text-[22px] font-bold leading-tight px-4 text-left pb-4">Sancta Nocte Palette</h2>
+<!-- Swatches -->
+<div class="flex flex-wrap gap-5 px-4 mb-4">
+<div class="group relative flex flex-col items-center gap-2">
+<label class="size-14 rounded-full border border-gray-300 dark:border-[#6b622e] shadow-sm relative flex items-center justify-center" style="background-color: #D4AF37;">
+<span class="sr-only">Neon Gold</span>
+</label>
+<span class="text-xs font-medium opacity-60">Primary</span>
+</div>
+<div class="group relative flex flex-col items-center gap-2">
+<label class="size-14 rounded-full border border-gray-300 dark:border-[#6b622e] shadow-sm relative flex items-center justify-center" style="background-color: #0F0F0F;">
+<span class="sr-only">Deep Onyx</span>
+</label>
+<span class="text-xs font-medium opacity-60">Base</span>
+</div>
+<div class="group relative flex flex-col items-center gap-2">
+<label class="size-14 rounded-full border border-gray-300 dark:border-[#6b622e] shadow-sm relative flex items-center justify-center" style="background-color: #FF0000;">
+<span class="sr-only">Liturgical Red</span>
+</label>
+<span class="text-xs font-medium opacity-60">Accent</span>
+</div>
+<div class="group relative flex flex-col items-center gap-2">
+<label class="size-14 rounded-full border border-gray-300 dark:border-[#6b622e] shadow-sm relative flex items-center justify-center bg-white dark:bg-gray-200 text-gray-900">
+<span class="font-bold text-lg">Aa</span>
+</label>
+<span class="text-xs font-medium opacity-60">Text</span>
+</div>
+</div>
+<!-- Details List -->
+<div class="px-4">
+<div class="flex justify-between items-center py-3 border-b border-gray-200 dark:border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-4 h-4 rounded-full bg-[#D4AF37]"></div>
+<div class="flex flex-col">
+<p class="text-gray-900 dark:text-[#cec48d] text-sm font-semibold">Neon Gold</p>
+<p class="text-gray-500 dark:text-gray-400 text-xs">Primary Accents &amp; UI Elements</p>
+</div>
+</div>
+<code class="text-gray-900 dark:text-white text-xs bg-gray-100 dark:bg-white/10 px-2 py-1 rounded font-mono">#D4AF37</code>
+</div>
+<div class="flex justify-between items-center py-3 border-b border-gray-200 dark:border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-4 h-4 rounded-full bg-[#0F0F0F] border border-gray-600"></div>
+<div class="flex flex-col">
+<p class="text-gray-900 dark:text-[#cec48d] text-sm font-semibold">Deep Onyx</p>
+<p class="text-gray-500 dark:text-gray-400 text-xs">App Background</p>
+</div>
+</div>
+<code class="text-gray-900 dark:text-white text-xs bg-gray-100 dark:bg-white/10 px-2 py-1 rounded font-mono">#0F0F0F</code>
+</div>
+<div class="flex justify-between items-center py-3 border-b border-gray-200 dark:border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-4 h-4 rounded-full bg-[#FF0000]"></div>
+<div class="flex flex-col">
+<p class="text-gray-900 dark:text-[#cec48d] text-sm font-semibold">Liturgical Red</p>
+<p class="text-gray-500 dark:text-gray-400 text-xs">Rubrics &amp; Instructions</p>
+</div>
+</div>
+<code class="text-gray-900 dark:text-white text-xs bg-gray-100 dark:bg-white/10 px-2 py-1 rounded font-mono">#FF0000</code>
+</div>
+</div>
+</div>
+<div class="h-4"></div>
+<!-- Typography Section -->
+<div class="pt-4">
+<h2 class="text-gray-900 dark:text-white tracking-tight text-[22px] font-bold leading-tight px-4 text-left pb-4">Typography</h2>
+<div class="px-4 space-y-4">
+<!-- Header Type -->
+<div class="bg-white dark:bg-white/5 p-4 rounded-lg border border-gray-200 dark:border-white/10">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 font-bold">Headers</span>
+<span class="text-xs font-mono text-primary">Cinzel</span>
+</div>
+<p class="text-2xl font-normal" style="font-family: 'Times New Roman', serif; text-transform: uppercase; letter-spacing: 0.05em;">Ordo Missae</p>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Used for major section headers and liturgical titles.</p>
+</div>
+<!-- Body Type -->
+<div class="bg-white dark:bg-white/5 p-4 rounded-lg border border-gray-200 dark:border-white/10">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 font-bold">Body &amp; Latin</span>
+<span class="text-xs font-mono text-primary">EB Garamond</span>
+</div>
+<p class="text-lg leading-relaxed italic" style="font-family: 'Garamond', serif;">In nómine Patris, et Fílii, et Spíritus Sancti.</p>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Standard text for prayers (Latin/English).</p>
+</div>
+<!-- Convention: Rubrics -->
+<div class="bg-white dark:bg-white/5 p-4 rounded-lg border border-gray-200 dark:border-white/10 border-l-4 border-l-liturgical-red">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs uppercase tracking-wider text-liturgical-red font-bold">Rubrics Convention</span>
+</div>
+<p class="text-sm text-liturgical-red">Sacerdos, stans ante altare, signat se signo crucis.</p>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Instructional text must always be Liturgical Red (#FF0000).</p>
+</div>
+</div>
+</div>
+<div class="h-4"></div>
+<!-- Symbols Section -->
+<div class="pt-4 pb-8">
+<h2 class="text-gray-900 dark:text-white tracking-tight text-[22px] font-bold leading-tight px-4 text-left pb-4">Emoji &amp; Unicode Symbols</h2>
+<div class="px-4">
+<div class="overflow-hidden rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5">
+<table class="w-full text-left text-sm">
+<thead class="bg-gray-50 dark:bg-white/5 border-b border-gray-200 dark:border-white/10">
+<tr>
+<th class="px-4 py-3 font-medium text-gray-900 dark:text-white">Glyph</th>
+<th class="px-4 py-3 font-medium text-gray-900 dark:text-white">Code</th>
+<th class="px-4 py-3 font-medium text-gray-900 dark:text-white">Usage</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-200 dark:divide-white/10">
+<tr>
+<td class="px-4 py-3 text-xl text-center border-r border-gray-100 dark:border-white/5">✠</td>
+<td class="px-4 py-3 font-mono text-xs text-gray-500 dark:text-gray-400">U+2720</td>
+<td class="px-4 py-3 text-gray-600 dark:text-gray-300">Sign of the Cross</td>
+</tr>
+<tr>
+<td class="px-4 py-3 text-xl text-center border-r border-gray-100 dark:border-white/5">℣</td>
+<td class="px-4 py-3 font-mono text-xs text-gray-500 dark:text-gray-400">U+2123</td>
+<td class="px-4 py-3 text-gray-600 dark:text-gray-300">Versicle (Priest)</td>
+</tr>
+<tr>
+<td class="px-4 py-3 text-xl text-center border-r border-gray-100 dark:border-white/5">℟</td>
+<td class="px-4 py-3 font-mono text-xs text-gray-500 dark:text-gray-400">U+211F</td>
+<td class="px-4 py-3 text-gray-600 dark:text-gray-300">Response (People)</td>
+</tr>
+<tr>
+<td class="px-4 py-3 text-xl text-center border-r border-gray-100 dark:border-white/5">☩</td>
+<td class="px-4 py-3 font-mono text-xs text-gray-500 dark:text-gray-400">U+2629</td>
+<td class="px-4 py-3 text-gray-600 dark:text-gray-300">Cross of Lorraine</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-4 p-4 bg-primary/10 rounded-lg border border-primary/20 flex gap-3">
+<span class="material-symbols-outlined text-primary">info</span>
+<p class="text-xs text-gray-700 dark:text-[#cec48d]">Ensure fonts support these Unicode blocks. Fallback to 'Noto Sans Symbols' if necessary.</p>
+</div>
+</div>
+</div>
+</div>
+</body></html>
