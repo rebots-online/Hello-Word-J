@@ -136,6 +136,10 @@
                         <p class="text-gray-600 text-sm">Existing digital resources for the Tridentine Liturgy are often fragmented, costly, or lack modern features. SanctissiMissa provides a single, elegant, and comprehensive solution.</p>
                     </div>
                     <div class="card p-6">
+                        <h3 class="font-bold text-lg mb-2 text-[#B8860B]">CLI Tools</h3>
+                        <p class="text-gray-600 text-sm">Command-line generator, REST API, and CLI client for liturgical text generation and integration.</p>
+                    </div>
+                    <div class="card p-6 lg:col-span-3">
                         <h3 class="font-bold text-lg mb-2 text-[#B8860B]">Target Audience</h3>
                         <ul class="list-disc list-inside text-gray-600 text-sm space-y-1">
                             <li>Laity interested in the Extraordinary Form</li>
@@ -218,7 +222,8 @@
                                 <li class="flex items-start"><span class="font-semibold w-32 shrink-0">Framework:</span> <span class="text-gray-600">React with TypeScript</span></li>
                                 <li class="flex items-start"><span class="font-semibold w-32 shrink-0">State:</span> <span class="text-gray-600">Redux (@reduxjs/toolkit)</span></li>
                                 <li class="flex items-start"><span class="font-semibold w-32 shrink-0">Database:</span> <span class="text-gray-600">IndexedDB for local-first storage</span></li>
-                                <li class="flex items-start"><span class="font-semibold w-32 shrink-0">Offline:</span> <span class="text-gray-600">Robust Service Worker</span></li>
+                                <li class="flex items-start"><span class="font-semibold w-32 shrink-0">CLI Tools:</span> <span class="text-gray-600">liturgical-gen, liturgical-api, liturgical-cli for command-line generation</span></li>
+                                <li class="flex items-start"><span class="font-semibold w-32 shrink-0">Data Import:</span> <span class="text-gray-600">Complete Divinum Officium import (600+ Mass texts, 2000+ Office texts)</span></li>
                             </ul>
                         </div>
                         <div id="ux-design" class="tab-content" style="display:none;">
@@ -283,7 +288,8 @@
                         'Complete 1962 Roman Missal & Breviary.',
                         'Bilingual Latin/English side-by-side view.',
                         'Advanced calendar engine for automatic date calculation.',
-                        'Handles all precedence rules and commemorations.'
+                        'Handles all precedence rules and commemorations.',
+                        'Rubrics display toggle (default ON) for liturgical instructions.'
                     ]
                 },
                 devotions: {
@@ -323,7 +329,10 @@
                         'Implement IndexedDB Storage Adapter',
                         'Build core Calendar Service',
                         'Create UI for Mass texts',
-                        'Configure Service Worker for offline use'
+                        'Configure Service Worker for offline use',
+                        'Import complete Divinum Officium database',
+                        'Build CLI tools (generator, API, client)',
+                        'Add rubrics display toggle (default ON)'
                     ]
                 },
                 'Phase 2': {

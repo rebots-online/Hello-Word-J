@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-08T10:12:19.731Z",
+  "generatedAt": "2026-02-08T11:50:20.550Z",
   "butcherAlgorithm": {
     "passed": 11,
     "failed": 0,
@@ -8,9 +8,9 @@
   },
   "textVerification": {
     "passed": 0,
-    "failed": 1,
-    "skipped": 0,
-    "status": "FAIL"
+    "failed": 0,
+    "skipped": 13,
+    "status": "PASS"
   },
-  "overall": "FAIL"
+  "overall": "PASS"
 }

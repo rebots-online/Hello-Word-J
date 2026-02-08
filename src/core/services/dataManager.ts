@@ -134,6 +134,13 @@ CREATE TABLE IF NOT EXISTS newsletters (
   FOREIGN KEY (parish_id) REFERENCES parish_info(id)
 );`;
 
+const CREATE_USER_SETTINGS_TABLE = `
+CREATE TABLE IF NOT EXISTS user_settings (
+  key TEXT PRIMARY KEY NOT NULL,
+  value TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);`;
+
 interface MergedTextPart {
   celebration_key: string;
   part_type: string;
@@ -218,6 +225,7 @@ export class DataManager {
       await this.storageService.executeQuery(CREATE_PARISH_INFO_TABLE);
       await this.storageService.executeQuery(CREATE_PARISH_EVENTS_TABLE);
       await this.storageService.executeQuery(CREATE_NEWSLETTERS_TABLE);
+      await this.storageService.executeQuery(CREATE_USER_SETTINGS_TABLE);
     });
 
     console.log('DataManager: Ready with self-contained liturgical database.');
@@ -714,6 +722,32 @@ export class DataManager {
       'UPDATE voice_notes SET transcription = ? WHERE id = ?',
       [transcription, id]
     );
+  }
+
+  // User Settings
+  async getUserSetting(key: string, defaultValue?: string): Promise<string | null> {
+    const results = await this.storageService.executeQuery(
+      'SELECT value FROM user_settings WHERE key = ?',
+      [key]
+    );
+    return results.length > 0 ? results[0].value : (defaultValue || null);
+  }
+
+  async setUserSetting(key: string, value: string): Promise<void> {
+    await this.storageService.executeQuery(
+      `INSERT OR REPLACE INTO user_settings (key, value, updated_at) VALUES (?, ?, ?)`,
+      [key, value, new Date().toISOString()]
+    );
+  }
+
+  // Rubrics display setting - defaults to ON
+  async getRubricsDisplay(): Promise<boolean> {
+    const value = await this.getUserSetting('rubrics_display', 'true');
+    return value === 'true';
+  }
+
+  async setRubricsDisplay(enabled: boolean): Promise<void> {
+    await this.setUserSetting('rubrics_display', enabled ? 'true' : 'false');
   }
 
   // Date Flags - Get all data types associated with a date
