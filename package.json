@@ -6,7 +6,7 @@
   "copyright": "Copyright (C) 2025 Robin L. M. Cheung, MBA. All rights reserved.",
   "scripts": {
     "dev": "vite",
-    "build": "VITE_BUILD_TIME=$(date +%s) vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "import-database": "ts-node scripts/import-divinum-officium-database.ts",
     "test-liturgical": "ts-node scripts/test-full-liturgical-generator.ts",

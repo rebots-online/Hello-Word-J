@@ -86,7 +86,8 @@ export default defineConfig({
   define: {
     'process.env': {},
     global: 'globalThis',
-    __DEV__: process.env.NODE_ENV !== 'production'
+    __DEV__: process.env.NODE_ENV !== 'production',
+    'import.meta.env.VITE_BUILD_TIME': JSON.stringify(process.env.VITE_BUILD_TIME || String(Math.floor(Date.now() / 1000)))
   },
   optimizeDeps: {
     include: ['react-native-web', 'dexie', 'sql.js'],
