@@ -38,15 +38,22 @@ jobs:
         with:
           accept-android-sdk-licenses: true
 
-      - name: Install Android NDK
+      - name: Find and set NDK_HOME
         run: |
-          sdkmanager --install "ndk;27.1.12297006"
-          echo "NDK_HOME=$ANDROID_HOME/ndk/27.1.12297006" >> $GITHUB_ENV
+          # Use whatever NDK is pre-installed on the runner
+          NDK_DIR=$(ls -d $ANDROID_HOME/ndk/*/ 2>/dev/null | sort -V | tail -1)
+          if [ -z "$NDK_DIR" ]; then
+            echo "No NDK found, installing one..."
+            sdkmanager --install "ndk;27.1.12297006"
+            NDK_DIR="$ANDROID_HOME/ndk/27.1.12297006"
+          fi
+          echo "NDK_HOME=${NDK_DIR%/}" >> $GITHUB_ENV
+          echo "Using NDK: ${NDK_DIR}"
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android,i686-linux-android
+          targets: aarch64-linux-android
 
       - name: Install Tauri system dependencies (Linux)
         run: |
@@ -65,15 +72,17 @@ jobs:
       - name: Install npm dependencies
         run: npm ci --legacy-peer-deps
 
+      - name: Build frontend
+        run: npm run build
+
       - name: Initialize Tauri Android
         run: npx tauri android init
 
-      - name: Build Android APK (debug)
-        run: npx tauri android build --debug
-        env:
-          NDK_HOME: ${{ env.NDK_HOME }}
+      - name: Build Android APK (debug, arm64 only)
+        run: npx tauri android build --debug --target aarch64
 
       - name: Find and upload APK
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: android-apk
