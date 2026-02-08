@@ -1,6 +1,9 @@
 # Project Index: SanctissiMissa (Hello, Word)
 
-Generated: 2026-02-06
+Generated: 2026-02-07
+Last Updated: 2026-02-07
+Author: Robin L. M. Cheung, MBA
+License: Copyright (C) 2025 - All rights reserved
 
 ## Project Structure
 
@@ -12,12 +15,21 @@ Hello-Word-J/
 │   ├── index.web.js            # RN web entry
 │   ├── index.html              # Web HTML shell
 │   ├── vite.config.ts          # HelloWord-level Vite config
-│   ├── src/platforms/web/      # Web-specific RN components
-│   │   ├── main.tsx            # Web bootstrap
-│   │   ├── FullWebApp.tsx      # Full web app wrapper
-│   │   ├── WebLiturgicalApp.tsx
-│   │   ├── ActualLiturgicalApp.tsx
-│   │   └── RealDataApp.tsx
+│   ├── src/
+│   │   ├── platforms/web/      # Web-specific RN components
+│   │   │   ├── main.tsx        # Web bootstrap
+│   │   │   ├── FullWebApp.tsx  # Full web app wrapper
+│   │   │   ├── WebLiturgicalApp.tsx
+│   │   │   ├── ActualLiturgicalApp.tsx
+│   │   │   └── RealDataApp.tsx
+│   │   ├── core/
+│   │   │   ├── components/     # Core RN components (3 files)
+│   │   │   │   ├── AppBar.tsx
+│   │   │   │   ├── BottomNav.tsx
+│   │   │   │   └── Card.tsx    # ⚠️ Untracked - newly created
+│   │   │   └── theme/
+│   │   │       ├── ThemeProvider.tsx
+│   │   │       └── themeConfig.ts
 │   └── __tests__/              # Jest tests (2 files)
 ├── src/                        # Shared core source
 │   ├── api/                    # API layer
@@ -216,3 +228,23 @@ cd HelloWord && npm test   # Jest tests
 - Tests: 2 files
 - Documentation (MD): ~70 files (excluding node_modules)
 - Data (JSON): 10 files
+
+## Known Issues & Notes
+
+⚠️ **Merge Conflicts**: `src/core/types/liturgical.ts` has unresolved conflicts
+⚠️ **Untracked Files**:
+  - `HelloWord/src/core/components/Card.tsx` (newly created, not in git)
+  - `HelloWordJ-7feb2026-12h30-session-ses_3cd1.md` (session file)
+
+⚠️ **CLI Missing**: Report command missing in main() switch statement (see CLAUDE.md)
+
+## Development Constraints
+
+- **NO placeholder data** - calculate on-demand, cache only what's used
+- **Match divinumofficium.com exactly** - any mismatch is a blocker
+- **Clean room implementation** - no direct copying from reference
+- **Offline-first architecture** with SQLite/IndexedDB storage
+
+## Token Efficiency
+
+**Reading this index**: ~3K tokens vs full codebase (~58K tokens) = **94% reduction**

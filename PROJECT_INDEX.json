@@ -4,7 +4,8 @@
     "codename": "Hello, Word",
     "version": "1.0.0",
     "author": "Robin L. M. Cheung, MBA",
-    "generated": "2026-02-06",
+    "generated": "2026-02-07",
+    "lastUpdated": "2026-02-07",
     "description": "Liturgical application for traditional Latin Catholic texts and prayers (1962 Missal)"
   },
   "entry_points": {
@@ -71,6 +72,11 @@
       { "name": "ParishDashboard", "path": "src/components/ParishDashboard.tsx" },
       { "name": "Journal", "path": "src/components/Journal.tsx" }
     ],
+    "rn_components": [
+      { "name": "AppBar", "path": "HelloWord/src/core/components/AppBar.tsx", "purpose": "React Native app bar" },
+      { "name": "BottomNav", "path": "HelloWord/src/core/components/BottomNav.tsx", "purpose": "React Native bottom navigation" },
+      { "name": "Card", "path": "HelloWord/src/core/components/Card.tsx", "purpose": "React Native card component", "status": "untracked" }
+    ],
     "platforms": {
       "factory": "src/platforms/storageFactory.ts",
       "web": ["src/platforms/web/StorageService.ts", "src/platforms/web/webSqliteStorage.ts"],
@@ -122,6 +128,23 @@
     "tests": 2,
     "documentation_md": 70,
     "data_json": 10
+  },
+  "known_issues": [
+    "src/core/types/liturgical.ts has unresolved merge conflicts",
+    "HelloWord/src/core/components/Card.tsx is untracked in git",
+    "HelloWordJ-7feb2026-12h30-session-ses_3cd1.md is untracked in git",
+    "CLI report command missing in main() switch statement (see CLAUDE.md)"
+  ],
+  "constraints": [
+    "NO placeholder data - calculate on-demand",
+    "Match divinumofficium.com exactly - any mismatch is a blocker",
+    "Clean room implementation - no direct copying",
+    "Offline-first architecture"
+  ],
+  "token_efficiency": {
+    "index_size": "3K tokens",
+    "full_codebase": "58K tokens",
+    "reduction": "94%"
   },
   "commands": {
     "dev": "npm run dev",
