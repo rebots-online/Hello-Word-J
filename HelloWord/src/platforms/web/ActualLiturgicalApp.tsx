@@ -201,6 +201,61 @@ function ActualLiturgicalApp(): React.JSX.Element {
     );
   }
 
+  const [showMenu, setShowMenu] = useState<string | null>(null);
+
+  const handleMenuClick = (menu: string) => {
+    setShowMenu(showMenu === menu ? null : menu);
+  };
+
+  const renderMenuBar = () => (
+    <div className="menu-bar">
+      <div className="menu-item" onClick={() => handleMenuClick('file')}>
+        <span>File</span>
+        {showMenu === 'file' && (
+          <div className="menu-dropdown">
+            <div className="menu-option" onClick={() => window.print()}>Print...</div>
+            <div className="menu-option" onClick={() => setCurrentView('settings')}>Preferences</div>
+            <div className="menu-divider" />
+            <div className="menu-option" onClick={() => window.location.reload()}>Exit</div>
+          </div>
+        )}
+      </div>
+      <div className="menu-item" onClick={() => handleMenuClick('edit')}>
+        <span>Edit</span>
+        {showMenu === 'edit' && (
+          <div className="menu-dropdown">
+            <div className="menu-option" onClick={() => setCurrentView('journal')}>New Journal Entry</div>
+            <div className="menu-option" onClick={() => setJournalTitle('')}>Clear Journal Title</div>
+            <div className="menu-option" onClick={() => setJournalContent('')}>Clear Journal Content</div>
+          </div>
+        )}
+      </div>
+      <div className="menu-item" onClick={() => handleMenuClick('view')}>
+        <span>View</span>
+        {showMenu === 'view' && (
+          <div className="menu-dropdown">
+            <div className="menu-option" onClick={() => setCurrentView('calendar')}>Calendar</div>
+            <div className="menu-option" onClick={() => setCurrentView('mass')}>Holy Mass</div>
+            <div className="menu-option" onClick={() => setCurrentView('office')}>Divine Office</div>
+            <div className="menu-option" onClick={() => setCurrentView('journal')}>Journal</div>
+            <div className="menu-divider" />
+            <div className="menu-option" onClick={() => setCurrentView('settings')}>Settings</div>
+          </div>
+        )}
+      </div>
+      <div className="menu-item" onClick={() => handleMenuClick('help')}>
+        <span>Help</span>
+        {showMenu === 'help' && (
+          <div className="menu-dropdown">
+            <div className="menu-option" onClick={() => setCurrentView('about')}>About SanctissiMissa</div>
+            <div className="menu-option" onClick={() => window.open('https://github.com/rebots-online/sanctissimissa', '_blank')}>Documentation</div>
+            <div className="menu-option" onClick={() => alert(`Version ${VERSION} (Build ${BUILD_NUMBER})\n${COPYRIGHT}`)}>Version Info</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   const renderNavigation = () => (
     <nav className="navigation">
       <button 
@@ -450,6 +505,7 @@ function ActualLiturgicalApp(): React.JSX.Element {
 
   return (
     <div className="app">
+      {renderMenuBar()}
       <div className="header">
         <h1>SanctissiMissa</h1>
         <p>Traditional Latin Liturgical Companion - Live Calendar from Divinum Officium</p>

@@ -13,7 +13,8 @@ import {
   ParishEvent,
   Newsletter,
   BilingualText,
-  LiturgicalDay
+  LiturgicalDay,
+  VoiceNote
 } from '../types/liturgical';
 
 const CREATE_CALENDAR_DAYS_TABLE = `
@@ -365,6 +366,115 @@ export class DataManager {
     );
   }
 
+  // Cache Management
+  async getCacheStats(): Promise<{
+    totalEntries: number;
+    expiredEntries: number;
+    totalSizeBytes: number;
+    oldestEntry: string | null;
+    newestEntry: string | null;
+  }> {
+    const [totalResult, expiredResult, sizeResult, oldestResult, newestResult] = await Promise.all([
+      this.storageService.executeQuery('SELECT COUNT(*) as count FROM cached_liturgical_data'),
+      this.storageService.executeQuery('SELECT COUNT(*) as count FROM cached_liturgical_data WHERE expires_at < ?', [new Date().toISOString()]),
+      this.storageService.executeQuery('SELECT SUM(LENGTH(liturgical_data)) as size FROM cached_liturgical_data'),
+      this.storageService.executeQuery('SELECT MIN(cached_at) as oldest FROM cached_liturgical_data'),
+      this.storageService.executeQuery('SELECT MAX(cached_at) as newest FROM cached_liturgical_data')
+    ]);
+
+    return {
+      totalEntries: totalResult[0]?.count || 0,
+      expiredEntries: expiredResult[0]?.count || 0,
+      totalSizeBytes: sizeResult[0]?.size || 0,
+      oldestEntry: oldestResult[0]?.oldest || null,
+      newestEntry: newestResult[0]?.newest || null
+    };
+  }
+
+  async cleanupExpiredCache(preserveMajorFeasts: boolean = true): Promise<{ deleted: number; preserved: number }> {
+    const majorFeastDates = preserveMajorFeasts ? this.getMajorFeastDates() : [];
+    
+    // Get all expired entries
+    const expiredResults = await this.storageService.executeQuery(
+      'SELECT date FROM cached_liturgical_data WHERE expires_at < ?',
+      [new Date().toISOString()]
+    );
+
+    let deleted = 0;
+    let preserved = 0;
+
+    for (const row of expiredResults) {
+      const date = row.date;
+      
+      // Check if this is a major feast date (Christmas, Easter, etc.)
+      if (majorFeastDates.some(feastDate => this.isSameLiturgicalDate(date, feastDate))) {
+        preserved++;
+        continue; // Skip deletion for major feasts
+      }
+
+      await this.storageService.executeQuery(
+        'DELETE FROM cached_liturgical_data WHERE date = ?',
+        [date]
+      );
+      deleted++;
+    }
+
+    console.log(`Cache cleanup: ${deleted} entries deleted, ${preserved} major feasts preserved`);
+    return { deleted, preserved };
+  }
+
+  async clearCacheForDate(date: string): Promise<void> {
+    await this.storageService.executeQuery(
+      'DELETE FROM cached_liturgical_data WHERE date = ?',
+      [date]
+    );
+  }
+
+  async clearAllCache(): Promise<void> {
+    await this.storageService.executeQuery('DELETE FROM cached_liturgical_data');
+  }
+
+  private getMajorFeastDates(): string[] {
+    // Major feasts that should be preserved in cache
+    // These are dates that users are likely to revisit
+    const currentYear = new Date().getFullYear();
+    const majorFeasts: string[] = [];
+
+    // Christmas (Dec 25) - for current and next year
+    majorFeasts.push(`${currentYear}-12-25`);
+    majorFeasts.push(`${currentYear + 1}-12-25`);
+
+    // Easter dates (these vary by year - simplified approximation)
+    // Easter is first Sunday after first full moon on or after March 21
+    // For 2025-2030, these are the Easter dates:
+    const easterDates = ['2025-04-20', '2026-04-05', '2027-03-28', '2028-04-16', '2029-04-01', '2030-04-21'];
+    majorFeasts.push(...easterDates);
+
+    // Pentecost (50 days after Easter)
+    // Major solemnities
+    const fixedFeasts = [
+      `${currentYear}-01-01`, // Mary Mother of God
+      `${currentYear}-01-06`, // Epiphany
+      `${currentYear}-03-19`, // St Joseph
+      `${currentYear}-03-25`, // Annunciation
+      `${currentYear}-08-15`, // Assumption
+      `${currentYear}-11-01`, // All Saints
+      `${currentYear}-12-08`, // Immaculate Conception
+      `${currentYear + 1}-01-01`,
+      `${currentYear + 1}-01-06`,
+    ];
+    majorFeasts.push(...fixedFeasts);
+
+    return majorFeasts;
+  }
+
+  private isSameLiturgicalDate(date1: string, date2: string): boolean {
+    // Compare dates ignoring year (for recurring feasts)
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+    return d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
+  }
+
   // Journal entries
   async createJournalEntry(entry: Omit<JournalEntry, 'id' | 'created' | 'modified'>): Promise<JournalEntry> {
     const id = `journal_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -552,5 +662,98 @@ export class DataManager {
     );
 
     return fullNewsletter;
+  }
+
+  // Voice Notes / Voice Journal
+  async getVoiceNotesForDate(date: string): Promise<VoiceNote[]> {
+    const results = await this.storageService.executeQuery(
+      'SELECT * FROM voice_notes WHERE date = ? ORDER BY duration DESC',
+      [date]
+    );
+    
+    return results.map((row: any) => ({
+      id: row.id,
+      date: row.date,
+      title: row.title,
+      filePath: row.file_path,
+      duration: row.duration,
+      transcription: row.transcription
+    }));
+  }
+
+  async saveVoiceNote(voiceNote: Omit<VoiceNote, 'id'>): Promise<VoiceNote> {
+    const id = `voice_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const fullVoiceNote: VoiceNote = { ...voiceNote, id };
+
+    await this.storageService.executeQuery(
+      `INSERT INTO voice_notes 
+       (id, date, title, file_path, duration, transcription)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [
+        fullVoiceNote.id,
+        fullVoiceNote.date,
+        fullVoiceNote.title,
+        fullVoiceNote.filePath,
+        fullVoiceNote.duration,
+        fullVoiceNote.transcription || null
+      ]
+    );
+
+    return fullVoiceNote;
+  }
+
+  async deleteVoiceNote(id: string): Promise<void> {
+    await this.storageService.executeQuery(
+      'DELETE FROM voice_notes WHERE id = ?',
+      [id]
+    );
+  }
+
+  async updateVoiceNoteTranscription(id: string, transcription: string): Promise<void> {
+    await this.storageService.executeQuery(
+      'UPDATE voice_notes SET transcription = ? WHERE id = ?',
+      [transcription, id]
+    );
+  }
+
+  // Date Flags - Get all data types associated with a date
+  async getDateFlags(date: string): Promise<{
+    hasMartyrology: boolean;
+    hasVoiceNotes: boolean;
+    hasJournalEntries: boolean;
+    voiceNoteCount: number;
+    journalEntryCount: number;
+  }> {
+    const [martyrology, voiceNotes, journalEntries] = await Promise.all([
+      this.getMartyrologicalEntry(date),
+      this.getVoiceNotesForDate(date),
+      this.getJournalEntriesForDate(date)
+    ]);
+
+    return {
+      hasMartyrology: !!martyrology && martyrology.entries.length > 0,
+      hasVoiceNotes: voiceNotes.length > 0,
+      hasJournalEntries: journalEntries.length > 0,
+      voiceNoteCount: voiceNotes.length,
+      journalEntryCount: journalEntries.length
+    };
+  }
+
+  private async getJournalEntriesForDate(date: string): Promise<JournalEntry[]> {
+    const results = await this.storageService.executeQuery(
+      'SELECT * FROM journal_entries WHERE date = ? ORDER BY created DESC',
+      [date]
+    );
+    
+    return results.map((row: any) => ({
+      id: row.id,
+      date: row.date,
+      title: row.title,
+      content: row.content,
+      liturgicalContext: row.liturgical_context ? JSON.parse(row.liturgical_context) : undefined,
+      tags: row.tags ? JSON.parse(row.tags) : [],
+      created: row.created,
+      modified: row.modified
+    }));
   }
 }

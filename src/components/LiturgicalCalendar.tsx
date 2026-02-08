@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { LiturgicalEngineInterface, LiturgicalData } from '../platforms/web/liturgicalEngineInterface.web';
 
 interface LiturgicalDay {
   date: string;
@@ -47,79 +48,64 @@ export const LiturgicalCalendar: React.FC<LiturgicalCalendarProps> = ({
   }, [currentMonth]);
 
   const loadLiturgicalData = async () => {
-    // Mock liturgical data - in production, this would call the liturgical calculation service
+    // Fetch real liturgical data from the working CLI engine
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
-    const mockData: { [date: string]: LiturgicalDay } = {};
+    const realData: { [date: string]: LiturgicalDay } = {};
 
-    // Generate sample liturgical days for the month
+    // Get days in month
     const daysInMonth = new Date(year, month + 1, 0).getDate();
+    
+    // Fetch liturgical data for each day
     for (let day = 1; day <= daysInMonth; day++) {
       const date = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
       
-      // Simulate some days having cached data
-      const isCached = Math.random() > 0.7; // 30% chance of being cached
-      const hasGeneratedMass = Math.random() > 0.8; // 20% chance
-      const hasGeneratedOffice = Math.random() > 0.9; // 10% chance
-      
-      // Sample liturgical data
-      if (day === 1) {
-        mockData[date] = {
-          date,
-          celebration: 'St. Therese of Lisieux',
-          rank: 4.5,
-          color: 'white',
-          season: 'per annum',
-          cached: true,
-          cacheExpiry: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-          hasGeneratedMass: true,
-          hasGeneratedOffice: true
-        };
-      } else if (day === 6) {
-        mockData[date] = {
-          date,
-          celebration: 'Dominica Sanctissimæ Trinitatis',
-          rank: 6.5,
-          color: 'white',
-          season: 'post Pentecosten',
-          cached: true,
-          cacheExpiry: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString(),
-          hasGeneratedMass: true,
-          hasGeneratedOffice: false
-        };
-      } else if (day === 13) {
-        mockData[date] = {
-          date,
-          celebration: 'Dominica II post Pentecosten',
-          rank: 6.0,
-          color: 'green',
-          season: 'post Pentecosten',
-          cached: false,
-          hasGeneratedMass: false,
-          hasGeneratedOffice: false
-        };
-      } else {
-        mockData[date] = {
+      try {
+        const liturgicalData: LiturgicalData | null = await LiturgicalEngineInterface.getCalendarData(date);
+        
+        if (liturgicalData && liturgicalData.calendar) {
+          realData[date] = {
+            date,
+            celebration: liturgicalData.calendar.celebration || 'Feria',
+            rank: liturgicalData.calendar.rank || 1.0,
+            color: liturgicalData.calendar.color || 'green',
+            season: liturgicalData.calendar.season || 'per annum',
+            commemorations: liturgicalData.calendar.commemorations || [],
+            cached: liturgicalData.cached || false,
+            cacheExpiry: liturgicalData.cacheExpiry,
+            hasGeneratedMass: !!liturgicalData.mass && Object.keys(liturgicalData.mass).length > 0,
+            hasGeneratedOffice: !!liturgicalData.office && Object.keys(liturgicalData.office).length > 0
+          };
+        } else {
+          // Fallback for dates without data
+          realData[date] = {
+            date,
+            celebration: 'Feria',
+            rank: 1.0,
+            color: 'green',
+            season: 'per annum'
+          };
+        }
+      } catch (error) {
+        console.error(`Failed to fetch liturgical data for ${date}:`, error);
+        // Fallback on error
+        realData[date] = {
           date,
           celebration: 'Feria',
           rank: 1.0,
           color: 'green',
-          season: 'per annum',
-          cached: isCached,
-          cacheExpiry: isCached ? new Date(Date.now() + Math.random() * 48 * 60 * 60 * 1000).toISOString() : undefined,
-          hasGeneratedMass,
-          hasGeneratedOffice
+          season: 'per annum'
         };
       }
     }
 
-    setLiturgicalDays(mockData);
+    setLiturgicalDays(realData);
     
-    // Update cache stats
-    const cachedCount = Object.values(mockData).filter(day => day.cached).length;
+    // Update cache stats from real data
+    const cachedCount = Object.values(realData).filter(day => day.cached).length;
     setCacheStats({
       totalEntries: cachedCount,
-      totalSize: cachedCount * 24 // Mock size calculation
+      totalSize: cachedCount * 24 // Approximate size calculation
     });
   };
 

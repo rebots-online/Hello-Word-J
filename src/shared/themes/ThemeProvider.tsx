@@ -6,6 +6,8 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { Theme, ThemeKey, ThemeMode, ThemeVariant } from './index';
 import { brutalistLight, brutalistDark } from './brutalist';
+import { retroLight, retroDark } from './retro';
+import { liquidGlassLight, liquidGlassDark } from './liquidGlass';
 import { skeuomorphicLight, skeuomorphicDark } from './skeuomorphic';
 
 interface ThemeContextType {
@@ -29,10 +31,10 @@ const themes: Record<ThemeKey, Theme> = {
   brutalist_dark: brutalistDark,
   skeuomorphic_light: skeuomorphicLight,
   skeuomorphic_dark: skeuomorphicDark,
-  liquidGlass_light: brutalistLight, // Placeholder until implemented
-  liquidGlass_dark: brutalistDark,   // Placeholder until implemented
-  retro_light: skeuomorphicLight,    // Placeholder until implemented
-  retro_dark: skeuomorphicDark,      // Placeholder until implemented
+  liquidGlass_light: liquidGlassLight,
+  liquidGlass_dark: liquidGlassDark,
+  retro_light: retroLight,
+  retro_dark: retroDark,
 };
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({

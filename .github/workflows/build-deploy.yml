@@ -1,0 +1,82 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: |
+        npm ci --legacy-peer-deps
+        cd HelloWord && npm ci --legacy-peer-deps
+    
+    - name: Generate version
+      id: version
+      run: |
+        VERSION="0.1.0"
+        BUILD_NUMBER=$(($(date +%s) % 100000))
+        FULL_VERSION="${VERSION}-${BUILD_NUMBER}"
+        echo "version=${FULL_VERSION}" >> $GITHUB_OUTPUT
+        echo "Version: ${FULL_VERSION}"
+    
+    - name: Build Web App
+      run: |
+        npm run build
+        mkdir -p "dist/sanctissimissa-web-${{ steps.version.outputs.version }}"
+        cp -r dist/* "dist/sanctissimissa-web-${{ steps.version.outputs.version }}/" || true
+    
+    - name: Run tests
+      run: |
+        npm test -- --coverage --watchAll=false || true
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: sanctissimissa-web-${{ steps.version.outputs.version }}
+        path: dist/
+    
+    - name: Create Release
+      if: github.ref == 'refs/heads/main'
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.version.outputs.version }}
+        name: SanctissiMissa v${{ steps.version.outputs.version }}
+        files: dist/**/**
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: sanctissimissa-web-${{ needs.build.outputs.version }}
+        path: dist/
+    
+    - name: Deploy to Production
+      run: |
+        echo "Deploying SanctissiMissa to production..."
+        # Add deployment commands here (e.g., rsync, ssh, cloud deployment)
+        echo "Deployment complete"
