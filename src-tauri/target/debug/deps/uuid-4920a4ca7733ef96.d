@@ -1,0 +1,14 @@
+/home/robin/github/Hello-Word-J/src-tauri/target/debug/deps/uuid-4920a4ca7733ef96.d: /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/lib.rs /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/macros.rs /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/builder.rs /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/error.rs /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/non_nil.rs /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/parser.rs /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/fmt.rs /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/timestamp.rs /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/external.rs /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/external/serde_support.rs
+
+/home/robin/github/Hello-Word-J/src-tauri/target/debug/deps/libuuid-4920a4ca7733ef96.rmeta: /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/lib.rs /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/macros.rs /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/builder.rs /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/error.rs /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/non_nil.rs /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/parser.rs /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/fmt.rs /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/timestamp.rs /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/external.rs /home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/external/serde_support.rs
+
+/home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/lib.rs:
+/home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/macros.rs:
+/home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/builder.rs:
+/home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/error.rs:
+/home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/non_nil.rs:
+/home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/parser.rs:
+/home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/fmt.rs:
+/home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/timestamp.rs:
+/home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/external.rs:
+/home/robin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.20.0/src/external/serde_support.rs:
