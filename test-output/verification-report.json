@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-02-08T10:12:19.731Z",
+  "butcherAlgorithm": {
+    "passed": 11,
+    "failed": 0,
+    "total": 11,
+    "status": "PASS"
+  },
+  "textVerification": {
+    "passed": 0,
+    "failed": 1,
+    "skipped": 0,
+    "status": "FAIL"
+  },
+  "overall": "FAIL"
+}
