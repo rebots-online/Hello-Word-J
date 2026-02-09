@@ -11,6 +11,7 @@
     "import-database": "ts-node scripts/import-divinum-officium-database.ts",
     "test-liturgical": "ts-node scripts/test-full-liturgical-generator.ts",
     "version": "echo \"$(cat package.json | grep '\"version\"' | cut -d'\"' -f4).$(date +%s)\"",
+    "tauri": "tauri",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
     "tauri:build:linux": "tauri build --target x86_64-unknown-linux-gnu",
