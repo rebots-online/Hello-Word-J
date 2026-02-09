@@ -21,6 +21,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set build metadata
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          echo "BUILD_ID=SanctissiMissa-v${VERSION}-${SHORT_SHA}" >> $GITHUB_ENV
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -85,7 +91,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: android-apk
+          name: ${{ env.BUILD_ID }}-android
           path: |
             src-tauri/gen/android/app/build/outputs/apk/**/*.apk
           if-no-files-found: warn
@@ -98,6 +104,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set build metadata
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          echo "BUILD_ID=SanctissiMissa-v${VERSION}-${SHORT_SHA}" >> $GITHUB_ENV
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -117,7 +129,7 @@ jobs:
       - name: Upload PWA artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: pwa-web
+          name: ${{ env.BUILD_ID }}-pwa
           path: dist/
 
   # ============================================================
@@ -142,6 +154,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set build metadata
+        shell: bash
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          echo "BUILD_ID=SanctissiMissa-v${VERSION}-${SHORT_SHA}" >> $GITHUB_ENV
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -179,7 +198,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: desktop-linux
+          name: ${{ env.BUILD_ID }}-linux
           path: |
             src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/deb/*.deb
             src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/*.AppImage
@@ -189,7 +208,7 @@ jobs:
         if: matrix.os == 'macos-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: desktop-macos
+          name: ${{ env.BUILD_ID }}-macos
           path: |
             src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/*.dmg
             src-tauri/target/x86_64-apple-darwin/release/bundle/macos/*.app
@@ -199,7 +218,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: desktop-windows
+          name: ${{ env.BUILD_ID }}-windows
           path: |
             src-tauri/target/x86_64-pc-windows-msvc/release/bundle/msi/*.msi
             src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis/*.exe
